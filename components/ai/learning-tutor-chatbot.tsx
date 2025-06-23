@@ -524,7 +524,7 @@ What's your initial thinking on this?`
       <Card
         ref={ref}
         className={cn(
-          "fixed bottom-4 right-4 w-96 h-[650px] shadow-xl flex flex-col border-primary/20 bg-gradient-to-br from-background to-primary/5 z-50",
+          "fixed bottom-4 right-4 w-96 h-[500px] shadow-xl flex flex-col border-primary/20 bg-gradient-to-br from-background to-primary/5 z-50",
           className
         )}
         {...props}
@@ -558,9 +558,9 @@ What's your initial thinking on this?`
           </div>
         </CardHeader>
 
-        <CardContent className="flex-1 flex flex-col p-4 pt-0">
+        <CardContent className="flex-1 flex flex-col p-4 pt-0 min-h-0">
           {/* Messages */}
-          <ScrollArea className="flex-1 mb-4">
+          <ScrollArea className="flex-1 mb-4 min-h-0">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div
@@ -650,28 +650,30 @@ What's your initial thinking on this?`
             </div>
           )}
 
-          {/* Input */}
-          <div className="flex space-x-2 mt-2">
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyPress}
-              placeholder="Ask me anything about GIS - I'll guide you to discover the answer..."
-              className="flex-1 px-3 py-3 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent min-h-[40px]"
-              disabled={isLoading}
-            />
-            <Button
-              onClick={handleSendMessage}
-              disabled={!input.trim() || isLoading}
-              size="sm"
-              className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 min-h-[40px] px-4"
-            >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Send className="h-4 w-4" />
-              )}
-            </Button>
+          {/* Input - Fixed at bottom */}
+          <div className="flex-shrink-0 border-t border-border/50 pt-3 mt-2">
+            <div className="flex space-x-2">
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyPress}
+                placeholder="Ask me anything about GIS..."
+                className="flex-1 px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                disabled={isLoading}
+              />
+              <Button
+                onClick={handleSendMessage}
+                disabled={!input.trim() || isLoading}
+                size="sm"
+                className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+              >
+                {isLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
