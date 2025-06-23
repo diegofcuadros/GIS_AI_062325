@@ -31,6 +31,255 @@ import {
   ArrowRight
 } from "lucide-react"
 
+// Comprehensive Workshop Knowledge Base
+const WORKSHOP_KNOWLEDGE = {
+  searchKnowledge: (query: string) => {
+    const searchTerms = query.toLowerCase().split(' ')
+    const knowledge = [
+      {
+        id: "workshop_overview",
+        title: "GIS & AI Workshop Overview",
+        content: `This 3-day workshop combines GIS fundamentals with AI-powered analysis for health geography applications.
+
+**Workshop Structure:**
+- **Day 1**: QGIS Fundamentals & Malaria Mapping
+- **Day 2**: Environmental Risk Mapping with Google Earth Engine  
+- **Day 3**: AI-Assisted Programming & Advanced Analysis
+
+**Learning Objectives:**
+- Master QGIS for health facility mapping
+- Use Google Earth Engine for environmental analysis
+- Apply AI tools for spatial analysis`,
+        topics: ["workshop", "overview", "structure", "schedule"],
+        category: "navigation"
+      },
+      {
+        id: "day2_activities",
+        title: "Day 2 Workshop Activities",
+        content: `Day 2 focuses on Environmental Risk Mapping using Google Earth Engine and satellite data.
+
+**Morning Session (9:00 AM - 12:00 PM):**
+- **Lab 3**: Environmental Risk Mapping (GEE)
+  - Introduction to Google Earth Engine
+  - JavaScript fundamentals for GEE
+  - Loading and visualizing satellite imagery
+  - NDVI calculation for vegetation analysis
+
+**Afternoon Session (1:00 PM - 5:00 PM):**
+- **Lab 3 Continued**: Advanced GEE Analysis
+  - Time series analysis
+  - Climate data integration
+  - Malaria risk factor mapping`,
+        topics: ["day2", "schedule", "activities", "google earth engine", "lab3"],
+        category: "navigation"
+      },
+      {
+        id: "what_is_gis",
+        title: "What is GIS? - Geographic Information Systems",
+        content: `GIS (Geographic Information Systems) is a technology that captures, stores, analyzes, and displays geographic information.
+
+**Core Components:**
+1. **Hardware**: Computers, GPS units, scanners
+2. **Software**: QGIS, ArcGIS, Google Earth Engine
+3. **Data**: Spatial data (where) + Attribute data (what)
+4. **People**: Users, analysts, developers
+5. **Methods**: Procedures for analysis
+
+**GIS in Health Applications:**
+- Disease mapping and outbreak tracking
+- Healthcare facility accessibility analysis
+- Environmental health monitoring
+- Resource allocation optimization`,
+        topics: ["gis", "definition", "fundamentals", "health"],
+        category: "concept"
+      },
+      {
+        id: "qgis_installation",
+        title: "How to Install QGIS",
+        content: `QGIS is free, open-source GIS software. Here's how to install it:
+
+**Step 1: Download QGIS**
+- Visit: https://qgis.org/en/site/forusers/download.html
+- Choose your operating system (Windows, Mac, Linux)
+- Download the Long Term Release (LTR) version
+
+**Step 2: Installation**
+- **Windows**: Run .exe file, follow wizard
+- **Mac**: Open .dmg, drag to Applications
+- **Linux**: Use package manager
+
+**System Requirements:**
+- RAM: Minimum 4GB, recommended 8GB+
+- Storage: 2GB free space
+- OS: Windows 10+, macOS 10.14+, Linux`,
+        topics: ["qgis", "installation", "setup", "download"],
+        category: "installation"
+      },
+      {
+        id: "crs_setup_location",
+        title: "Where to Find CRS Setup Information",
+        content: `Coordinate Reference System setup is covered in Lab 1:
+
+**Primary Location:**
+- **Section**: "1.2 Setting Up Your GIS Environment"
+- **Subsection**: "Coordinate Reference Systems for Uganda"
+- **Location**: Lab 1, Step 2
+
+**Navigation:**
+1. Click "Labs & Tutorials" in main menu
+2. Select "Lab 1: Malaria Mapping Fundamentals"
+3. Scroll to "1.2 Setting Up Your GIS Environment"
+4. Find "Coordinate Reference Systems" subsection
+
+**What You'll Learn:**
+- Why CRS matters for Uganda data
+- How to set project CRS in QGIS
+- Uganda-specific CRS (EPSG:32636)`,
+        topics: ["crs", "navigation", "lab1", "setup", "uganda"],
+        category: "navigation"
+      },
+      {
+        id: "coordinate_reference_systems",
+        title: "Understanding Coordinate Reference Systems",
+        content: `CRS define how locations on Earth are represented mathematically.
+
+**Key Types:**
+- **Geographic CRS**: Lat/long (EPSG:4326 - WGS84)
+- **Projected CRS**: x,y coordinates (EPSG:32636 - UTM Zone 36N)
+
+**Uganda Context:**
+- **EPSG:4326**: Global system, good for general mapping
+- **EPSG:32636**: Uganda's projected system, better for measurements
+
+**When to Use:**
+- Geographic (4326): Web mapping, global datasets
+- Projected (32636): Distance/area calculations, spatial analysis
+
+**Common Issues:**
+- Mixing CRS causes errors
+- Check project CRS (bottom-right of QGIS)
+- Reproject data when necessary`,
+        topics: ["crs", "projections", "coordinates", "epsg", "uganda"],
+        category: "concept"
+      }
+    ]
+
+    const results = knowledge.filter(item => {
+      return searchTerms.some(term => 
+        item.title.toLowerCase().includes(term) ||
+        item.topics.some(topic => topic.includes(term)) ||
+        item.content.toLowerCase().includes(term)
+      )
+    })
+
+    return results.slice(0, 3)
+  },
+
+  generateResponse: (userMessage: string) => {
+    const results = WORKSHOP_KNOWLEDGE.searchKnowledge(userMessage)
+    
+    if (results.length === 0) {
+      return `That's an interesting question about "${userMessage}"! 🎓
+
+🤔 **Let's explore this together:**
+
+To give you the most helpful guidance, I'd like to understand:
+- What specific aspect interests you most?
+- Are you working on a particular lab or concept?
+- What have you tried so far?
+
+📚 **I can help with:**
+- Workshop navigation and structure
+- GIS concepts and fundamentals
+- QGIS installation and setup
+- Google Earth Engine basics
+- Coordinate reference systems
+- Health geography applications
+
+What would you like to explore first? 🚀`
+    }
+
+    const topResult = results[0]
+    
+    // Handle different question types
+    if (userMessage.toLowerCase().includes('day 2') || userMessage.toLowerCase().includes('activities')) {
+      return `Great question about Day 2 activities! Let me guide you through what's planned. 📅
+
+${topResult.content}
+
+🤔 **To help you prepare:**
+- Have you completed Day 1 materials?
+- Do you have a Google Earth Engine account set up?
+- What aspects of environmental analysis interest you most?
+
+💡 **Pro tip:** Day 2 builds on Day 1 concepts, so make sure you're comfortable with QGIS basics before diving into GEE!
+
+Is there a specific part of Day 2 you'd like to know more about? 🚀`
+    }
+
+    if (userMessage.toLowerCase().includes('what is gis')) {
+      return `Excellent fundamental question! Let's explore GIS together. 🗺️
+
+🤔 **Before I explain, tell me:**
+- Have you used GPS on your phone or Google Maps?
+- What do you think makes location-based information special?
+- Can you think of any problems that might benefit from mapping?
+
+📚 **Here's the foundation:**
+${topResult.content}
+
+💡 **Real-world connection:** Every time you use GPS navigation, check weather maps, or see election results by region - you're seeing GIS in action!
+
+What specific aspect of GIS would you like to explore further? 🌟`
+    }
+
+    if (userMessage.toLowerCase().includes('install') || userMessage.toLowerCase().includes('qgis')) {
+      return `Perfect! Let me guide you through QGIS installation step by step. 🛠️
+
+${topResult.content}
+
+🤔 **Before we start:**
+- What operating system are you using?
+- Have you installed similar software before?
+- Are you encountering any specific issues?
+
+💡 **I'll walk you through each step and help troubleshoot any problems that come up.**
+
+What system are you working with, and shall we start the installation process? 🚀`
+    }
+
+    if (userMessage.toLowerCase().includes('crs') || userMessage.toLowerCase().includes('coordinate')) {
+      return `Great question about coordinate systems! This is fundamental to GIS work. 🎯
+
+📍 **Here's exactly where to find this information:**
+${topResult.content}
+
+🤔 **Let's think about this conceptually first:**
+- Imagine giving directions to a friend - what reference points do you use?
+- Why might maps of the world look different in different projections?
+- How do you think GPS coordinates relate to measurements in meters?
+
+💡 **Uganda-specific guidance:** For this workshop, we use EPSG:32636 (UTM Zone 36N) for accurate distance measurements.
+
+Are you looking for the basic concepts or specific setup steps in QGIS? 🌟`
+    }
+
+    // Default comprehensive response
+    return `Great question about "${topResult.title}"! 🎓
+
+${topResult.content.split('\n').slice(0, 6).join('\n')}
+
+🤔 **Let's explore this together:**
+- What specific aspect interests you most?
+- How does this relate to your current work or goals?
+- What questions come to mind as you read this?
+
+💡 **My approach:** I'll guide you through discovery and hands-on learning rather than just providing answers.
+
+What would you like to dive deeper into? 🚀`
+  }
+}
+
 // Enhanced Learning Tutor Knowledge Base
 const TUTOR_KNOWLEDGE_BASE = {
   // Learning assessment questions
@@ -284,16 +533,25 @@ I'm here to guide you through your GIS journey using the Socratic method - I'll 
 - Ask you probing questions to build understanding
 - Guide you to discover solutions yourself  
 - Help you connect concepts to real-world applications
-- Encourage experimentation and learning from mistakes
+- Provide workshop navigation and content guidance
 
-📚 **Today's Focus:** ${currentLab.toUpperCase()} - Step ${currentStep}
+📚 **I can help you with:**
+- Workshop structure and daily activities
+- GIS concepts and fundamentals  
+- QGIS installation and setup
+- Coordinate reference systems
+- Google Earth Engine basics
+- Finding specific information in the workshop materials
 
-To get started, I'd love to understand your background:
-- What's your experience with GIS so far?
-- What specific challenge brought you here today?
-- What do you hope to accomplish in this session?
+💡 **Try asking me:**
+- "What are the activities for Day 2?"
+- "What is GIS?"
+- "How can I install QGIS?"
+- "Where can I find CRS setup information?"
 
-Remember: There are no "dumb" questions in learning! 🌟`,
+**Today's Focus:** ${currentLab.toUpperCase()} - Step ${currentStep}
+
+What would you like to explore or learn about? 🌟`,
         timestamp: new Date(),
         type: "assessment",
         learningLevel: studentLevel
@@ -455,7 +713,8 @@ What's your initial thinking on this?`
             tutorMode: true
           })
         } else {
-          response = await generateTutorResponse(input.trim())
+          // Use comprehensive workshop knowledge
+          response = WORKSHOP_KNOWLEDGE.generateResponse(input.trim())
         }
 
         const tutorMessage: TutorMessage = {
