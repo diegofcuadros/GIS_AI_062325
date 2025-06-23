@@ -1,0 +1,47 @@
+{% extends "sphinx_rtd_theme/layout.html" %}
+
+ {%- block extrahead %}
+  <meta name="description" content="QGIS {{ version }} documentation: {{ title|striptags|e }}">
+  {%- if outdated %}
+  <meta name="robots" content="noindex">
+  {%- endif %}
+  <script>
+    var _paq = window._paq = window._paq || [];
+    _paq.push(["disableCookies"]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="//matomo.qgis.org/";
+      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setSiteId', '1']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+ {%- endblock -%}
+
+ {%block extrabody %}
+
+  <nav class="release_status_topbar">
+   {%- if isTesting %}
+    <div class="row isTesting">
+     {{ _('This documentation is a work in progress. For the Long Term Release and translations, please visit the ') }}<a href="https://docs.qgis.org/latest/{{ language }}/{{ pagename }}.html">{{ _('latest version') }}</a>.
+    </div>
+   {%- endif %}
+
+   {%- if outdated %}
+    <div class="row outdated">
+     {{ _('This documentation is for a QGIS version which has reached end of life. Instead visit the ') }}<a href="https://docs.qgis.org/latest/{{ language }}/{{ pagename }}.html">{{ _('latest version') }}</a>.
+    </div>
+   {%- endif %}
+  </nav>
+
+  {{ super() }}
+
+ {% endblock extrabody %}
+
+ {% block sidebartitle %}
+   {{ super() }}
+   <a href= "{{pathto('genindex.html', 1)}}">{{ _('Index') }}</a>
+ {% endblock sidebartitle %}
+

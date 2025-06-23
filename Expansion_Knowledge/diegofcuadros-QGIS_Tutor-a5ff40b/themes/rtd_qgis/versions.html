@@ -1,0 +1,77 @@
+<!-- Transifex follows a particular logic to build target pages:
+Expected French translation link for https://docs.qgis.org/3.28/en/docs/user_manual/print_composer/overview_composer.html
+would return https://app.transifex.com/qgis/qgis-documentation/translate/#fr/aa6d8bc653526d38b295ca94bf8eee5e
+with the md5 value of "github#qgis/QGIS-Documentation#release_3.28#locale/en/LC_MESSAGES/docs/user_manual/print_composer/overview_composer.po"-->
+{%- set transifex_slug = ['github#qgis/QGIS-Documentation#release_', version, '#locale/en/LC_MESSAGES/', pagename, '.po'] | join('') %}
+<!--Make sure that mismatching language codes between Transifex and Sphinx are converted-->
+{%- set transifex_lang = language if language not in ('zh_Hant', 'zh_Hans') else (language | replace('_', '-')) %}
+
+{# Add rst-badge after rst-versions for small badge style. #}
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-info-circle"> {{ project }} </span>
+      v: {{ version }}
+      <span class="fa fa-caret-down"></span>
+    </span>
+
+    <div class="rst-other-versions">
+      <dl>
+        <dt>{{ _('Languages') }}</dt>
+        {% for slug, url in supported_languages %}
+          <dd><a href="{{ url }}/{{ pagename }}.html">{{ slug }}</a></dd>
+        {% endfor %}
+      </dl>
+
+      <dl>
+        <dt>{{ _('Versions') }}</dt>
+        {% for slug, url in versions %}
+          <dd><a href="{{ url }}/{{ language }}/{{ pagename }}.html">{{ slug }}</a></dd>
+        {% endfor %}
+      </dl>
+
+      {% if version_downloads %} 
+       <dl>
+        <dt>{{ _('Downloads') }}</dt>
+        {% for type, url in downloads %}
+          <dd><a href="{{ url }}">{{ type }}</a></dd>
+        {% endfor %}
+      </dl>
+      {% endif %}
+
+      {# Hide contribute to docs fields for obsolete documents. #}
+      {% if not outdated %} 
+      <dl>
+        <dt>{{ _('Contribute to Docs') }}</dt>
+          <dd>
+            <a href="{{ github_url }}/{{ pagename }}.rst" target="_blank" rel="noopener noreferrer">{{ _('Edit on GitHub') }}</a>
+          </dd>
+          {# Display the call for translation only for the latest document. #}
+          {% if not isTesting %}
+          <dd>
+            <a href="{{ transifex_url }}/#{{ transifex_lang }}/{{ calculate_tx_slug(transifex_slug) }}" target="_blank" rel="noopener noreferrer">{{ _('Translate Page') }}</a>
+          </dd>
+          {% endif %}
+          <dd>
+            <a href="https://github.com/qgis/QGIS-Documentation/issues" target="_blank" rel="noopener noreferrer">{{ _('Report Issue') }}</a>
+          </dd>
+      </dl>
+      {% endif %}
+
+      <dl>
+        <dt>{{ _('On QGIS Project') }}</dt>
+          <dd>
+            <a href="https://qgis.org" target="_blank" rel="noopener noreferrer">{{ _('Home') }}</a>
+          </dd>
+          <dd>
+            <a href="https://qgis.org/api/{{ api_version }}" target="_blank" rel="noopener noreferrer">{{ _('C++ API') }}</a>
+          </dd>
+          <dd>
+            <a href="https://qgis.org/pyqgis/{{ pyqgis_version }}" target="_blank" rel="noopener noreferrer">{{ _('PyQGIS API') }}</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/qgis/QGIS/tree/{{ source_version }}" target="_blank" rel="noopener noreferrer">{{ _('Source') }}</a>
+          </dd>
+      </dl>
+
+    </div>
+  </div>

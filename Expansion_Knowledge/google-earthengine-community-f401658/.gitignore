@@ -1,0 +1,10 @@
+.*
+coverage
+node_modules
+out
+!.github
+!.gitignore
+!.eslintrc.json
+!.private-key.json.enc
+!.travis
+!.travis.yml

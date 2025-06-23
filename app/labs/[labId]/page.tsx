@@ -4,6 +4,7 @@ import { labsData } from "@/lib/constants"
 import { notFound } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { WorkshopContentChatbot } from "@/components/ai/workshop-content-chatbot"
+import { LearningTutorChatbot } from "@/components/ai/learning-tutor-chatbot"
 import {
   CheckSquare,
   Lightbulb,
@@ -78,11 +79,22 @@ function AIAssistantPlaceholder({ labContext }: { labContext: string }) {
         </CardContent>
       </Card>
       
-      {/* The actual AI chatbot - positioned as floating widget */}
-      <WorkshopContentChatbot 
-        currentLab={currentLab}
-        currentStep={1}
-      />
+      {/* Dual AI Learning System */}
+      <div className="space-y-4">
+        {/* Content-focused chatbot for quick answers */}
+        <WorkshopContentChatbot 
+          currentLab={currentLab}
+          currentStep={1}
+        />
+        
+        {/* Learning tutor for guided discovery */}
+        <LearningTutorChatbot
+          currentLab={currentLab}
+          currentStep={1}
+          studentLevel="beginner"
+          className="right-[26rem]" // Position to avoid overlap
+        />
+      </div>
     </div>
   )
 }
