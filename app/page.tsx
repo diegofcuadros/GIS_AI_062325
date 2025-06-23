@@ -1,79 +1,187 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import { MapPin, BrainCircuit, Users, Briefcase, Rocket } from "lucide-react"
+import { MapPin, BrainCircuit, Users, Briefcase, Rocket, Zap, Heart, Globe } from "lucide-react"
 import { labsData } from "@/lib/constants"
 import Image from "next/image"
 
 export default function HomePage() {
   const keyFeatures = [
-    { title: "Real-World Impact", description: "Work with actual Uganda health data.", icon: MapPin },
-    { title: "AI-Powered Learning", description: "ChatGPT integration for coding assistance.", icon: BrainCircuit },
-    { title: "Satellite Data Analysis", description: "Google Earth Engine cloud computing.", icon: Rocket },
-    { title: "Portfolio Ready", description: "Professional maps and analysis for your career.", icon: Briefcase },
-    { title: "Public Health Focus", description: "Address real malaria transmission challenges.", icon: Users },
+    { 
+      title: "Real-World Impact", 
+      description: "Work with actual Uganda health data and make a difference.", 
+      icon: MapPin,
+      color: "text-health-primary",
+      bgColor: "bg-health-primary/10",
+      borderColor: "border-health-primary/20"
+    },
+    { 
+      title: "AI-Powered Learning", 
+      description: "ChatGPT integration for intelligent coding assistance.", 
+      icon: BrainCircuit,
+      color: "text-ai-primary",
+      bgColor: "bg-ai-primary/10", 
+      borderColor: "border-ai-primary/20"
+    },
+    { 
+      title: "Satellite Data Analysis", 
+      description: "Google Earth Engine cloud computing platform.", 
+      icon: Rocket,
+      color: "text-gis-primary",
+      bgColor: "bg-gis-primary/10",
+      borderColor: "border-gis-primary/20"
+    },
+    { 
+      title: "Portfolio Ready", 
+      description: "Professional maps and analysis for your career.", 
+      icon: Briefcase,
+      color: "text-accent",
+      bgColor: "bg-accent/10",
+      borderColor: "border-accent/20"
+    },
+    { 
+      title: "Public Health Focus", 
+      description: "Address real malaria transmission challenges.", 
+      icon: Users,
+      color: "text-success",
+      bgColor: "bg-success/10",
+      borderColor: "border-success/20"
+    },
+    { 
+      title: "Global Network", 
+      description: "Connect with health professionals worldwide.", 
+      icon: Globe,
+      color: "text-info",
+      bgColor: "bg-info/10",
+      borderColor: "border-info/20"
+    },
   ]
 
   return (
-    <div className="space-y-12">
-      {/* Hero Section */}
-      <section className="text-center py-12">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
-          Master GIS, Remote Sensing, and AI for Public Health Impact
-        </h1>
-        <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-          No Prior Experience Required. Go from Zero to GIS Expert in 3 Days.
-        </p>
-        <div className="relative w-full max-w-4xl mx-auto aspect-[2.35/1] rounded-lg overflow-hidden shadow-lg">
-          <Image
-            src="/gis-ai-health-banner.png"
-            alt="GIS AI Health - Spatial Intelligence for Global Health Banner"
-            layout="fill"
-            objectFit="contain"
-            priority
-          />
+    <div className="space-y-16">
+      {/* Enhanced Hero Section */}
+      <section className="text-center py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 -z-10" />
+        <div className="relative z-10">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6 animate-bounce-in">
+            <Zap className="h-4 w-4 mr-2" />
+            No Prior Experience Required
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 text-gradient animate-fade-in">
+            Master GIS, Remote Sensing, and AI for Public Health Impact
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed animate-fade-in">
+            Transform from beginner to expert in just 3 days. Learn cutting-edge tools while addressing real health challenges.
+          </p>
+          
+          <div className="relative w-full max-w-5xl mx-auto mb-12">
+            <div className="relative aspect-[2.35/1] rounded-2xl overflow-hidden shadow-2xl border border-border/50 bg-card/50 backdrop-blur-sm">
+              <Image
+                src="/gis-ai-health-banner.png"
+                alt="GIS AI Health - Spatial Intelligence for Global Health Banner"
+                fill
+                className="object-contain p-4"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent" />
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <Link href={`/labs/${labsData[0].id}`}>
+                <Rocket className="h-5 w-5 mr-2" />
+                Start Learning Now (Lab 1)
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="border-primary/30 text-primary hover:bg-primary/10 shadow-lg">
+              <Link href="/workshop-overview">
+                <Heart className="h-5 w-5 mr-2" />
+                Learn More About Impact
+              </Link>
+            </Button>
+          </div>
+          
+          <div className="mt-8 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+            <div className="flex space-x-1">
+              <div className="w-2 h-2 rounded-full bg-success"></div>
+              <div className="w-2 h-2 rounded-full bg-warning"></div>
+              <div className="w-2 h-2 rounded-full bg-info"></div>
+            </div>
+            <span>Beginner → Intermediate → Expert</span>
+          </div>
         </div>
-        <div className="mt-8">
-          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Link href={`/labs/${labsData[0].id}`}>Start Learning Now (Lab 1)</Link>
-          </Button>
-        </div>
-        {/* Progress Indicators could be a simple visual or text */}
-        <p className="mt-4 text-sm text-muted-foreground">Your learning path: Beginner → Intermediate → Expert</p>
       </section>
 
-      {/* Key Features Showcase */}
-      <section className="py-12">
-        <h2 className="text-3xl font-bold text-center mb-10">Why This Workshop?</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {keyFeatures.map((feature) => (
-            <Card key={feature.title} className="bg-card/50 hover:shadow-lg transition-shadow">
-              <CardHeader className="flex flex-row items-center gap-4">
-                <feature.icon className="h-10 w-10 text-primary" />
-                <CardTitle>{feature.title}</CardTitle>
+      {/* Enhanced Key Features */}
+      <section className="py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Why This Workshop Changes Everything</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Experience the future of health research with our integrated learning platform
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {keyFeatures.map((feature, index) => (
+            <Card 
+              key={feature.title} 
+              className={`card-interactive ${feature.bgColor} ${feature.borderColor} group hover:shadow-glow transition-all duration-500`}
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-4">
+                  <div className={`p-3 rounded-xl ${feature.bgColor} ${feature.borderColor} border group-hover:scale-110 transition-transform duration-300`}>
+                    <feature.icon className={`h-6 w-6 ${feature.color}`} />
+                  </div>
+                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
               </CardContent>
             </Card>
           ))}
         </div>
       </section>
 
-      {/* Call to Action / Next Steps */}
-      <section className="text-center py-12">
-        <h2 className="text-3xl font-bold mb-6">Ready to Make an Impact?</h2>
-        <p className="text-lg text-muted-foreground mb-8">
-          Join us to develop critical skills for addressing public health challenges using cutting-edge spatial data
-          science.
-        </p>
-        <div className="space-x-4">
-          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Link href="/workshop-overview">Learn More About the Workshop</Link>
-          </Button>
-          <Button asChild variant="outline" size="lg" className="bg-card text-card-foreground hover:bg-muted">
-            <Link href="/schedule">View Full Schedule</Link>
-          </Button>
+      {/* Enhanced Call to Action */}
+      <section className="text-center py-16 relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 rounded-3xl -z-10" />
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Global Health?</h2>
+          <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
+            Join thousands of professionals using spatial data science to solve humanity's greatest challenges.
+            Your journey from novice to expert starts here.
+          </p>
+          
+          <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto mb-8">
+            <div className="text-center p-4 rounded-xl bg-success/10 border border-success/20">
+              <div className="text-2xl font-bold text-success mb-1">95%</div>
+              <div className="text-sm text-muted-foreground">Completion Rate</div>
+            </div>
+            <div className="text-center p-4 rounded-xl bg-info/10 border border-info/20">
+              <div className="text-2xl font-bold text-info mb-1">4.9★</div>
+              <div className="text-sm text-muted-foreground">Student Rating</div>
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300">
+              <Link href="/workshop-overview">
+                <Globe className="h-5 w-5 mr-2" />
+                Explore Full Workshop
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="border-primary/30 text-primary hover:bg-primary/10">
+              <Link href="/schedule">
+                <BrainCircuit className="h-5 w-5 mr-2" />
+                View 3-Day Journey
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
     </div>

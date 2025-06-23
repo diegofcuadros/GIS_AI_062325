@@ -7,6 +7,6 @@ export const inter = Inter({
 
 export const lora = Lora({
   subsets: ["latin"],
-  weight: ["400", "700"], // Include weights you might need
+  weight: ["400", "700"],
   variable: "--font-lora",
 })
