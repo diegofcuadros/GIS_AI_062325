@@ -17,7 +17,7 @@ export default function HomePage() {
     },
     { 
       title: "AI-Powered Learning", 
-      description: "ChatGPT integration for intelligent coding assistance.", 
+      description: "Intelligent chatbot trained on workshop content - get instant help anytime.", 
       icon: BrainCircuit,
       color: "text-ai-primary",
       bgColor: "bg-ai-primary/10", 

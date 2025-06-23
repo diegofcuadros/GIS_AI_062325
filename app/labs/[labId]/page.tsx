@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import { labsData } from "@/lib/constants"
 import { notFound } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { WorkshopContentChatbot } from "@/components/ai/workshop-content-chatbot"
 import {
   CheckSquare,
   Lightbulb,
@@ -51,33 +52,38 @@ import {
 } from "lucide-react"
 import { Laptop } from "lucide-react"
 
-// Placeholder for AI Assistant
+// Workshop AI Assistant - Real Implementation
 function AIAssistantPlaceholder({ labContext }: { labContext: string }) {
+  // Parse lab context to extract lab number
+  const labMatch = labContext.match(/Lab (\d+)/)
+  const labNumber = labMatch ? parseInt(labMatch[1]) : 1
+  const currentLab = `lab${labNumber}`
+  
   return (
-    <Card className="mt-8 bg-background/70 border-primary/50">
-      <CardHeader>
-        <CardTitle className="flex items-center font-sans">
-          <Bot className="mr-2 h-6 w-6 text-primary" /> AI-Powered Learning Assistant
-        </CardTitle>
-        <CardDescription className="font-sans">Context-aware help for {labContext}</CardDescription>
-      </CardHeader>
-      <CardContent className="font-serif text-base">
-        <p className="text-muted-foreground mb-2">
-          Ask questions in natural language, get code suggestions, debugging help, and concept explanations.
-        </p>
-        <div className="p-4 bg-muted rounded text-sm font-sans">
-          Example: "Explain K-means clustering in the context of {labContext}"
-        </div>
-        {labContext.includes("Lab 4") && (
-          <div className="mt-4 p-3 bg-muted/50 rounded border border-dashed font-sans">
-            <p className="font-semibold text-xs">Embedded ChatGPT Interface (Conceptual)</p>
-            <p className="text-xs text-muted-foreground">
-              Direct integration for code assistance, smart prompt templates, code explanation, error diagnosis.
-            </p>
+    <div className="mt-8">
+      <Card className="mb-4 bg-background/70 border-primary/50">
+        <CardHeader>
+          <CardTitle className="flex items-center font-sans">
+            <Bot className="mr-2 h-6 w-6 text-primary" /> AI-Powered Learning Assistant
+          </CardTitle>
+          <CardDescription className="font-sans">Context-aware help for {labContext}</CardDescription>
+        </CardHeader>
+        <CardContent className="font-serif text-base">
+          <p className="text-muted-foreground mb-2">
+            Ask questions in natural language, get code suggestions, debugging help, and concept explanations.
+          </p>
+          <div className="p-4 bg-muted rounded text-sm font-sans">
+            Example: "How do I load shapefiles in QGIS?" or "What does NDVI measure?"
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+      
+      {/* The actual AI chatbot - positioned as floating widget */}
+      <WorkshopContentChatbot 
+        currentLab={currentLab}
+        currentStep={1}
+      />
+    </div>
   )
 }
 
