@@ -188,6 +188,158 @@ export function DesignSystemShowcase() {
           </Button>
         </div>
       </section>
+
+      {/* Phase 1.2 Component Library */}
+      <section className="space-y-6">
+        <h2 className="text-display-sm">Phase 1.2: Advanced Component Library</h2>
+        <p className="text-lg text-muted-foreground">
+          Sophisticated interactive components built on our enhanced design system
+        </p>
+        
+        <div className="grid gap-6">
+          {/* TutorialStep Preview */}
+          <Card className="overflow-hidden">
+            <CardHeader className="bg-gis-primary/5 border-b border-gis-primary/20">
+              <CardTitle className="flex items-center gap-2 text-gis-primary">
+                <div className="w-6 h-6 bg-gis-primary rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                TutorialStep Component
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Interactive step-by-step guidance with built-in timer, validation system, and progressive hints
+              </p>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-success rounded-full animate-pulse-soft"></div>
+                    <span className="text-sm">Timer: 02:45</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="px-2 py-1 bg-success/10 text-success text-xs rounded border border-success/20">
+                      Beginner
+                    </div>
+                    <div className="px-2 py-1 bg-info/10 text-info text-xs rounded border border-info/20">
+                      15m
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div className="bg-gis-primary h-2 rounded-full w-1/2 transition-all duration-500"></div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="px-3 py-1 bg-warning/10 text-warning text-xs rounded border border-warning/20">
+                    💡 Hints Available (3)
+                  </div>
+                  <div className="px-3 py-1 bg-info/10 text-info text-xs rounded border border-info/20">
+                    ⚠️ Prerequisites (1)
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* InteractiveCodeBlock Preview */}
+          <Card className="overflow-hidden">
+            <CardHeader className="bg-ai-primary/5 border-b border-ai-primary/20">
+              <CardTitle className="flex items-center gap-2 text-ai-primary">
+                <div className="w-6 h-6 bg-ai-primary rounded text-white text-xs font-bold flex items-center justify-center">
+                  JS
+                </div>
+                InteractiveCodeBlock Component
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Live code editing with multi-language support, execution, and output validation
+              </p>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <div className="bg-muted/30 rounded-lg border border-border/50 p-4 font-mono text-sm">
+                  <div className="flex">
+                    <div className="w-8 text-right text-muted-foreground text-xs mr-4">
+                      1<br/>2<br/>3
+                    </div>
+                    <div className="flex-1">
+                      <span className="text-blue-400">const</span> <span className="text-white">data</span> = <span className="text-green-400">"Hello World"</span>;<br/>
+                      <span className="text-blue-400">console</span>.<span className="text-yellow-400">log</span>(<span className="text-white">data</span>);<br/>
+                      <span className="text-gray-400">// Output: Hello World</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <div className="w-2 h-2 bg-success rounded-full"></div>
+                    <span>Last run: 10:30:45</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" className="h-7 px-2 text-xs">
+                      Copy
+                    </Button>
+                    <Button size="sm" className="h-7 px-3 text-xs bg-ai-primary hover:bg-ai-primary/90">
+                      Run
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* ChatAssistant Preview */}
+          <Card className="overflow-hidden">
+            <CardHeader className="bg-health-primary/5 border-b border-health-primary/20">
+              <CardTitle className="flex items-center gap-2 text-health-primary">
+                <div className="w-6 h-6 bg-health-primary rounded-full flex items-center justify-center text-white">
+                  🤖
+                </div>
+                ChatAssistant Component
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">
+                AI-powered contextual help with real-time chat interface and suggested prompts
+              </p>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <div className="space-y-3">
+                  <div className="flex items-start gap-2">
+                    <div className="w-6 h-6 bg-health-primary rounded-full flex items-center justify-center text-white text-xs">
+                      AI
+                    </div>
+                    <div className="bg-muted p-3 rounded-lg flex-1 text-sm">
+                      Hello! I'm your AI assistant. How can I help you with your GIS analysis today?
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2 justify-end">
+                    <div className="bg-primary text-primary-foreground p-3 rounded-lg text-sm max-w-[80%]">
+                      How do I calculate NDVI from satellite data?
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-health-primary rounded-full flex items-center justify-center text-white text-xs">
+                      AI
+                    </div>
+                    <div className="flex gap-1">
+                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  <Button size="sm" variant="outline" className="h-7 text-xs">
+                    Explain this code
+                  </Button>
+                  <Button size="sm" variant="outline" className="h-7 text-xs">
+                    Debug my issue
+                  </Button>
+                  <Button size="sm" variant="outline" className="h-7 text-xs">
+                    Show example
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
     </div>
   );
 } 
