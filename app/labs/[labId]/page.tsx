@@ -3,7 +3,6 @@ import type { ReactNode } from "react"
 import { labsData } from "@/lib/constants"
 import { notFound } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { WorkshopContentChatbot } from "@/components/ai/workshop-content-chatbot"
 import { LearningTutorChatbot } from "@/components/ai/learning-tutor-chatbot"
 import {
   CheckSquare,
@@ -65,36 +64,27 @@ function AIAssistantPlaceholder({ labContext }: { labContext: string }) {
       <Card className="mb-4 bg-background/70 border-primary/50">
         <CardHeader>
           <CardTitle className="flex items-center font-sans">
-            <Bot className="mr-2 h-6 w-6 text-primary" /> AI-Powered Learning Assistant
+            <GraduationCap className="mr-2 h-6 w-6 text-primary" /> GIS Learning Tutor
           </CardTitle>
-          <CardDescription className="font-sans">Context-aware help for {labContext}</CardDescription>
+          <CardDescription className="font-sans">Socratic method tutoring for {labContext}</CardDescription>
         </CardHeader>
         <CardContent className="font-serif text-base">
           <p className="text-muted-foreground mb-2">
-            Ask questions in natural language, get code suggestions, debugging help, and concept explanations.
+            Your personal GIS tutor that guides you to discover answers through questions and exploration. 
+            Combines workshop content knowledge with pedagogical teaching methods.
           </p>
           <div className="p-4 bg-muted rounded text-sm font-sans">
-            Example: "How do I load shapefiles in QGIS?" or "What does NDVI measure?"
+            <strong>Try asking:</strong> "I'm new to GIS, where should I start?" or "What is a coordinate reference system?"
           </div>
         </CardContent>
       </Card>
       
-      {/* Dual AI Learning System */}
-      <div className="space-y-4">
-        {/* Content-focused chatbot for quick answers */}
-        <WorkshopContentChatbot 
-          currentLab={currentLab}
-          currentStep={1}
-        />
-        
-        {/* Learning tutor for guided discovery */}
-        <LearningTutorChatbot
-          currentLab={currentLab}
-          currentStep={1}
-          studentLevel="beginner"
-          className="right-[26rem]" // Position to avoid overlap
-        />
-      </div>
+      {/* Single AI Learning Tutor - combines both functionalities */}
+      <LearningTutorChatbot
+        currentLab={currentLab}
+        currentStep={1}
+        studentLevel="beginner"
+      />
     </div>
   )
 }
