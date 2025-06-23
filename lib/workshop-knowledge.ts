@@ -304,9 +304,7 @@ export class WorkshopKnowledgeService {
   }
 
   private generateNavigationResponse(item: KnowledgeItem): string {
-    return `Great question about finding information! Let me guide you to exactly what you need. 🗺️
-
-📍 **Here's where to find "${item.title}":**
+    return `Here's exactly where to find "${item.title}": 🗺️
 
 ${item.content}
 
@@ -315,73 +313,59 @@ ${item.content}
 - Each lab has numbered steps for easy reference
 - Look for highlighted boxes with key information
 
-💡 **To help you better:**
-${item.socraticQuestions?.map((q, i) => `${i + 1}. ${q}`).join('\n') || ''}
-
-Would you like me to guide you through the specific steps? 🚀`
+Need help with anything specific from this section?`
   }
 
   private generateConceptResponse(item: KnowledgeItem): string {
-    return `Excellent question! Let's explore "${item.title}" together using the Socratic method. 🧠
-
-🤔 **Before I explain, let me understand your perspective:**
-${item.socraticQuestions?.map((q, i) => `${i + 1}. ${q}`).join('\n') || ''}
-
-📚 **Here's the foundation:**
-${item.content.split('\n').slice(0, 8).join('\n')}
-
-💡 **My teaching approach:**
-${item.tutorGuidance || "I'll guide you through hands-on discovery of this concept."}
-
-What's your initial thinking? 🌟`
-  }
-
-  private generateInstallationResponse(item: KnowledgeItem): string {
-    return `Perfect! Let me guide you through the installation process step by step. 🛠️
+    return `Here's what you need to know about "${item.title}": 🧠
 
 ${item.content}
 
-🤔 **Before we start:**
-${item.socraticQuestions?.map((q, i) => `${i + 1}. ${q}`).join('\n') || ''}
+💡 **Key takeaways:**
+${item.tutorGuidance || "This concept is fundamental to completing the workshop tutorials successfully."}
 
-💡 **I'll walk you through each step and help troubleshoot any issues.**
+Any specific part you'd like me to clarify further?`
+  }
 
-What system are you working with? 🚀`
+  private generateInstallationResponse(item: KnowledgeItem): string {
+    return `Here's the complete installation guide: 🛠️
+
+${item.content}
+
+💡 **Installation support:** I can help troubleshoot any issues you encounter during installation.
+
+Need help with any specific step?`
   }
 
   private generateComprehensiveResponse(item: KnowledgeItem, userMessage: string): string {
-    return `Great question about "${item.title}"! 🎓
+    return `Here's the complete information about "${item.title}": 🎓
 
-🎯 **Here's what you need to know:**
-${item.content.split('\n').slice(0, 6).join('\n')}
+${item.content}
 
-🤔 **Let's explore this together:**
-${item.socraticQuestions?.map((q, i) => `${i + 1}. ${q}`).join('\n') || ''}
+💡 **Additional guidance:**
+${item.tutorGuidance || "This information will help you complete the workshop tutorials successfully."}
 
-💡 **My teaching approach:**
-${item.tutorGuidance || "I'll guide you through discovery and hands-on learning."}
-
-What aspect would you like to explore first? 🚀`
+Need clarification on any specific aspect?`
   }
 
   private generateExploratoryResponse(message: string): string {
-    return `That's an interesting question about "${message}"! 🎓
-
-🤔 **Let's explore this together:**
-
-To give you the most helpful guidance, I'd like to understand:
-- What specific aspect interests you most?
-- What's the context - are you working on a particular lab?
-- What have you tried or explored so far?
+    return `I can help you with "${message}"! 🎓
 
 📚 **I have comprehensive knowledge about:**
-- Workshop structure and navigation
-- GIS concepts and applications
-- QGIS installation and troubleshooting
-- Google Earth Engine and remote sensing
-- Health geography applications
+- **Workshop navigation**: Finding specific labs, sections, and activities
+- **QGIS**: Installation, data loading, styling, coordinate systems, troubleshooting
+- **Google Earth Engine**: Authentication, NDVI calculation, satellite analysis, exports
+- **Health GIS**: Malaria mapping, facility analysis, risk assessment
+- **Programming**: Python setup, debugging, AI-assisted coding
 
-What would you like to explore first? 🚀`
+**Common questions I can answer:**
+- "How do I load data in QGIS?"
+- "Where is the coordinate system setup?"
+- "How to calculate NDVI in Google Earth Engine?"
+- "How to fix Python import errors?"
+- "What are the Day 2 activities?"
+
+What specific topic can I help you with?`
   }
 }
 

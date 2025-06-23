@@ -30,6 +30,7 @@ import {
   ThumbsUp,
   ArrowRight
 } from "lucide-react"
+import { introductoryKnowledge } from "@/lib/introductory-knowledge"
 
 // Comprehensive Workshop Knowledge Base
 const WORKSHOP_KNOWLEDGE = {
@@ -176,107 +177,137 @@ const WORKSHOP_KNOWLEDGE = {
   },
 
   generateResponse: (userMessage: string) => {
-    const results = WORKSHOP_KNOWLEDGE.searchKnowledge(userMessage)
+    // First try workshop-specific knowledge
+    const workshopResults = WORKSHOP_KNOWLEDGE.searchKnowledge(userMessage)
     
-    if (results.length === 0) {
-      return `That's an interesting question about "${userMessage}"! 🎓
+    // Then try introductory knowledge for foundational concepts
+    const introResults = introductoryKnowledge.search(userMessage)
+    
+    // Prioritize workshop-specific content, but fall back to introductory concepts
+    if (workshopResults.length > 0) {
+      const topResult = workshopResults[0]
+      return `# ${topResult.title} 📚
 
-🤔 **Let's explore this together:**
+${topResult.content}
 
-To give you the most helpful guidance, I'd like to understand:
-- What specific aspect interests you most?
-- Are you working on a particular lab or concept?
-- What have you tried so far?
+**🏷️ Category:** ${topResult.category}
 
-📚 **I can help with:**
-- Workshop navigation and structure
-- GIS concepts and fundamentals
-- QGIS installation and setup
-- Google Earth Engine basics
-- Coordinate reference systems
-- Health geography applications
+${workshopResults.length > 1 ? `\n**🔗 Related topics:**\n${workshopResults.slice(1, 3).map(r => `- ${r.title}`).join('\n')}` : ''}
 
-What would you like to explore first? 🚀`
+Need help with anything else?`
+    }
+    
+    // If we have introductory knowledge matches, use those
+    if (introResults.length > 0) {
+      return introductoryKnowledge.generateResponse(userMessage)
+    }
+    
+    // Fallback response with comprehensive help options
+    return `I can help you with "${userMessage}"! 🎓
+
+📚 **I have comprehensive knowledge about:**
+
+**🎯 Workshop Content:**
+- **Workshop navigation**: Finding specific labs, sections, and activities
+- **QGIS**: Installation, data loading, styling, coordinate systems, troubleshooting
+- **Google Earth Engine**: Authentication, NDVI calculation, satellite analysis, exports
+- **Health GIS**: Malaria mapping, facility analysis, risk assessment
+- **Programming**: Python setup, debugging, AI-assisted coding
+
+**📖 GIS Fundamentals:**
+- **What is GIS?** - Core concepts and applications
+- **Data Types**: Vector vs raster, points/lines/polygons, attribute data
+- **Google Earth Engine**: Cloud computing for earth science
+- **Coordinate Systems**: Projections, EPSG codes, spatial reference
+- **Spatial Analysis**: Pattern detection, clustering, interpolation
+
+**💡 Popular questions I can answer:**
+- "What is GIS?" or "What is Google Earth Engine?"
+- "Vector vs raster data" or "What is point data?"
+- "How do I load data in QGIS?"
+- "Where is the coordinate system setup?"
+- "How to calculate NDVI in Google Earth Engine?"
+- "Understanding coordinate systems"
+
+What specific topic can I help you with?`
     }
 
     const topResult = results[0]
     
     // Handle different question types
     if (userMessage.toLowerCase().includes('day 2') || userMessage.toLowerCase().includes('activities')) {
-      return `Great question about Day 2 activities! Let me guide you through what's planned. 📅
+      return `Here's your complete Day 2 schedule: 📅
 
 ${topResult.content}
 
-🤔 **To help you prepare:**
-- Have you completed Day 1 materials?
-- Do you have a Google Earth Engine account set up?
-- What aspects of environmental analysis interest you most?
+**🔧 Pre-Day 2 Setup:**
+- Complete Day 1 QGIS tutorials first
+- Create Google Earth Engine account at earthengine.google.com
+- Have Google Colab or Jupyter Notebook ready
 
-💡 **Pro tip:** Day 2 builds on Day 1 concepts, so make sure you're comfortable with QGIS basics before diving into GEE!
+**💡 Key Focus:** Environmental risk mapping using satellite data for malaria analysis in Uganda
 
-Is there a specific part of Day 2 you'd like to know more about? 🚀`
+Any specific Day 2 topic you need help with?`
     }
 
     if (userMessage.toLowerCase().includes('what is gis')) {
-      return `Excellent fundamental question! Let's explore GIS together. 🗺️
+      return `Here's what GIS is and why it matters: 🗺️
 
-🤔 **Before I explain, tell me:**
-- Have you used GPS on your phone or Google Maps?
-- What do you think makes location-based information special?
-- Can you think of any problems that might benefit from mapping?
-
-📚 **Here's the foundation:**
 ${topResult.content}
 
-💡 **Real-world connection:** Every time you use GPS navigation, check weather maps, or see election results by region - you're seeing GIS in action!
+**💡 Real-world examples you know:**
+- GPS navigation (finding routes)
+- Weather maps (showing temperature patterns)
+- COVID-19 dashboards (tracking cases by location)
+- Ride-sharing apps (matching drivers and passengers)
 
-What specific aspect of GIS would you like to explore further? 🌟`
+**🎯 In our workshop:** We'll use GIS to map malaria risk in Uganda by combining health facility locations, population data, and environmental factors from satellites.
+
+Need help with any specific GIS concept?`
     }
 
     if (userMessage.toLowerCase().includes('install') || userMessage.toLowerCase().includes('qgis')) {
-      return `Perfect! Let me guide you through QGIS installation step by step. 🛠️
+      return `Here's the complete QGIS installation guide: 🛠️
 
 ${topResult.content}
 
-🤔 **Before we start:**
-- What operating system are you using?
-- Have you installed similar software before?
-- Are you encountering any specific issues?
+**🔧 Installation troubleshooting:**
+- **Windows**: If blocked by security, right-click → "Run as administrator"
+- **Mac**: If blocked by security, go to System Preferences → Security & Privacy → Allow
+- **Linux**: Use your distribution's package manager for easiest installation
 
-💡 **I'll walk you through each step and help troubleshoot any problems that come up.**
+**✅ Verify installation:** Open QGIS and you should see the main interface with toolbars and an empty map canvas.
 
-What system are you working with, and shall we start the installation process? 🚀`
+Having trouble with any specific step?`
     }
 
     if (userMessage.toLowerCase().includes('crs') || userMessage.toLowerCase().includes('coordinate')) {
-      return `Great question about coordinate systems! This is fundamental to GIS work. 🎯
+      return `Here's everything about coordinate systems for the workshop: 🎯
 
-📍 **Here's exactly where to find this information:**
 ${topResult.content}
 
-🤔 **Let's think about this conceptually first:**
-- Imagine giving directions to a friend - what reference points do you use?
-- Why might maps of the world look different in different projections?
-- How do you think GPS coordinates relate to measurements in meters?
+**🛠️ Quick QGIS setup for Uganda:**
+1. Project → Properties → CRS tab
+2. Search for "EPSG:32636" (UTM Zone 36N)
+3. Select it and click OK
+4. Check bottom-right corner shows "EPSG:32636"
 
-💡 **Uganda-specific guidance:** For this workshop, we use EPSG:32636 (UTM Zone 36N) for accurate distance measurements.
+**⚠️ Common issues:**
+- Data appears in wrong location → Check and set correct CRS for each layer
+- Distance measurements wrong → Make sure project CRS is EPSG:32636
+- Layers don't align → Enable "on-the-fly reprojection"
 
-Are you looking for the basic concepts or specific setup steps in QGIS? 🌟`
+Need help with a specific CRS problem?`
     }
 
     // Default comprehensive response
-    return `Great question about "${topResult.title}"! 🎓
+    return `Here's the complete information about "${topResult.title}": 🎓
 
-${topResult.content.split('\n').slice(0, 6).join('\n')}
+${topResult.content}
 
-🤔 **Let's explore this together:**
-- What specific aspect interests you most?
-- How does this relate to your current work or goals?
-- What questions come to mind as you read this?
+**💡 Key takeaways:** This information will help you complete the workshop tutorials successfully.
 
-💡 **My approach:** I'll guide you through discovery and hands-on learning rather than just providing answers.
-
-What would you like to dive deeper into? 🚀`
+Need clarification on any specific aspect?`
   }
 }
 

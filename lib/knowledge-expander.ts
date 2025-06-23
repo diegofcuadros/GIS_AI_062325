@@ -759,4 +759,690 @@ What would you like to explore first? Remember, there are no wrong answers - onl
 }
 
 // Export singleton instance
-export const knowledgeExpander = new KnowledgeExpansionService() 
+export const knowledgeExpander = new KnowledgeExpansionService()
+
+/**
+ * Expanded GIS & AI Workshop Knowledge Base
+ * Comprehensive practical tutorial assistance
+ */
+
+export const EXPANDED_TUTORIAL_KNOWLEDGE = {
+  // QGIS Practical Help
+  "qgis_data_loading": {
+    title: "Loading Data in QGIS - Complete Guide",
+    content: `**Method 1: Menu-based loading**
+1. Layer → Add Layer → Add Vector Layer (for shapefiles, GeoJSON, etc.)
+2. Click the "..." button to browse for your file
+3. Navigate to your data folder
+4. Select the .shp file (for shapefiles)
+5. Click "Add" - layer appears in Layers panel
+
+**Method 2: Drag and drop**
+- Simply drag files from Windows Explorer/Mac Finder into QGIS
+- Works for most common formats (.shp, .geojson, .kml, .gpx)
+
+**Method 3: Browser panel**
+- Use Browser panel (left side) to navigate folders
+- Double-click files to add them
+
+**For Uganda workshop data:**
+- Load uganda_districts.shp for district boundaries
+- Load health_facilities.shp for clinic/hospital locations
+- Load population_centers.shp for settlement data
+
+**Troubleshooting:**
+- If layer doesn't appear: Right-click → Zoom to Layer
+- If wrong location: Check coordinate system
+- If missing files: Ensure all shapefile components (.shp, .shx, .dbf, .prj) are present`,
+    category: "tutorial",
+    difficulty: "beginner",
+    keywords: ["load data", "import", "shapefile", "vector", "qgis"]
+  },
+
+  "qgis_symbology": {
+    title: "QGIS Styling and Symbology Guide",
+    content: `**Access symbology:** Right-click layer → Properties → Symbology tab
+
+**Single Symbol (uniform styling):**
+- Use for simple display of all features the same way
+- Click color box to change fill/outline colors
+- Adjust size for points, width for lines
+
+**Categorized (style by categories):**
+- Choose attribute field (e.g., facility_type)
+- Click "Classify" to create categories
+- Different symbol for each unique value
+- Good for: facility types, land use classes
+
+**Graduated (style by numeric values):**
+- Choose numeric field (e.g., population, distance)
+- Select classification method (Natural Breaks recommended)
+- Choose color ramp (e.g., Reds for high values)
+- Set number of classes (5-7 usually optimal)
+
+**For health facility mapping:**
+- Categorized by facility type (hospital, clinic, health center)
+- Use medical symbols: red cross for hospitals, circles for clinics
+- Graduated by population served or distance to nearest facility
+
+**Color schemes for health data:**
+- Disease incidence: Light to dark red
+- Population density: Light to dark blue  
+- Access/distance: Green (good) to red (poor)
+- Risk levels: Blue (low) to red (high)`,
+    category: "tutorial", 
+    difficulty: "beginner",
+    keywords: ["style", "symbology", "color", "classification", "graduated"]
+  },
+
+  "qgis_coordinate_systems": {
+    title: "Coordinate Systems Setup for Uganda",
+    content: `**Understanding coordinate systems:**
+- **Geographic (Lat/Long)**: EPSG:4326 (WGS84) - global system
+- **Projected (meters)**: EPSG:32636 (UTM Zone 36N) - Uganda's system
+
+**Set project CRS (recommended for Uganda):**
+1. Project → Properties → CRS tab
+2. Search for "32636" 
+3. Select "WGS 84 / UTM zone 36N - EPSG:32636"
+4. Click OK
+5. Verify bottom-right shows "EPSG:32636"
+
+**Set layer CRS (if data appears wrong):**
+1. Right-click layer → Properties → Source tab
+2. If shows "Unknown CRS" or wrong CRS:
+3. Right-click layer → Set CRS
+4. Choose correct CRS (usually EPSG:4326 for GPS data)
+
+**Why this matters:**
+- EPSG:4326: Good for web maps, global data
+- EPSG:32636: Accurate distance/area measurements in Uganda
+- Wrong CRS = wrong measurements and misaligned data
+
+**Common problems:**
+- Data appears at wrong location → Set correct layer CRS
+- Distance measurements wrong → Use EPSG:32636 project CRS
+- Layers don't align → Check all layer CRS are correct
+
+**Quick fix:** Enable "On-the-fly CRS transformation" to automatically align different CRS`,
+    category: "tutorial",
+    difficulty: "intermediate", 
+    keywords: ["crs", "coordinate system", "projection", "epsg", "utm", "uganda"]
+  },
+
+  // Google Earth Engine Practical Help
+  "gee_authentication": {
+    title: "Google Earth Engine Authentication Setup",
+    content: `**Step 1: Get GEE access**
+1. Go to earthengine.google.com
+2. Sign up with your Google account
+3. Wait for approval (usually instant for academic use)
+
+**Step 2: Authenticate in Python/Colab**
+\`\`\`python
+import ee
+
+# First time setup
+ee.Authenticate()
+# Click the link, sign in, copy code back
+
+# Initialize (run every session)
+ee.Initialize()
+
+# Test it works
+print(ee.String('Hello World').getInfo())
+\`\`\`
+
+**Step 3: JavaScript Code Editor**
+1. Go to code.earthengine.google.com
+2. Sign in with same Google account
+3. Should work immediately
+
+**Troubleshooting:**
+- "Not authorized" → Check you have GEE access approved
+- Authentication expires → Re-run ee.Authenticate()
+- Import errors → Install earthengine-api: \`pip install earthengine-api\`
+- Colab issues → Restart runtime after authentication
+
+**For workshop:** We'll use both Python (Colab) and JavaScript (Code Editor) interfaces`,
+    category: "tutorial",
+    difficulty: "beginner",
+    keywords: ["authentication", "google earth engine", "gee", "setup", "access"]
+  },
+
+  "gee_ndvi_calculation": {
+    title: "NDVI Calculation in Google Earth Engine",
+    content: `**What is NDVI?**
+Normalized Difference Vegetation Index: (NIR - Red) / (NIR + Red)
+- Values: -1 to +1
+- Higher values = more vegetation
+- Useful for: crop monitoring, forest mapping, environmental analysis
+
+**JavaScript Code (GEE Code Editor):**
+\`\`\`javascript
+// Load Landsat 8 image
+var image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_171059_20200101');
+
+// Calculate NDVI (B5=NIR, B4=Red for Landsat 8)
+var ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI');
+
+// Visualization parameters
+var ndviVis = {
+  min: -1, 
+  max: 1, 
+  palette: ['red', 'yellow', 'green']
+};
+
+// Display
+Map.centerObject(image, 8);
+Map.addLayer(ndvi, ndviVis, 'NDVI');
+\`\`\`
+
+**Python Code (Colab):**
+\`\`\`python
+import ee
+ee.Initialize()
+
+# Load image
+image = ee.Image('LANDSAT/LC08/C02/T1_TOA/LC08_171059_20200101')
+
+# Calculate NDVI
+ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI')
+
+# For visualization in Colab, use folium
+import folium
+import geemap
+
+Map = geemap.Map()
+Map.addLayer(ndvi, {'min': -1, 'max': 1, 'palette': ['red', 'yellow', 'green']}, 'NDVI')
+Map
+\`\`\`
+
+**Band numbers for different satellites:**
+- Landsat 8/9: NIR=B5, Red=B4
+- Landsat 5/7: NIR=B4, Red=B3  
+- Sentinel-2: NIR=B8, Red=B4
+
+**For Uganda malaria mapping:**
+- High NDVI = dense vegetation = potential mosquito habitat
+- Moderate NDVI = agricultural areas = human-mosquito contact zones
+- Low NDVI = urban/bare areas = lower transmission risk`,
+    category: "tutorial",
+    difficulty: "intermediate",
+    keywords: ["ndvi", "vegetation", "satellite", "landsat", "calculation"]
+  },
+
+  "gee_image_collections": {
+    title: "Working with Image Collections in GEE",
+    content: `**Image Collections vs Images:**
+- Image: Single satellite scene from one date
+- ImageCollection: Multiple images over time/space
+
+**Load and filter collections:**
+\`\`\`javascript
+// Load Landsat 8 collection
+var collection = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
+  .filterBounds(uganda)  // Spatial filter
+  .filterDate('2020-01-01', '2020-12-31')  // Temporal filter
+  .filterMetadata('CLOUD_COVER', 'less_than', 20);  // Quality filter
+
+// Get median composite (reduces clouds)
+var composite = collection.median();
+
+// Get mean composite
+var meanComposite = collection.mean();
+\`\`\`
+
+**Common filtering methods:**
+- \`.filterBounds(geometry)\` - spatial extent
+- \`.filterDate(start, end)\` - time range
+- \`.filterMetadata('CLOUD_COVER', 'less_than', 20)\` - cloud cover
+- \`.filter(ee.Filter.calendarRange(6, 9, 'month'))\` - specific months
+
+**Reducing collections:**
+- \`.median()\` - reduces clouds, good for composites
+- \`.mean()\` - average values
+- \`.min()\` / \`.max()\` - extreme values
+- \`.sum()\` - total (e.g., annual precipitation)
+
+**For Uganda analysis:**
+\`\`\`javascript
+// Define Uganda boundary
+var uganda = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
+  .filter(ee.Filter.eq('country_na', 'Uganda'));
+
+// Rainy season composite (March-May, Oct-Dec)
+var rainySeasonL8 = ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA')
+  .filterBounds(uganda)
+  .filterDate('2020-01-01', '2020-12-31')
+  .filter(ee.Filter.calendarRange(3, 5, 'month'))
+  .filterMetadata('CLOUD_COVER', 'less_than', 30)
+  .median();
+\`\`\``,
+    category: "tutorial",
+    difficulty: "intermediate",
+    keywords: ["image collection", "filter", "composite", "median", "time series"]
+  },
+
+  // Health GIS Applications
+  "health_facility_analysis": {
+    title: "Health Facility Accessibility Analysis",
+    content: `**Analysis Types:**
+1. **Point-in-polygon**: Count facilities per district
+2. **Distance analysis**: Distance to nearest facility
+3. **Service area analysis**: Population within facility catchments
+4. **Accessibility modeling**: Travel time considering roads/terrain
+
+**1. Count facilities per district:**
+\`\`\`
+Vector → Analysis Tools → Count Points in Polygon
+- Input polygon: district_boundaries
+- Input points: health_facilities  
+- Output: districts_with_facility_count
+\`\`\`
+
+**2. Distance to nearest facility:**
+\`\`\`
+Vector → Analysis Tools → Distance to Nearest Hub
+- Source points: population_centers
+- Destination hubs: health_facilities
+- Hub layer name: facility_name
+- Output: distance_to_health
+\`\`\`
+
+**3. Buffer analysis (service areas):**
+\`\`\`
+Vector → Geoprocessing Tools → Buffer
+- Input: health_facilities
+- Distance: 5000 (5km radius)
+- Output: facility_catchments
+\`\`\`
+
+**4. Visualizing results:**
+- **Facility density**: Graduated symbology on districts by facility count
+- **Access quality**: Color code by distance (green <5km, yellow 5-15km, red >15km)
+- **Population coverage**: Overlay population data with service areas
+
+**Key metrics for Uganda:**
+- WHO recommendation: 1 health facility per 10,000 people
+- Accessibility target: <5km to nearest facility
+- Critical distance: >15km = poor access
+
+**Interpretation:**
+- High facility density + low distance = good access
+- Low facility density + high distance = underserved areas
+- Consider geographic barriers: mountains, rivers, roads`,
+    category: "tutorial",
+    difficulty: "intermediate", 
+    keywords: ["health facility", "accessibility", "distance", "buffer", "service area"]
+  },
+
+  "malaria_risk_mapping": {
+    title: "Malaria Risk Mapping Methodology",
+    content: `**Environmental Risk Factors:**
+1. **Temperature**: 20-30°C optimal for mosquito development
+2. **Rainfall**: 100-200mm monthly for breeding sites
+3. **Elevation**: <2000m (mosquitoes can't survive higher)
+4. **Vegetation**: NDVI 0.3-0.7 optimal (resting sites)
+5. **Water bodies**: Breeding sites within 2km
+
+**Human Risk Factors:**
+1. **Population density**: More people = more cases
+2. **Healthcare access**: Distance to treatment
+3. **Socioeconomic status**: Housing quality, bed nets
+4. **Age structure**: Children <5 most vulnerable
+
+**Data Sources:**
+- **Climate**: CHIRPS precipitation, MODIS temperature
+- **Elevation**: SRTM digital elevation model
+- **Vegetation**: Landsat/Sentinel NDVI
+- **Water**: Global Surface Water dataset
+- **Population**: WorldPop population grids
+- **Health**: Facility locations, case reports
+
+**Risk Model Development:**
+\`\`\`javascript
+// Environmental suitability model
+var temp_suit = temperature.gt(20).and(temperature.lt(30));
+var precip_suit = precipitation.gt(100).and(precipitation.lt(300));
+var elev_suit = elevation.lt(2000);
+var ndvi_suit = ndvi.gt(0.3).and(ndvi.lt(0.7));
+
+// Combine factors (equal weights)
+var env_risk = temp_suit.add(precip_suit).add(elev_suit).add(ndvi_suit);
+
+// Population-weighted risk
+var malaria_risk = env_risk.multiply(population_density);
+\`\`\`
+
+**Risk Classification:**
+- **Very Low**: 0-20% of maximum risk
+- **Low**: 20-40% 
+- **Moderate**: 40-60%
+- **High**: 60-80%
+- **Very High**: 80-100%
+
+**Validation:**
+- Compare model with actual case data
+- Check against known transmission zones
+- Validate with expert knowledge`,
+    category: "tutorial",
+    difficulty: "advanced",
+    keywords: ["malaria", "risk mapping", "environmental factors", "disease modeling"]
+  },
+
+  // Programming and AI Help
+  "python_gis_setup": {
+    title: "Python GIS Environment Setup",
+    content: `**Essential packages for GIS in Python:**
+\`\`\`bash
+# Core GIS packages
+pip install geopandas folium earthengine-api
+
+# Data analysis
+pip install pandas numpy matplotlib seaborn
+
+# Machine learning
+pip install scikit-learn
+
+# Jupyter/Colab specific
+pip install geemap ipyleaflet
+\`\`\`
+
+**Google Colab setup:**
+\`\`\`python
+# Run this cell first in Colab
+!pip install earthengine-api geemap geopandas folium
+
+import ee
+import geemap
+import geopandas as gpd
+import pandas as pd
+import folium
+import matplotlib.pyplot as plt
+
+# Authenticate Earth Engine
+ee.Authenticate()
+ee.Initialize()
+\`\`\`
+
+**Common import errors and fixes:**
+- **ModuleNotFoundError**: Install missing package with pip
+- **ImportError**: Restart kernel after installation
+- **Authentication errors**: Re-run ee.Authenticate()
+
+**Working with shapefiles in Python:**
+\`\`\`python
+# Read shapefile
+gdf = gpd.read_file('uganda_districts.shp')
+
+# Basic info
+print(gdf.head())
+print(gdf.crs)  # Check coordinate system
+print(gdf.shape)  # Number of features
+
+# Reproject if needed
+gdf_utm = gdf.to_crs('EPSG:32636')
+
+# Simple map
+gdf.plot(figsize=(10, 8))
+plt.show()
+\`\`\`
+
+**Combining with Earth Engine:**
+\`\`\`python
+# Convert GEE image to numpy array
+import numpy as np
+
+# Sample image at points
+points = ee.FeatureCollection('your_points')
+sampled = image.sampleRegions(collection=points, scale=30)
+
+# Export to drive for download
+task = ee.batch.Export.table.toDrive(
+    collection=sampled,
+    description='sampled_data',
+    fileFormat='CSV'
+)
+task.start()
+\`\`\``,
+    category: "tutorial",
+    difficulty: "intermediate",
+    keywords: ["python", "setup", "geopandas", "colab", "packages"]
+  },
+
+  "ai_assisted_gis": {
+    title: "Using AI for GIS Programming",
+    content: `**Effective AI prompts for GIS:**
+
+**1. Code generation:**
+"Write Google Earth Engine JavaScript code to:
+- Load Landsat 8 imagery for Uganda in 2020
+- Filter for images with <20% cloud cover  
+- Calculate NDVI and display with green color palette
+- Export the result to Google Drive"
+
+**2. Debugging help:**
+"I'm getting this error in QGIS: [paste error]
+Here's what I was trying to do: [describe task]
+How do I fix this?"
+
+**3. Concept explanation:**
+"Explain the difference between raster and vector data in GIS, with examples relevant to health mapping"
+
+**4. Code optimization:**
+"How can I make this Google Earth Engine code run faster: [paste code]"
+
+**5. Analysis guidance:**
+"What's the best way to analyze healthcare accessibility using QGIS? I have facility locations and population data."
+
+**Best practices:**
+- Be specific about your data and location
+- Include error messages when debugging
+- Ask for step-by-step instructions
+- Request code comments for learning
+- Specify your software (QGIS, GEE, Python)
+
+**AI tools for GIS:**
+- **ChatGPT/Claude**: Code generation, debugging, concept explanation
+- **GitHub Copilot**: Real-time code completion
+- **Google Bard**: Earth Engine specific help
+- **Stack Overflow**: Community Q&A with AI summaries
+
+**Example workflow:**
+1. Ask AI to generate initial code
+2. Test and identify issues
+3. Ask AI to debug specific errors
+4. Request explanations of complex parts
+5. Ask for optimization suggestions`,
+    category: "tutorial", 
+    difficulty: "intermediate",
+    keywords: ["ai", "chatgpt", "programming", "debugging", "code generation"]
+  },
+
+  // Troubleshooting Common Issues
+  "qgis_common_errors": {
+    title: "QGIS Common Errors and Solutions",
+    content: `**1. Layer not visible after loading:**
+- Check layer is turned ON (checkbox in Layers panel)
+- Right-click layer → Zoom to Layer
+- Check if layer is behind others (drag up in panel)
+- Verify symbology has visible colors
+- Check coordinate system matches project
+
+**2. "Invalid geometry" errors:**
+- Vector → Geometry Tools → Fix Geometries
+- Creates new layer with repaired geometry
+- Always backup original data first
+
+**3. Coordinate system problems:**
+- Data appears in wrong location
+- Enable "On-the-fly CRS transformation"
+- Set correct CRS: Right-click layer → Set CRS
+- For Uganda: Use EPSG:32636 (UTM Zone 36N)
+
+**4. Analysis tools grayed out:**
+- Check Processing Toolbox is enabled
+- View → Panels → Processing Toolbox
+- Some tools require vector/raster input to be selected
+
+**5. Slow performance:**
+- Simplify complex geometries
+- Use spatial indexes: Vector → Data Management → Create Spatial Index
+- Reduce number of features displayed
+- Close unused layers
+
+**6. Export/save issues:**
+- Right-click layer → Export → Save Features As
+- Choose appropriate format (Shapefile, GeoJSON, etc.)
+- Verify coordinate system in export dialog
+
+**7. Plugin problems:**
+- Plugins → Manage and Install Plugins
+- Check plugin is enabled
+- Restart QGIS if plugin not working
+- Update plugins regularly
+
+**8. Memory errors with large datasets:**
+- Process data in smaller chunks
+- Use "Selected features only" option
+- Increase virtual memory in system settings
+- Consider using PostGIS for very large datasets`,
+    category: "troubleshooting",
+    difficulty: "beginner",
+    keywords: ["errors", "troubleshooting", "qgis", "problems", "solutions"]
+  },
+
+  "gee_common_errors": {
+    title: "Google Earth Engine Common Errors",
+    content: `**1. "User memory limit exceeded":**
+- Reduce study area with .clip(geometry)
+- Limit time range with .filterDate()
+- Select specific bands with .select(['B4', 'B3', 'B2'])
+- Use coarser resolution with .reproject(scale=100)
+- Sample data instead of processing full images
+
+**2. "Computation timed out":**
+- Simplify complex calculations
+- Use .limit(100) to reduce collection size
+- Break analysis into smaller chunks
+- Use .getInfo() sparingly (very slow)
+
+**3. "Export failed" errors:**
+- Check Google Drive has enough space
+- Reduce export resolution (increase scale parameter)
+- Limit export region size
+- Use maxPixels parameter: maxPixels: 1e9
+
+**4. Authentication issues:**
+- Re-run ee.Authenticate() 
+- Clear browser cache
+- Check you have Earth Engine access approved
+- Restart kernel/runtime after authentication
+
+**5. "Collection.first() is not a function":**
+- You're treating ImageCollection as Image
+- Use .first() to get single image: collection.first()
+- Or use reduction: collection.median()
+
+**6. "Image.select: Pattern 'B1' did not match any bands":**
+- Check band names with: print(image.bandNames())
+- Different satellites have different band names
+- Landsat 8: B1-B11, Sentinel-2: B1-B12
+
+**7. JavaScript vs Python syntax:**
+- JavaScript: var, camelCase, semicolons
+- Python: snake_case, no var, indentation
+- Use correct syntax for your platform
+
+**8. Visualization not showing:**
+- Check visualization parameters (min, max, bands)
+- Ensure image has data in your area
+- Use Map.centerObject() to focus on data
+- Check image date range and cloud cover
+
+**Quick debugging tips:**
+- Use print() statements to check intermediate results
+- Start with small test areas
+- Check data availability for your region/time
+- Use Inspector tool to click and see pixel values`,
+    category: "troubleshooting", 
+    difficulty: "intermediate",
+    keywords: ["google earth engine", "errors", "memory", "timeout", "debugging"]
+  }
+}
+
+/**
+ * Search function for expanded knowledge
+ */
+export function searchExpandedKnowledge(query: string, limit: number = 5) {
+  const searchTerms = query.toLowerCase().split(' ')
+  const results: Array<{item: any, score: number}> = []
+
+  Object.entries(EXPANDED_TUTORIAL_KNOWLEDGE).forEach(([key, item]) => {
+    let score = 0
+    
+    searchTerms.forEach(term => {
+      // Title matches get highest score
+      if (item.title.toLowerCase().includes(term)) score += 20
+      
+      // Keyword matches get high score  
+      if (item.keywords.some(keyword => keyword.includes(term))) score += 15
+      
+      // Content matches get medium score
+      if (item.content.toLowerCase().includes(term)) score += 5
+      
+      // Category matches get bonus
+      if (item.category === "tutorial" && (term === "how" || term === "tutorial")) score += 10
+      if (item.category === "troubleshooting" && (term === "error" || term === "problem")) score += 10
+    })
+
+    // Boost beginner content
+    if (item.difficulty === "beginner") score += 3
+
+    if (score > 0) {
+      results.push({item: {key, ...item}, score})
+    }
+  })
+
+  return results
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(r => r.item)
+}
+
+/**
+ * Generate direct tutorial response
+ */
+export function generateDirectTutorialResponse(query: string): string {
+  const results = searchExpandedKnowledge(query, 3)
+  
+  if (results.length === 0) {
+    return `I can help you with "${query}"! 🎓
+
+📚 **I have comprehensive knowledge about:**
+- **QGIS**: Data loading, styling, coordinate systems, analysis tools
+- **Google Earth Engine**: Authentication, NDVI, image collections, exports  
+- **Health GIS**: Facility analysis, malaria mapping, accessibility modeling
+- **Programming**: Python setup, AI-assisted coding, debugging
+- **Troubleshooting**: Common errors and solutions
+
+**Popular tutorials:**
+- "How to load data in QGIS"
+- "NDVI calculation in Google Earth Engine"
+- "Health facility accessibility analysis"
+- "Coordinate system setup for Uganda"
+
+What specific topic would you like help with?`
+  }
+
+  const topResult = results[0]
+  
+  return `${topResult.title} 📚
+
+${topResult.content}
+
+**💡 Difficulty level:** ${topResult.difficulty}
+
+Need help with any specific step or have questions about this tutorial?`
+} 
