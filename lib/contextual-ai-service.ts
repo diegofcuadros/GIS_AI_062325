@@ -2,6 +2,7 @@
 // Provides step-specific guidance with direct links to lab content
 
 import { labKnowledgeBase, getLabByNumber, getLabSection, getLabStep, searchLabContent } from './lab-knowledge-base';
+import { EnhancedAIService } from './enhanced-ai-service';
 
 export interface ContextualResponse {
   answer: string;
@@ -488,6 +489,217 @@ To add layers to your QGIS project:
         ],
         relatedSteps: []
       };
+    }
+    
+    // Handle coordinate reference system questions
+    if (queryLower.includes('coordinate') && (queryLower.includes('reference') || queryLower.includes('system') || queryLower.includes('crs'))) {
+      return {
+        answer: `**What is a Coordinate Reference System (CRS)?**
+
+A **Coordinate Reference System (CRS)** defines how geographic coordinates (latitude/longitude or x/y) relate to specific locations on Earth's surface.
+
+**Why CRS Matters:**
+• Ensures accurate measurement of distances and areas
+• Prevents spatial data misalignment
+• Critical for combining multiple datasets
+
+**Common CRS Used:**
+• **WGS 84 (EPSG:4326)**: Global standard for GPS coordinates
+• **UTM zones**: For regional mapping with metric units  
+• **Local projections**: Country-specific systems for detailed work
+
+**In this Workshop:**
+• Uganda data often uses WGS 84 UTM Zone 36N (EPSG:32636)
+• Health facility coordinates typically in decimal degrees (WGS 84)
+• Always verify CRS consistency when combining datasets
+
+**QGIS CRS Settings:**
+• Check layer CRS: Right-click layer → Properties → Source tab
+• Set project CRS: Project → Properties → CRS tab
+• Reproject layer: Right-click → Export → Save Features As (choose new CRS)`,
+        directLinks: [
+          {
+            text: "🌍 Lab 1: Working with Uganda Coordinate Systems",
+            url: "/labs/lab1#section-3-2",
+            type: 'related_lab'
+          },
+          {
+            text: "📚 QGIS CRS Documentation",
+            url: "https://docs.qgis.org/latest/en/docs/user_manual/working_with_projections/working_with_projections.html",
+            type: 'external'
+          }
+        ],
+        relatedSteps: [],
+        tips: [
+          "When in doubt, use WGS 84 UTM Zone 36N for Uganda",
+          "Check that all layers use the same CRS before analysis",
+          "GPS coordinates are usually in WGS 84 decimal degrees"
+        ]
+      };
+    }
+    
+    // Handle vector vs raster questions  
+    if ((queryLower.includes('vector') || queryLower.includes('raster')) && (queryLower.includes('difference') || queryLower.includes('vs') || queryLower.includes('what'))) {
+      return {
+        answer: `**Vector vs Raster Data**
+
+**Vector Data:**
+• Represents discrete features using points, lines, and polygons
+• Examples: Health facilities (points), roads (lines), districts (polygons)
+• Stores attributes in tables linked to geographic features
+• Ideal for: Administrative boundaries, facility locations, infrastructure
+
+**Raster Data:**
+• Grid of cells/pixels covering continuous areas
+• Each cell has a value (elevation, temperature, rainfall)
+• Examples: Satellite imagery, elevation models, climate data
+• Ideal for: Environmental variables, remote sensing, modeling
+
+**In Health GIS:**
+• **Vector**: Hospital locations, district boundaries, travel routes
+• **Raster**: Population density surfaces, climate variables, disease risk maps
+
+**File Formats:**
+• **Vector**: .shp, .gpkg, .geojson, .csv (with coordinates)
+• **Raster**: .tif, .tiff, .img, .asc`,
+        directLinks: [
+          {
+            text: "📊 Lab 1: Working with Vector Health Data",
+            url: "/labs/lab1",
+            type: 'related_lab'
+          },
+          {
+            text: "🛰️ Lab 3: Raster Analysis for Malaria Mapping",
+            url: "/labs/lab3",
+            type: 'related_lab'
+          }
+        ],
+        relatedSteps: [],
+        tips: [
+          "Use vector for discrete features, raster for continuous phenomena",
+          "Vector data maintains precision, raster data has resolution limits",
+          "Choose format based on your analysis needs"
+        ]
+      };
+    }
+    
+    // Handle basic GIS questions
+    if (queryLower.includes('what') && queryLower.includes('gis')) {
+      return {
+        answer: `**What is GIS (Geographic Information System)?**
+
+**GIS** is a technology that captures, stores, analyzes, and displays geographic information to solve real-world problems.
+
+**Core Components:**
+• **Geographic Data**: Spatial information about features on Earth
+• **Software**: Tools like QGIS for data analysis and visualization  
+• **Analysis**: Spatial operations to answer location-based questions
+• **Visualization**: Maps, charts, and reports to communicate findings
+
+**In Public Health:**
+• Map disease patterns and identify hotspots
+• Analyze access to healthcare facilities
+• Plan intervention strategies based on geography
+• Monitor environmental health risks
+
+**This Workshop Applications:**
+• Lab 1: Spatial access to health facilities in Uganda
+• Lab 3: Malaria prevalence mapping and risk assessment
+• Lab 4: AI-assisted programming for geospatial analysis
+• Lab 5: Advanced clustering for disease surveillance
+
+**Key Benefits:**
+• Visual analysis reveals patterns invisible in tables
+• Spatial relationships inform better decision-making
+• Integration of multiple data sources provides comprehensive insights`,
+        directLinks: [
+          {
+            text: "🏥 Lab 1: Health Facility Access Analysis",
+            url: "/labs/lab1",
+            type: 'related_lab'
+          },
+          {
+            text: "🦟 Lab 3: Disease Mapping Tutorial",
+            url: "/labs/lab3", 
+            type: 'related_lab'
+          }
+        ],
+        relatedSteps: [],
+        tips: [
+          "GIS answers 'where' questions that traditional analysis cannot",
+          "Spatial patterns often reveal important public health insights",
+          "Maps communicate complex information more effectively than tables"
+        ]
+      };
+    }
+    
+    // Handle map styling/symbology questions
+    if (queryLower.includes('style') && (queryLower.includes('map') || queryLower.includes('layer'))) {
+      return {
+        answer: `**How to Style Map Layers in QGIS**
+
+To style your map layers for better visualization:
+
+**1. Access Layer Properties:**
+• Right-click layer name → Properties → Symbology tab
+
+**2. Choose Symbology Type:**
+• **Single Symbol**: Same style for all features
+• **Graduated**: Different colors based on data values (choropleth maps)
+• **Categorized**: Different symbols for different categories
+
+**3. For Health Data Visualization:**
+• **Disease prevalence**: Use Graduated symbology with sequential colors (light to dark)
+• **Health facilities**: Use categorized symbols by facility type
+• **Administrative boundaries**: Use simple outlines with no fill
+
+**4. Color Selection Tips:**
+• Sequential schemes: For quantitative data (low to high values)
+• Diverging schemes: For data with meaningful midpoint (above/below average)
+• Qualitative schemes: For categorical data (facility types)
+
+**Workshop Examples:**
+• Lab 1: Style health facilities by type using categorized symbology
+• Lab 3: Create malaria prevalence choropleth using graduated colors`,
+        directLinks: [
+          {
+            text: "🎨 Lab 1: Styling Health Facility Points",
+            url: "/labs/lab1#section-3-4",
+            type: 'related_lab'
+          },
+          {
+            text: "🗺️ Lab 3: Creating Choropleth Maps",
+            url: "/labs/lab3#section-3-4",
+            type: 'related_lab'
+          }
+        ],
+        relatedSteps: [],
+        tips: [
+          "Use ColorBrewer color schemes for professional cartography",
+          "Consider colorblind-friendly palettes for accessibility",
+          "Match color intensity to data values (light = low, dark = high)"
+        ]
+      };
+    }
+    
+    // Try enhanced AI service as fallback for unhandled questions
+    try {
+      const enhancedService = new EnhancedAIService();
+      const enhancedResponse = enhancedService.generateResponse(query, { currentLab: context.currentLab });
+      if (enhancedResponse && enhancedResponse.trim() && !enhancedResponse.includes("I don't have specific information")) {
+        return {
+          answer: enhancedResponse,
+          directLinks: searchResults.slice(0, 2).map(result => ({
+            text: result.title,
+            url: result.link,
+            type: 'related_lab' as const
+          })),
+          relatedSteps: [],
+          tips: ["For lab-specific guidance, ask about specific procedures or steps"]
+        };
+      }
+    } catch (error) {
+      console.log('Enhanced AI service fallback failed, using default response');
     }
     
     // Default general response

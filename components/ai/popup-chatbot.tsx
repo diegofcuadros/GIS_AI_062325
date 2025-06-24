@@ -27,6 +27,7 @@ import {
 import { introductoryKnowledge } from "@/lib/introductory-knowledge"
 import { enhancedAI } from "@/lib/enhanced-ai-service"
 import { ContextualAIService } from "@/lib/contextual-ai-service"
+import { dynamicKnowledge } from "@/lib/dynamic-knowledge-service"
 
 export interface ChatMessage {
   id: string
@@ -225,11 +226,31 @@ export function PopupChatbot({
       console.warn('Contextual AI service error:', error)
     }
     
-    // Fallback to enhanced AI service
+    // Primary fallback to dynamic knowledge service (Expansion_Knowledge integration)
     try {
-      const labContext = enhancedAI.detectLabContext(typeof window !== 'undefined' ? window.location.pathname : undefined)
+      const searchResults = await dynamicKnowledge.search(userMessage, {
+        maxResults: 5,
+        labContext: currentLab
+      })
+      
+      if (searchResults.length > 0) {
+        const dynamicResponse = dynamicKnowledge.generateResponse(userMessage, searchResults, {
+          currentLab: currentLab
+        })
+        
+        if (dynamicResponse && dynamicResponse.length > 100) {
+          return dynamicResponse
+        }
+      }
+    } catch (dynamicError) {
+      console.warn('Dynamic knowledge service error:', dynamicError)
+    }
+    
+    // Secondary fallback to enhanced AI service
+    try {
+      const labContextPath = enhancedAI.detectLabContext(typeof window !== 'undefined' ? window.location.pathname : undefined)
       const enhancedResponse = enhancedAI.generateResponse(userMessage, {
-        currentLab: labContext || currentLab,
+        currentLab: labContextPath || currentLab,
         userExpertise: 'beginner'
       })
       
