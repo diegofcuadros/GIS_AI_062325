@@ -23,6 +23,7 @@ import { ContextualAIService } from "@/lib/contextual-ai-service"
 import { dynamicKnowledge } from "@/lib/dynamic-knowledge-service"
 import { smartLinkService, SmartLink, CitationInfo, LinkContext } from "@/lib/smart-link-service"
 import { SmartLinksDisplay } from "./smart-links-display"
+import { MarkdownContent } from "./markdown-content"
 
 export interface EnhancedChatMessage {
   id: string
@@ -348,7 +349,7 @@ export function EnhancedPopupChatbot({
                             message.type === "suggestion" && "border-2 border-primary/20"
                           )}
                         >
-                          <div className="whitespace-pre-wrap">{message.content}</div>
+                          <MarkdownContent content={message.content} />
                           
                           {message.role === "assistant" && (
                             <div className="text-xs text-muted-foreground mt-1">

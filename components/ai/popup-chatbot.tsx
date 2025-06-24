@@ -30,6 +30,7 @@ import { ContextualAIService } from "@/lib/contextual-ai-service"
 import { dynamicKnowledge } from "@/lib/dynamic-knowledge-service"
 import { smartLinkService, SmartLink, CitationInfo, LinkContext } from "@/lib/smart-link-service"
 import { SmartLinksDisplay } from "./smart-links-display"
+import { MarkdownContent } from "./markdown-content"
 
 export interface ChatMessage {
   id: string
@@ -479,7 +480,7 @@ What specific aspect would you like me to explain?`
                           : "bg-muted"
                       )}
                     >
-                      <div className="whitespace-pre-wrap">{message.content}</div>
+                                                <MarkdownContent content={message.content} />
                       <div className="text-xs opacity-70 mt-1">
                         {message.timestamp.toLocaleTimeString([], { 
                           hour: '2-digit', 
