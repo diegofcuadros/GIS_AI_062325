@@ -28,6 +28,8 @@ import { introductoryKnowledge } from "@/lib/introductory-knowledge"
 import { enhancedAI } from "@/lib/enhanced-ai-service"
 import { ContextualAIService } from "@/lib/contextual-ai-service"
 import { dynamicKnowledge } from "@/lib/dynamic-knowledge-service"
+import { smartLinkService, SmartLink, CitationInfo, LinkContext } from "@/lib/smart-link-service"
+import { SmartLinksDisplay } from "./smart-links-display"
 
 export interface ChatMessage {
   id: string
@@ -35,6 +37,9 @@ export interface ChatMessage {
   content: string
   timestamp: Date
   type?: "question" | "suggestion" | "error"
+  smartLinks?: SmartLink[]
+  citations?: CitationInfo[]
+  relatedContent?: SmartLink[]
 }
 
 export interface PopupChatbotProps {

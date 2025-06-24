@@ -181,6 +181,12 @@ export default function HomePage() {
                 View 3-Day Journey
               </Link>
             </Button>
+            <Button asChild variant="ghost" size="lg" className="text-accent hover:bg-accent/10">
+              <Link href="/smart-links-demo">
+                <Zap className="h-5 w-5 mr-2" />
+                Try Smart Links Demo
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
