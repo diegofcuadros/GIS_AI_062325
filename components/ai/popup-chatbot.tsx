@@ -372,7 +372,7 @@ What specific aspect would you like me to explain?`
           top: position.y,
           cursor: isDragging ? "grabbing" : "default"
         }}
-        onMouseDown={handleMouseDown}
+
       >
         {/* Header */}
         <div
@@ -381,6 +381,7 @@ What specific aspect would you like me to explain?`
             "flex items-center justify-between p-4 border-b border-border bg-card rounded-t-xl",
             "cursor-grab active:cursor-grabbing"
           )}
+          onMouseDown={handleMouseDown}
         >
           <div className="flex items-center space-x-2">
             <div className="relative">
