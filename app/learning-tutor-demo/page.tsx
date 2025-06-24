@@ -206,12 +206,15 @@ export default function LearningTutorDemo() {
           {/* Right Column: Chatbot */}
           <div className="lg:col-span-2 lg:sticky lg:top-8">
             {activeScenario ? (
-              <LearningTutorChatbot
-                key={`${activeScenario.id}-${studentLevel}`}
-                studentLevel={studentLevel}
-                currentLab={activeScenario.title}
-                className="h-auto min-h-[75vh] lg:h-[calc(100vh-4rem)]"
-              />
+              // <LearningTutorChatbot
+              //   key={`${activeScenario.id}-${studentLevel}`}
+              //   studentLevel={studentLevel}
+              //   currentLab={activeScenario.title}
+              //   className="h-auto min-h-[75vh] lg:h-[calc(100vh-4rem)]"
+              // />
+              <div className="h-[calc(100vh-4rem)] min-h-[75vh] bg-teal-900/20 border-2 border-dashed border-teal-500 rounded-lg flex items-center justify-center">
+                <p className="text-teal-300">Chatbot Placeholder</p>
+              </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-[75vh] min-h-[600px] bg-muted/50 rounded-lg border-2 border-dashed">
                 <div className="text-center p-8">
