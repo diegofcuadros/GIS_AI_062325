@@ -5,6 +5,7 @@ import "./globals.css"
 import Navbar from "@/components/layout/navbar"
 import Footer from "@/components/layout/footer"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ChatbotWrapper } from "@/components/ai/chatbot-wrapper"
 
 export const metadata: Metadata = {
   title: "GIS, AI & Public Health Workshop",
@@ -25,6 +26,7 @@ export default function RootLayout({
             <Navbar />
             <main className="flex-grow container mx-auto px-4 py-8">{children}</main>
             <Footer />
+            <ChatbotWrapper />
           </div>
         </ThemeProvider>
       </body>

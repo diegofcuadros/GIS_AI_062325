@@ -190,6 +190,18 @@ const config: Config = {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        "slide-up": {
+          "0%": { transform: "translateY(100%)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "wiggle": {
+          "0%, 100%": { transform: "rotate(-3deg)" },
+          "50%": { transform: "rotate(3deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -198,9 +210,12 @@ const config: Config = {
         "fade-out": "fade-out 0.3s ease-out",
         "slide-in": "slide-in 0.3s ease-out",
         "slide-out": "slide-out 0.3s ease-out",
+        "slide-up": "slide-up 0.3s ease-out",
         "bounce-in": "bounce-in 0.6s ease-out",
         "pulse-soft": "pulse-soft 2s ease-in-out infinite",
         "shimmer": "shimmer 2s linear infinite",
+        "float": "float 3s ease-in-out infinite",
+        "wiggle": "wiggle 1s ease-in-out infinite",
       },
       backdropBlur: {
         xs: '2px',
