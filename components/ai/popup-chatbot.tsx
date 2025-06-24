@@ -25,6 +25,7 @@ import {
   Keyboard
 } from "lucide-react"
 import { introductoryKnowledge } from "@/lib/introductory-knowledge"
+import { enhancedAI } from "@/lib/enhanced-ai-service"
 
 export interface ChatMessage {
   id: string
@@ -178,14 +179,33 @@ export function PopupChatbot({
 
   // Generate response using existing knowledge base
   const generateResponse = async (userMessage: string): Promise<string> => {
-    // Try introductory knowledge first
+    try {
+      // First try enhanced AI service with context awareness
+      const labContext = enhancedAI.detectLabContext(typeof window !== 'undefined' ? window.location.pathname : undefined)
+      const enhancedResponse = enhancedAI.generateResponse(userMessage, {
+        currentLab: labContext || currentLab,
+        userExpertise: 'beginner' // Could be made dynamic based on user behavior
+      })
+      
+      // If enhanced response is substantive, use it
+      if (enhancedResponse && enhancedResponse.length > 200) {
+        return enhancedResponse
+      }
+    } catch (error) {
+      console.warn('Enhanced AI service error:', error)
+    }
+    
+    // Fallback to introductory knowledge
     const results = introductoryKnowledge.search(userMessage)
     
     if (results.length > 0) {
       return introductoryKnowledge.generateResponse(userMessage)
     }
     
-    // Fallback response with suggestions
+    // Final fallback response with context-aware suggestions
+    const contextualSuggestions = enhancedAI.getContextualSuggestions(currentLab)
+    const suggestionsText = contextualSuggestions.slice(0, 4).map(s => `- "${s}"`).join('\n')
+    
     return `I'd love to help you with "${userMessage}"! 🤔
 
 📚 **I have comprehensive knowledge about:**
@@ -196,10 +216,7 @@ export function PopupChatbot({
 - **Concepts**: NDVI, clustering, buffer analysis, spatial joins
 
 **Try asking:**
-- "What is GIS?"
-- "How do I load data in QGIS?"
-- "What is the difference between vector and raster?"
-- "What is Google Earth Engine?"
+${suggestionsText}
 
 What specific aspect would you like me to explain?`
   }
@@ -255,7 +272,14 @@ What specific aspect would you like me to explain?`
     }
   }
 
-  const currentSuggestions = QUICK_SUGGESTIONS[currentLab as keyof typeof QUICK_SUGGESTIONS] || QUICK_SUGGESTIONS.general
+  // Use enhanced AI service for context-aware suggestions or fallback to static suggestions
+  const currentSuggestions = React.useMemo(() => {
+    try {
+      return enhancedAI.getContextualSuggestions(currentLab)
+    } catch (error) {
+      return QUICK_SUGGESTIONS[currentLab as keyof typeof QUICK_SUGGESTIONS] || QUICK_SUGGESTIONS.general
+    }
+  }, [currentLab])
 
   if (!isOpen) return null
 
