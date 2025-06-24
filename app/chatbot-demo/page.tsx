@@ -34,7 +34,7 @@ export default function ChatbotDemoPage() {
             <div className="flex items-center justify-center gap-2 mb-4">
               <MessageSquare className="w-8 h-8 text-emerald-600" />
               <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-                GIS Learning Assistant
+                GIS AI Assistant
               </h1>
               <Sparkles className="w-8 h-8 text-blue-600" />
             </div>

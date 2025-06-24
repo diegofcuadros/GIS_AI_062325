@@ -3,7 +3,7 @@ import type { ReactNode } from "react"
 import { labsData } from "@/lib/constants"
 import { notFound } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { LearningTutorChatbot } from "@/components/ai/learning-tutor-chatbot"
+
 import {
   CheckSquare,
   Lightbulb,
@@ -52,42 +52,7 @@ import {
 } from "lucide-react"
 import { Laptop } from "lucide-react"
 
-// Workshop AI Assistant - Real Implementation
-function AIAssistantPlaceholder({ labContext }: { labContext: string }) {
-  // Parse lab context to extract lab number
-  const labMatch = labContext.match(/Lab (\d+)/)
-  const labNumber = labMatch ? parseInt(labMatch[1]) : 1
-  const currentLab = `lab${labNumber}`
-  
-  return (
-    <div className="mt-8">
-      <Card className="mb-4 bg-background/70 border-primary/50">
-        <CardHeader>
-          <CardTitle className="flex items-center font-sans">
-            <GraduationCap className="mr-2 h-6 w-6 text-primary" /> GIS Learning Tutor
-          </CardTitle>
-          <CardDescription className="font-sans">Socratic method tutoring for {labContext}</CardDescription>
-        </CardHeader>
-        <CardContent className="font-serif text-base">
-          <p className="text-muted-foreground mb-2">
-            Your personal GIS tutor that guides you to discover answers through questions and exploration. 
-            Combines workshop content knowledge with pedagogical teaching methods.
-          </p>
-          <div className="p-4 bg-muted rounded text-sm font-sans">
-            <strong>Try asking:</strong> "I'm new to GIS, where should I start?" or "What is a coordinate reference system?"
-          </div>
-        </CardContent>
-      </Card>
-      
-      {/* Single AI Learning Tutor - combines both functionalities */}
-      <LearningTutorChatbot
-        currentLab={currentLab}
-        currentStep={1}
-        studentLevel="beginner"
-      />
-    </div>
-  )
-}
+
 
 // Placeholder for Code Block / Interactive Cell
 function CodeBlockPlaceholder({
@@ -4078,7 +4043,7 @@ export default function LabPage({ params }: { params: { labId: string } }) {
         </p>
       )}
 
-      <AIAssistantPlaceholder labContext={lab.title} />
+
 
       <Card className="mt-8 bg-card/50 font-sans">
         <CardHeader>

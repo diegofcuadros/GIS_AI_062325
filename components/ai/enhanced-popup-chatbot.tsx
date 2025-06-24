@@ -94,7 +94,7 @@ export function EnhancedPopupChatbot({
     {
       id: "welcome",
       role: "assistant",
-      content: `Hi! I'm your GIS Learning Assistant! 🎓\n\nI can help you with:\n• **Lab procedures** and step-by-step guidance\n• **GIS fundamentals** (what is GIS, vector vs raster, etc.)\n• **Technical troubleshooting** for QGIS and Google Earth Engine\n• **Concepts** like coordinate systems, spatial analysis\n\nWhat would you like to learn about?`,
+      content: `Hi! I'm your GIS AI Assistant! 🎓\n\nI can help you with:\n• **Lab procedures** and step-by-step guidance\n• **GIS fundamentals** (what is GIS, vector vs raster, etc.)\n• **Technical troubleshooting** for QGIS and Google Earth Engine\n• **Concepts** like coordinate systems, spatial analysis\n\nWhat would you like to know about?`,
       timestamp: new Date(),
       type: "suggestion"
     }
@@ -297,7 +297,7 @@ export function EnhancedPopupChatbot({
         >
           <div className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-primary" />
-            <CardTitle className="text-lg">GIS Learning Assistant</CardTitle>
+            <CardTitle className="text-lg">GIS AI Assistant</CardTitle>
             {currentLab !== "general" && (
               <Badge variant="secondary" className="text-xs">
                 {currentLab.toUpperCase()}

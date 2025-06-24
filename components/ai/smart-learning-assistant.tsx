@@ -157,7 +157,7 @@ const SmartLearningAssistant = React.forwardRef<HTMLDivElement, SmartLearningAss
                 <Brain className="h-6 w-6 text-ai-primary" />
               </div>
               <div>
-                <CardTitle className="text-xl">AI Learning Assistant</CardTitle>
+                <CardTitle className="text-xl">AI Assistant</CardTitle>
                 <p className="text-sm text-muted-foreground">
                   {labContext} • {activeStudents}/{totalStudents} active students
                 </p>

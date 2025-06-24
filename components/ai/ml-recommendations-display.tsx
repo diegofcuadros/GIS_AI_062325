@@ -203,7 +203,7 @@ export function MLRecommendationsDisplay({
               <Brain className="w-5 h-5 text-purple-600" />
             </div>
             <div>
-              <h4 className="font-medium text-sm">AI Learning Assistant</h4>
+                              <h4 className="font-medium text-sm">AI Assistant</h4>
               <p className="text-xs text-gray-600">
                 Recommendations improve as you interact more with the system
               </p>

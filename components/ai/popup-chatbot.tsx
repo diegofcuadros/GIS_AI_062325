@@ -104,7 +104,7 @@ export function PopupChatbot({
     {
       id: "welcome",
       role: "assistant",
-      content: `Hi! I'm your GIS Learning Assistant! 🎓\n\nI can help you with:\n• **Lab procedures** and step-by-step guidance\n• **GIS fundamentals** (what is GIS, vector vs raster, etc.)\n• **Technical troubleshooting** for QGIS and Google Earth Engine\n• **Concepts** like coordinate systems, spatial analysis\n\nWhat would you like to learn about?`,
+      content: `Hi! I'm your GIS AI Assistant! 🎓\n\nI can help you with:\n• **Lab procedures** and step-by-step guidance\n• **GIS fundamentals** (what is GIS, vector vs raster, etc.)\n• **Technical troubleshooting** for QGIS and Google Earth Engine\n• **Concepts** like coordinate systems, spatial analysis\n\nWhat would you like to know about?`,
       timestamp: new Date(),
       type: "suggestion"
     }
@@ -397,7 +397,7 @@ What specific aspect would you like me to explain?`
               <Sparkles className="h-3 w-3 text-accent absolute -top-1 -right-1" />
             </div>
             <div>
-              <h3 className="font-semibold text-sm">GIS Learning Assistant</h3>
+              <h3 className="font-semibold text-sm">GIS AI Assistant</h3>
               {currentLab !== "general" && (
                 <p className="text-xs text-muted-foreground">
                   Helping with {currentLab.toUpperCase()}
