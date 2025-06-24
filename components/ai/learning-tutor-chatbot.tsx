@@ -230,84 +230,6 @@ Need help with anything else?`
 - "Understanding coordinate systems"
 
 What specific topic can I help you with?`
-    }
-
-    const topResult = results[0]
-    
-    // Handle different question types
-    if (userMessage.toLowerCase().includes('day 2') || userMessage.toLowerCase().includes('activities')) {
-      return `Here's your complete Day 2 schedule: 📅
-
-${topResult.content}
-
-**🔧 Pre-Day 2 Setup:**
-- Complete Day 1 QGIS tutorials first
-- Create Google Earth Engine account at earthengine.google.com
-- Have Google Colab or Jupyter Notebook ready
-
-**💡 Key Focus:** Environmental risk mapping using satellite data for malaria analysis in Uganda
-
-Any specific Day 2 topic you need help with?`
-    }
-
-    if (userMessage.toLowerCase().includes('what is gis')) {
-      return `Here's what GIS is and why it matters: 🗺️
-
-${topResult.content}
-
-**💡 Real-world examples you know:**
-- GPS navigation (finding routes)
-- Weather maps (showing temperature patterns)
-- COVID-19 dashboards (tracking cases by location)
-- Ride-sharing apps (matching drivers and passengers)
-
-**🎯 In our workshop:** We'll use GIS to map malaria risk in Uganda by combining health facility locations, population data, and environmental factors from satellites.
-
-Need help with any specific GIS concept?`
-    }
-
-    if (userMessage.toLowerCase().includes('install') || userMessage.toLowerCase().includes('qgis')) {
-      return `Here's the complete QGIS installation guide: 🛠️
-
-${topResult.content}
-
-**🔧 Installation troubleshooting:**
-- **Windows**: If blocked by security, right-click → "Run as administrator"
-- **Mac**: If blocked by security, go to System Preferences → Security & Privacy → Allow
-- **Linux**: Use your distribution's package manager for easiest installation
-
-**✅ Verify installation:** Open QGIS and you should see the main interface with toolbars and an empty map canvas.
-
-Having trouble with any specific step?`
-    }
-
-    if (userMessage.toLowerCase().includes('crs') || userMessage.toLowerCase().includes('coordinate')) {
-      return `Here's everything about coordinate systems for the workshop: 🎯
-
-${topResult.content}
-
-**🛠️ Quick QGIS setup for Uganda:**
-1. Project → Properties → CRS tab
-2. Search for "EPSG:32636" (UTM Zone 36N)
-3. Select it and click OK
-4. Check bottom-right corner shows "EPSG:32636"
-
-**⚠️ Common issues:**
-- Data appears in wrong location → Check and set correct CRS for each layer
-- Distance measurements wrong → Make sure project CRS is EPSG:32636
-- Layers don't align → Enable "on-the-fly reprojection"
-
-Need help with a specific CRS problem?`
-    }
-
-    // Default comprehensive response
-    return `Here's the complete information about "${topResult.title}": 🎓
-
-${topResult.content}
-
-**💡 Key takeaways:** This information will help you complete the workshop tutorials successfully.
-
-Need clarification on any specific aspect?`
   }
 }
 
@@ -523,6 +445,7 @@ Try to work through this logic before I give you the formula. What's your thinki
   }
 }
 
+// Message types for the tutor interface
 export interface TutorMessage {
   id: string
   role: "user" | "tutor"
@@ -535,6 +458,7 @@ export interface TutorMessage {
   nextSteps?: string[]
 }
 
+// Props for the Learning Tutor component
 export interface LearningTutorProps {
   currentLab?: string
   currentStep?: number
@@ -543,240 +467,185 @@ export interface LearningTutorProps {
   className?: string
 }
 
-const LearningTutorChatbot = React.forwardRef<HTMLDivElement, LearningTutorProps>(
-  ({
-    currentLab = "lab1",
-    currentStep = 1,
-    studentLevel = "beginner",
-    onMessage,
-    className,
-    ...props
-  }, ref) => {
+// Main Learning Tutor Chatbot Component
+export const LearningTutorChatbot = React.forwardRef<HTMLDivElement, LearningTutorProps>(
+  ({ currentLab, currentStep, studentLevel = "beginner", onMessage, className }, ref) => {
     const [messages, setMessages] = React.useState<TutorMessage[]>([
       {
         id: "welcome",
         role: "tutor",
-        content: `Hello! I'm your GIS Learning Tutor 🎓
+        content: `Hi! I'm your GIS Learning Assistant! 🎓 I'm here to help you master GIS concepts and complete the workshop activities.
 
-I'm here to guide you through your GIS journey using the Socratic method - I'll help you discover concepts through questions and exploration rather than just giving you answers.
+**🎯 I can help you with:**
+- **Workshop navigation** - Finding specific labs and sections
+- **QGIS fundamentals** - Installation, data loading, coordinate systems
+- **Google Earth Engine** - Cloud computing, satellite analysis, NDVI
+- **GIS concepts** - What is GIS? Vector vs raster? Spatial analysis?
+- **Troubleshooting** - Error fixes and step-by-step guidance
 
-🎯 **My Teaching Approach:**
-- Ask you probing questions to build understanding
-- Guide you to discover solutions yourself  
-- Help you connect concepts to real-world applications
-- Provide workshop navigation and content guidance
-
-📚 **I can help you with:**
-- Workshop structure and daily activities
-- GIS concepts and fundamentals  
-- QGIS installation and setup
-- Coordinate reference systems
-- Google Earth Engine basics
-- Finding specific information in the workshop materials
-
-💡 **Try asking me:**
-- "What are the activities for Day 2?"
+**💡 Just ask me questions like:**
 - "What is GIS?"
-- "How can I install QGIS?"
-- "Where can I find CRS setup information?"
+- "How do I install QGIS?"
+- "What are Day 2 activities?"
+- "Vector vs raster data?"
+- "Where is the CRS setup?"
 
-**Today's Focus:** ${currentLab.toUpperCase()} - Step ${currentStep}
-
-What would you like to explore or learn about? 🌟`,
+What would you like to learn about?`,
         timestamp: new Date(),
-        type: "assessment",
+        type: "guidance",
         learningLevel: studentLevel
       }
     ])
-    
-    const [input, setInput] = React.useState("")
+
+    const [currentMessage, setCurrentMessage] = React.useState("")
     const [isLoading, setIsLoading] = React.useState(false)
-    const [isMinimized, setIsMinimized] = React.useState(false)
-    const [studentProfile, setStudentProfile] = React.useState({
-      level: studentLevel,
-      strengths: [] as string[],
-      challenges: [] as string[],
-      goals: [] as string[]
+    const [learningContext, setLearningContext] = React.useState({
+      currentTopic: null,
+      difficulty: studentLevel,
+      recentConcepts: [],
+      needsAssessment: true
     })
 
-    // Enhanced tutor response generation
+    const messagesEndRef = React.useRef<HTMLDivElement>(null)
+    const inputRef = React.useRef<HTMLInputElement>(null)
+
+    // Auto-scroll to bottom when new messages arrive
+    React.useEffect(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }, [messages])
+
+    // Focus input on mount
+    React.useEffect(() => {
+      inputRef.current?.focus()
+    }, [])
+
+    // Generate tutor response based on user input
     const generateTutorResponse = async (userMessage: string): Promise<string> => {
-      const lowerMessage = userMessage.toLowerCase()
-      
-      // Check for direct topic matches with tutoring approach
-      for (const [topic, response] of Object.entries(TUTOR_KNOWLEDGE_BASE.contextResponses)) {
-        if (lowerMessage.includes(topic.replace(/[_\s]/g, "")) || 
-            lowerMessage.includes(topic.replace(/_/g, " "))) {
-          return response.tutorResponse
+      // Use custom message handler if provided
+      if (onMessage) {
+        try {
+          return await onMessage(userMessage, learningContext)
+        } catch (error) {
+          console.error("Custom message handler error:", error)
         }
       }
+
+      // Use workshop knowledge base
+      const response = WORKSHOP_KNOWLEDGE.generateResponse(userMessage)
       
-      // Assess student level and provide appropriate guidance
-      if (lowerMessage.includes("beginner") || lowerMessage.includes("new") || lowerMessage.includes("first time")) {
-        return generateBeginnerGuidance(lowerMessage)
+      // Add contextual guidance based on student level
+      if (studentLevel === "beginner") {
+        return generateBeginnerGuidance(response)
       }
       
-      if (lowerMessage.includes("error") || lowerMessage.includes("problem") || lowerMessage.includes("not working")) {
-        return generateTroubleshootingGuidance(lowerMessage)
+      if (userMessage.toLowerCase().includes("error") || userMessage.toLowerCase().includes("problem")) {
+        return generateTroubleshootingGuidance(response)
       }
       
-      if (lowerMessage.includes("help") || lowerMessage.includes("how")) {
-        return generateSocraticResponse(lowerMessage)
-      }
-      
-      // Default encouraging response
-      return `That's an interesting point! Let me help you explore this further.
-
-🤔 **Let's think about this together:**
-
-To give you the most helpful guidance, I'd like to understand:
-- What specific aspect of "${userMessage}" are you most curious about?
-- What's the context - are you working on a particular project or analysis?
-- What have you tried so far, if anything?
-
-💡 **My approach:** Instead of just giving you the answer, I'll guide you to discover it. This helps build deeper understanding that you can apply to future challenges.
-
-What would you like to explore first?`
+      return generateSocraticResponse(response)
     }
 
+    // Generate beginner-friendly guidance
     const generateBeginnerGuidance = (message: string): string => {
-      return `Welcome to the world of GIS! 🌟 I love working with beginners because you bring fresh perspectives.
+      return `${message}
 
-🎯 **Let's start with the foundations:**
+**🎯 Next steps for beginners:**
+1. Take your time to understand each concept
+2. Practice with the provided examples
+3. Don't hesitate to ask follow-up questions
+4. Remember: everyone starts somewhere!
 
-**First, let's get oriented:**
-- Are you using QGIS, ArcGIS, or another GIS software?
-- Do you have any specific data you're working with?
-- What drew you to learn GIS?
-
-**My teaching philosophy for beginners:**
-1️⃣ **Explore before explaining** - I'll have you try things first
-2️⃣ **Connect to real world** - Every concept ties to practical applications  
-3️⃣ **Build step by step** - Each skill builds on the previous one
-4️⃣ **Embrace mistakes** - They're the best learning opportunities!
-
-🚀 **Let's start your GIS journey!**
-What would you like to tackle first: loading data, understanding maps, or learning about coordinate systems?
-
-Remember: Every expert was once a beginner! 💪`
+**💡 Tip:** If anything seems confusing, just ask "Can you explain [concept] in simpler terms?"`
     }
 
+    // Generate troubleshooting guidance
     const generateTroubleshootingGuidance = (message: string): string => {
-      const troubleshootingQuestions = TUTOR_KNOWLEDGE_BASE.assessment.troubleshooting
-      const randomQuestion = troubleshootingQuestions[Math.floor(Math.random() * troubleshootingQuestions.length)]
-      
-      return `I see you're encountering a challenge - that's part of the learning process! 🔍
+      return `${message}
 
-🧩 **Let's debug this together using systematic thinking:**
+**🔧 Troubleshooting approach:**
+1. **Identify the problem**: What exactly went wrong?
+2. **Check the basics**: Data loaded? Correct CRS? Valid file paths?
+3. **Review recent steps**: What did you do just before the error?
+4. **Test systematically**: Try one fix at a time
 
-**My detective approach:**
-1️⃣ **Understand the situation** - What exactly happened?
-2️⃣ **Identify the context** - What were you trying to accomplish?
-3️⃣ **Trace the steps** - What did you do just before this occurred?
-4️⃣ **Form hypotheses** - What might be causing this?
-5️⃣ **Test solutions** - Let's try fixes systematically
-
-**To start our investigation:**
-${randomQuestion}
-
-**Also helpful to know:**
-- What software/version are you using?
-- What did you expect to happen vs. what actually happened?
-- Are there any error messages? (Don't worry if you don't understand them!)
-
-🎯 **Learning goal:** By the end of this, you'll not only solve this problem but understand the debugging process for future challenges!
-
-What details can you share to start our detective work?`
+**❓ To help you better, please tell me:**
+- What were you trying to do?
+- What error message did you see?
+- What software are you using (QGIS, GEE, Python)?`
     }
 
+    // Generate Socratic questioning responses
     const generateSocraticResponse = (message: string): string => {
-      const conceptPatterns = TUTOR_KNOWLEDGE_BASE.socraticPatterns.concept_understanding
-      const randomPattern = conceptPatterns[Math.floor(Math.random() * conceptPatterns.length)]
+      const questions = [
+        "How do you think this concept applies to your current project?",
+        "What similarities do you see between this and concepts you already know?",
+        "Can you think of a real-world example where this would be useful?",
+        "What questions does this raise for you about the broader topic?"
+      ]
       
-      return `Great question! I love that you're asking "how" - it shows you want to understand the process, not just memorize steps. 🧠
+      const randomQuestion = questions[Math.floor(Math.random() * questions.length)]
+      
+      return `${message}
 
-🎓 **Let's use the Socratic method - learning through discovery:**
+**🤔 Think about this:** ${randomQuestion}
 
-**Instead of me just telling you the answer, let's explore together:**
-
-${randomPattern.replace("[concept]", "this topic")}
-
-**My guided discovery approach:**
-1️⃣ **Start with what you know** - What's your current understanding?
-2️⃣ **Make connections** - How does this relate to things you've learned?
-3️⃣ **Test hypotheses** - What do you think should happen?
-4️⃣ **Experiment safely** - Let's try it and see what we learn
-5️⃣ **Reflect on results** - What worked? What surprised you?
-
-🤔 **Think about this first:**
-- What do you already know about this topic?
-- Why do you think this skill/concept is important?
-- What's your best guess about how to approach this?
-
-After you share your thoughts, I'll guide you through the discovery process!
-
-What's your initial thinking on this?`
+This will help deepen your understanding and connect concepts together.`
     }
 
+    // Handle sending messages
     const handleSendMessage = async () => {
-      if (!input.trim() || isLoading) return
+      if (!currentMessage.trim() || isLoading) return
 
       const userMessage: TutorMessage = {
-        id: Date.now().toString(),
+        id: `user-${Date.now()}`,
         role: "user",
-        content: input.trim(),
+        content: currentMessage.trim(),
         timestamp: new Date(),
         type: "question"
       }
 
       setMessages(prev => [...prev, userMessage])
-      setInput("")
+      setCurrentMessage("")
       setIsLoading(true)
 
       try {
-        let response: string
+        const response = await generateTutorResponse(userMessage.content)
         
-        if (onMessage) {
-          response = await onMessage(input.trim(), {
-            currentLab,
-            currentStep,
-            studentLevel: studentProfile.level,
-            tutorMode: true
-          })
-        } else {
-          // Use comprehensive workshop knowledge
-          response = WORKSHOP_KNOWLEDGE.generateResponse(input.trim())
-        }
-
         const tutorMessage: TutorMessage = {
-          id: (Date.now() + 1).toString(),
+          id: `tutor-${Date.now()}`,
           role: "tutor",
           content: response,
           timestamp: new Date(),
           type: "guidance",
-          learningLevel: studentProfile.level,
-          concepts: [], // Would be populated by content analysis
-          followUpQuestions: [] // Would be generated based on response
+          learningLevel: studentLevel
         }
 
-        setTimeout(() => {
-          setMessages(prev => [...prev, tutorMessage])
-          setIsLoading(false)
-        }, 1500) // Slightly longer to simulate thoughtful consideration
-
+        setMessages(prev => [...prev, tutorMessage])
+        
+        // Update learning context
+        setLearningContext(prev => ({
+          ...prev,
+          recentConcepts: [...prev.recentConcepts, userMessage.content].slice(-5)
+        }))
+        
       } catch (error) {
+        console.error("Error generating response:", error)
+        
         const errorMessage: TutorMessage = {
-          id: (Date.now() + 1).toString(),
+          id: `error-${Date.now()}`,
           role: "tutor",
-          content: "I'm having a moment of reflection here! 🤔 Let me gather my thoughts and try again. Could you rephrase your question or try asking about something specific?",
+          content: "I'm having trouble processing your question right now. Could you try rephrasing it, or ask about a specific topic like 'What is GIS?' or 'How to install QGIS?'",
           timestamp: new Date(),
-          type: "encouragement"
+          type: "guidance"
         }
+        
         setMessages(prev => [...prev, errorMessage])
+      } finally {
         setIsLoading(false)
       }
     }
 
+    // Handle Enter key press
     const handleKeyPress = (e: React.KeyboardEvent) => {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault()
@@ -784,185 +653,141 @@ What's your initial thinking on this?`
       }
     }
 
-    const quickStarters = [
-      "I'm new to GIS, where should I start?",
-      "I'm having trouble loading data",
-      "What is a coordinate reference system?",
-      "How do I calculate NDVI?",
-      "Can you help me with buffer analysis?",
-      "I don't understand spatial relationships"
-    ]
-
-    if (isMinimized) {
-      return (
-        <div 
-          ref={ref}
-          className={cn(
-            "fixed bottom-4 right-4 w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full shadow-lg cursor-pointer hover:scale-105 transition-all duration-300 flex items-center justify-center",
-            className
-          )}
-          onClick={() => setIsMinimized(false)}
-          {...props}
-        >
-          <GraduationCap className="h-8 w-8 text-primary-foreground" />
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-success rounded-full animate-pulse-soft" />
-        </div>
-      )
-    }
-
     return (
-      <Card
-        ref={ref}
-        className={cn(
-          "fixed bottom-4 right-4 w-96 h-[500px] shadow-xl flex flex-col border-primary/20 bg-gradient-to-br from-background to-primary/5 z-50",
-          className
-        )}
-        {...props}
-      >
-        <CardHeader className="flex-shrink-0 pb-4 bg-gradient-to-r from-primary/10 to-accent/10">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-primary to-accent">
-                <GraduationCap className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <div>
-                <CardTitle className="text-lg flex items-center">
-                  GIS Learning Tutor
-                  <Badge variant="secondary" className="ml-2 text-xs">
-                    {studentProfile.level}
-                  </Badge>
-                </CardTitle>
-                <p className="text-xs text-muted-foreground">
-                  Socratic Method • {currentLab.toUpperCase()} • Step {currentStep}
-                </p>
-              </div>
+      <Card ref={ref} className={cn("flex flex-col h-[600px] w-full max-w-4xl mx-auto", className)}>
+        <CardHeader className="flex-shrink-0 border-b bg-gradient-to-r from-teal-50 to-emerald-50 dark:from-teal-950 dark:to-emerald-950">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-900">
+              <GraduationCap className="w-5 h-5 text-teal-600 dark:text-teal-400" />
             </div>
-            <div className="flex space-x-1">
-              <Button size="sm" variant="ghost" onClick={() => setMessages([messages[0]])}>
-                <RefreshCw className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="ghost" onClick={() => setIsMinimized(true)}>
-                ✕
-              </Button>
+            <div className="flex-1">
+              <CardTitle className="text-lg font-semibold text-teal-900 dark:text-teal-100">
+                GIS Learning Assistant
+              </CardTitle>
+              <p className="text-sm text-teal-600 dark:text-teal-400">
+                Your AI tutor for GIS concepts and workshop guidance
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="text-xs">
+                {studentLevel}
+              </Badge>
+              {currentLab && (
+                <Badge variant="outline" className="text-xs">
+                  {currentLab}
+                </Badge>
+              )}
             </div>
           </div>
         </CardHeader>
 
-        <CardContent className="flex-1 flex flex-col p-4 pt-0 min-h-0">
-          {/* Messages */}
-          <ScrollArea className="flex-1 mb-4 min-h-0">
+        <CardContent className="flex-1 flex flex-col p-0">
+          <ScrollArea className="flex-1 p-4">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div
                   key={message.id}
                   className={cn(
-                    "flex",
-                    message.role === "user" ? "justify-end" : "justify-start"
+                    "flex gap-3 max-w-[85%]",
+                    message.role === "user" ? "ml-auto" : "mr-auto"
                   )}
                 >
+                  {message.role === "tutor" && (
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-teal-100 dark:bg-teal-900 flex items-center justify-center">
+                      <Bot className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                    </div>
+                  )}
+                  
                   <div
                     className={cn(
-                      "max-w-[85%] p-3 rounded-lg",
+                      "rounded-lg px-4 py-3 text-sm",
                       message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-gradient-to-r from-muted to-muted/70 border border-border/50"
+                        ? "bg-blue-500 text-white ml-auto"
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                     )}
                   >
-                    <div className="flex items-start space-x-2">
-                      {message.role === "tutor" && (
-                        <div className="flex items-center space-x-1">
-                          <GraduationCap className="h-4 w-4 mt-0.5 flex-shrink-0 text-primary" />
-                          {message.type === "assessment" && <Target className="h-3 w-3 text-blue-500" />}
-                          {message.type === "guidance" && <Lightbulb className="h-3 w-3 text-yellow-500" />}
-                          {message.type === "encouragement" && <ThumbsUp className="h-3 w-3 text-green-500" />}
-                        </div>
-                      )}
-                      <div className="flex-1">
-                        <div className="whitespace-pre-wrap text-sm">{message.content}</div>
-                        <div className="flex items-center justify-between mt-2">
-                          <div className="flex items-center space-x-2">
-                            {message.type && (
-                              <Badge variant="outline" className="text-xs">
-                                {message.type === "assessment" && <Eye className="h-3 w-3 mr-1" />}
-                                {message.type === "guidance" && <ArrowRight className="h-3 w-3 mr-1" />}
-                                {message.type === "encouragement" && <ThumbsUp className="h-3 w-3 mr-1" />}
-                                {message.type}
-                              </Badge>
-                            )}
-                            {message.learningLevel && (
-                              <Badge variant="secondary" className="text-xs">
-                                {message.learningLevel}
-                              </Badge>
-                            )}
-                          </div>
-                          <span className="text-xs text-muted-foreground">
-                            {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </span>
+                    <div className="whitespace-pre-wrap">{message.content}</div>
+                    
+                    {message.type === "checkpoint" && (
+                      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                          <Target className="w-3 h-3" />
+                          Learning checkpoint
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
+                  
+                  {message.role === "user" && (
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                      <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    </div>
+                  )}
                 </div>
               ))}
-
+              
               {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-gradient-to-r from-muted to-muted/70 p-3 rounded-lg max-w-[85%] border border-border/50">
-                    <div className="flex items-center space-x-2">
-                      <GraduationCap className="h-4 w-4 text-primary" />
-                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                      <span className="text-sm text-muted-foreground">Considering your question...</span>
+                <div className="flex gap-3 max-w-[85%] mr-auto">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-teal-100 dark:bg-teal-900 flex items-center justify-center">
+                    <Bot className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                  </div>
+                  <div className="bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        Thinking...
+                      </span>
                     </div>
                   </div>
                 </div>
               )}
             </div>
+            <div ref={messagesEndRef} />
           </ScrollArea>
 
-          {/* Quick Starters */}
-          {messages.length <= 1 && (
-            <div className="mb-4">
-              <p className="text-xs text-muted-foreground mb-2">Quick learning starters:</p>
-              <div className="grid grid-cols-1 gap-1">
-                {quickStarters.slice(0, 3).map((starter, index) => (
-                  <Button
-                    key={index}
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setInput(starter)}
-                    className="text-xs h-8 px-2 justify-start"
-                  >
-                    <MessageSquare className="h-3 w-3 mr-1" />
-                    {starter.length > 30 ? starter.substring(0, 30) + "..." : starter}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Input - Fixed at bottom */}
-          <div className="flex-shrink-0 border-t border-border/50 pt-3 mt-2">
-            <div className="flex space-x-2">
+          <div className="flex-shrink-0 border-t bg-gray-50 dark:bg-gray-900 p-4">
+            <div className="flex gap-2">
               <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyPress}
-                placeholder="Ask me anything about GIS..."
-                className="flex-1 px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                ref={inputRef}
+                type="text"
+                value={currentMessage}
+                onChange={(e) => setCurrentMessage(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Ask me anything about GIS, QGIS, Google Earth Engine, or the workshop..."
+                className="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 dark:bg-gray-800 dark:text-gray-100"
                 disabled={isLoading}
               />
               <Button
                 onClick={handleSendMessage}
-                disabled={!input.trim() || isLoading}
+                disabled={!currentMessage.trim() || isLoading}
                 size="sm"
-                className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+                className="px-3"
               >
                 {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
-                  <Send className="h-4 w-4" />
+                  <Send className="w-4 h-4" />
                 )}
               </Button>
+            </div>
+            
+            <div className="mt-2 flex flex-wrap gap-2">
+              {[
+                "What is GIS?",
+                "Vector vs raster?",
+                "Install QGIS",
+                "Day 2 activities",
+                "Google Earth Engine"
+              ].map((suggestion) => (
+                <button
+                  key={suggestion}
+                  onClick={() => setCurrentMessage(suggestion)}
+                  className="text-xs px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                  disabled={isLoading}
+                >
+                  {suggestion}
+                </button>
+              ))}
             </div>
           </div>
         </CardContent>
@@ -972,5 +797,3 @@ What's your initial thinking on this?`
 )
 
 LearningTutorChatbot.displayName = "LearningTutorChatbot"
-
-export { LearningTutorChatbot }
