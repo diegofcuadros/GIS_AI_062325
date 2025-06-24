@@ -362,8 +362,8 @@ What specific aspect would you like me to explain?`
         ref={popupRef}
         className={cn(
           "fixed z-50 w-[90vw] md:w-96 bg-background border border-border rounded-xl shadow-2xl",
-          "transition-all duration-300 ease-in-out",
-          isMinimized ? "h-14" : "h-[70vh] md:h-[600px]",
+          "transition-all duration-300 ease-in-out flex flex-col",
+          isMinimized ? "h-14" : "h-[80vh] md:h-[650px]",
           isDragging ? "select-none" : "",
           className
         )}
@@ -426,7 +426,7 @@ What specific aspect would you like me to explain?`
 
         {/* Content */}
         {!isMinimized && (
-          <>
+          <div className="flex flex-col flex-1 min-h-0">
             {/* Quick suggestions */}
             <div className="p-3 border-b border-border bg-muted/30">
               <p className="text-xs font-medium text-muted-foreground mb-2">Quick help:</p>
@@ -446,7 +446,7 @@ What specific aspect would you like me to explain?`
             </div>
 
             {/* Messages */}
-            <ScrollArea className="flex-1 p-4 h-[calc(100%-140px)]">
+            <ScrollArea className="flex-1 p-4">
               <div className="space-y-4">
                 {messages.map((message) => (
                   <div
@@ -539,7 +539,7 @@ What specific aspect would you like me to explain?`
                 </Badge>
               </div>
             </div>
-          </>
+          </div>
         )}
       </div>
     </>
