@@ -28,6 +28,8 @@ import { introductoryKnowledge } from "@/lib/introductory-knowledge"
 import { enhancedAI } from "@/lib/enhanced-ai-service"
 import { ContextualAIService } from "@/lib/contextual-ai-service"
 import { dynamicKnowledge } from "@/lib/dynamic-knowledge-service"
+import { mlRecommendationService, ContentSimilarityMatch, PredictiveAssistance } from '@/lib/ml-recommendation-service'
+import MLRecommendationsDisplay from '@/components/ai/ml-recommendations-display'
 import { smartLinkService, SmartLink, CitationInfo, LinkContext } from "@/lib/smart-link-service"
 import { SmartLinksDisplay } from "./smart-links-display"
 import { MarkdownContent } from "./markdown-content"

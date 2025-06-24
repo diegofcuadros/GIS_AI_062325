@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import { MapPin, BrainCircuit, Users, Briefcase, Rocket, Zap, Heart, Globe } from "lucide-react"
+import { MapPin, BrainCircuit, Users, Briefcase, Rocket, Zap, Heart, Globe, Brain, ChevronRight, LinkIcon } from "lucide-react"
 import { labsData } from "@/lib/constants"
 import Image from "next/image"
 
