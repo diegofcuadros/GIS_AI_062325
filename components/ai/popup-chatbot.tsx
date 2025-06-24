@@ -26,6 +26,7 @@ import {
 } from "lucide-react"
 import { introductoryKnowledge } from "@/lib/introductory-knowledge"
 import { enhancedAI } from "@/lib/enhanced-ai-service"
+import { ContextualAIService } from "@/lib/contextual-ai-service"
 
 export interface ChatMessage {
   id: string
@@ -177,25 +178,64 @@ export function PopupChatbot({
     }
   }, [isDragging, handleMouseMove, handleMouseUp])
 
-  // Generate response using existing knowledge base
+  // Generate response using contextual AI service
   const generateResponse = async (userMessage: string): Promise<string> => {
     try {
-      // First try enhanced AI service with context awareness
-      const labContext = enhancedAI.detectLabContext(typeof window !== 'undefined' ? window.location.pathname : undefined)
-      const enhancedResponse = enhancedAI.generateResponse(userMessage, {
-        currentLab: labContext || currentLab,
-        userExpertise: 'beginner' // Could be made dynamic based on user behavior
-      })
+      // Detect current lab context from URL and page content
+      const currentUrl = typeof window !== 'undefined' ? window.location.pathname + window.location.hash : ''
+      const pageContent = typeof document !== 'undefined' ? document.body.innerText : undefined
       
-      // If enhanced response is substantive, use it
-      if (enhancedResponse && enhancedResponse.length > 200) {
-        return enhancedResponse
+      const labContext = ContextualAIService.detectLabContext(currentUrl, pageContent)
+      
+      // Generate contextual response
+      const contextualResponse = ContextualAIService.generateContextualResponse(userMessage, labContext)
+      
+      // Format response with direct links
+      let formattedResponse = contextualResponse.answer
+      
+      if (contextualResponse.directLinks.length > 0) {
+        formattedResponse += "\n\n**Direct Links:**\n"
+        contextualResponse.directLinks.forEach(link => {
+          formattedResponse += `• [${link.text}](${link.url})\n`
+        })
       }
+      
+      if (contextualResponse.tips && contextualResponse.tips.length > 0) {
+        formattedResponse += "\n\n**💡 Tips:**\n"
+        contextualResponse.tips.forEach(tip => {
+          formattedResponse += `• ${tip}\n`
+        })
+      }
+      
+      if (contextualResponse.troubleshooting && contextualResponse.troubleshooting.length > 0) {
+        formattedResponse += "\n\n**🔧 Troubleshooting:**\n"
+        contextualResponse.troubleshooting.forEach(issue => {
+          formattedResponse += `• ${issue}\n`
+        })
+      }
+      
+      return formattedResponse
+      
     } catch (error) {
-      console.warn('Enhanced AI service error:', error)
+      console.warn('Contextual AI service error:', error)
+      
+      // Fallback to enhanced AI service
+      try {
+        const labContext = enhancedAI.detectLabContext(typeof window !== 'undefined' ? window.location.pathname : undefined)
+        const enhancedResponse = enhancedAI.generateResponse(userMessage, {
+          currentLab: labContext || currentLab,
+          userExpertise: 'beginner'
+        })
+        
+        if (enhancedResponse && enhancedResponse.length > 200) {
+          return enhancedResponse
+        }
+      } catch (enhancedError) {
+        console.warn('Enhanced AI service error:', enhancedError)
+      }
     }
     
-    // Fallback to introductory knowledge
+    // Final fallback to introductory knowledge
     const results = introductoryKnowledge.search(userMessage)
     
     if (results.length > 0) {
