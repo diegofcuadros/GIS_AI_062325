@@ -190,49 +190,54 @@ export function PopupChatbot({
       // Generate contextual response
       const contextualResponse = ContextualAIService.generateContextualResponse(userMessage, labContext)
       
-      // Format response with direct links
-      let formattedResponse = contextualResponse.answer
-      
-      if (contextualResponse.directLinks.length > 0) {
-        formattedResponse += "\n\n**Direct Links:**\n"
-        contextualResponse.directLinks.forEach(link => {
-          formattedResponse += `• [${link.text}](${link.url})\n`
-        })
+      // Ensure we have a valid response
+      if (contextualResponse && contextualResponse.answer && contextualResponse.answer.trim().length > 0) {
+        // Format response with direct links
+        let formattedResponse = contextualResponse.answer
+        
+        if (contextualResponse.directLinks && contextualResponse.directLinks.length > 0) {
+          formattedResponse += "\n\n**Direct Links:**\n"
+          contextualResponse.directLinks.forEach(link => {
+            formattedResponse += `• [${link.text}](${link.url})\n`
+          })
+        }
+        
+        if (contextualResponse.tips && contextualResponse.tips.length > 0) {
+          formattedResponse += "\n\n**💡 Tips:**\n"
+          contextualResponse.tips.forEach(tip => {
+            formattedResponse += `• ${tip}\n`
+          })
+        }
+        
+        if (contextualResponse.troubleshooting && contextualResponse.troubleshooting.length > 0) {
+          formattedResponse += "\n\n**🔧 Troubleshooting:**\n"
+          contextualResponse.troubleshooting.forEach(issue => {
+            formattedResponse += `• ${issue}\n`
+          })
+        }
+        
+        return formattedResponse
+      } else {
+        console.warn('Contextual AI returned empty response, falling back...')
       }
-      
-      if (contextualResponse.tips && contextualResponse.tips.length > 0) {
-        formattedResponse += "\n\n**💡 Tips:**\n"
-        contextualResponse.tips.forEach(tip => {
-          formattedResponse += `• ${tip}\n`
-        })
-      }
-      
-      if (contextualResponse.troubleshooting && contextualResponse.troubleshooting.length > 0) {
-        formattedResponse += "\n\n**🔧 Troubleshooting:**\n"
-        contextualResponse.troubleshooting.forEach(issue => {
-          formattedResponse += `• ${issue}\n`
-        })
-      }
-      
-      return formattedResponse
       
     } catch (error) {
       console.warn('Contextual AI service error:', error)
+    }
+    
+    // Fallback to enhanced AI service
+    try {
+      const labContext = enhancedAI.detectLabContext(typeof window !== 'undefined' ? window.location.pathname : undefined)
+      const enhancedResponse = enhancedAI.generateResponse(userMessage, {
+        currentLab: labContext || currentLab,
+        userExpertise: 'beginner'
+      })
       
-      // Fallback to enhanced AI service
-      try {
-        const labContext = enhancedAI.detectLabContext(typeof window !== 'undefined' ? window.location.pathname : undefined)
-        const enhancedResponse = enhancedAI.generateResponse(userMessage, {
-          currentLab: labContext || currentLab,
-          userExpertise: 'beginner'
-        })
-        
-        if (enhancedResponse && enhancedResponse.length > 200) {
-          return enhancedResponse
-        }
-      } catch (enhancedError) {
-        console.warn('Enhanced AI service error:', enhancedError)
+      if (enhancedResponse && enhancedResponse.length > 50) {
+        return enhancedResponse
       }
+    } catch (enhancedError) {
+      console.warn('Enhanced AI service error:', enhancedError)
     }
     
     // Final fallback to introductory knowledge

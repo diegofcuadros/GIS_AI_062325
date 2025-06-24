@@ -418,6 +418,79 @@ To visualize malaria prevalence data:
     currentStep: any,
     currentLab: any
   ): ContextualResponse {
+    // Handle common GIS questions directly
+    const queryLower = query.toLowerCase();
+    
+    if (queryLower.includes('create') && queryLower.includes('map')) {
+      return {
+        answer: `**Creating Maps in QGIS**
+
+To create a map in QGIS:
+
+1. **Load your data**: Use Layer → Add Layer (vector, raster, or CSV)
+2. **Set symbology**: Right-click layer → Properties → Symbology
+3. **Create layout**: Project → New Print Layout
+4. **Add map frame**: Add Item → Add Map in the layout
+5. **Add elements**: Title, legend, north arrow, scale bar
+6. **Export**: Layout → Export as Image/PDF
+
+**For this workshop specifically:**
+• Lab 1: Health facility access maps with buffer analysis
+• Lab 3: Malaria prevalence choropleth maps with graduated colors
+• Use Uganda district data with health statistics`,
+        directLinks: [
+          {
+            text: "📖 Lab 1: Health Facility Access Mapping",
+            url: "/labs/lab1",
+            type: 'related_lab'
+          },
+          {
+            text: "🗺️ Lab 3: Malaria Mapping Tutorial", 
+            url: "/labs/lab3",
+            type: 'related_lab'
+          }
+        ],
+        relatedSteps: [],
+        tips: [
+          "Always set a proper coordinate reference system first",
+          "Use appropriate colors for your data type (sequential for quantities)",
+          "Include all essential map elements for professional maps"
+        ]
+      };
+    }
+    
+    if (queryLower.includes('layers') && queryLower.includes('add')) {
+      return {
+        answer: `**Adding Layers in QGIS**
+
+To add layers to your QGIS project:
+
+1. **Vector data**: Layer → Add Layer → Add Vector Layer
+2. **Raster data**: Layer → Add Layer → Add Raster Layer  
+3. **CSV data**: Layer → Add Layer → Add Delimited Text Layer
+4. **Web services**: Layer → Add Layer → Add WMS/WFS Layer
+
+**For workshop data:**
+• Uganda districts: Use Add Vector Layer for .gpkg files
+• Health facilities: Use Add Delimited Text Layer for CSV with coordinates
+• Malaria data: Use Add Delimited Text Layer for attribute-only CSV`,
+        directLinks: [
+          {
+            text: "📋 Lab 1 Step 3: Import District Boundaries",
+            url: "/labs/lab1#section-3-2-step-3",
+            type: 'related_lab'
+          },
+          {
+            text: "📋 Lab 1 Step 4: Convert Facility Coordinates",
+            url: "/labs/lab1#section-3-2-step-4", 
+            type: 'related_lab'
+          }
+        ],
+        relatedSteps: []
+      };
+    }
+    
+    // Default general response
     let answer = "I'd be happy to help with your GIS workshop question!\n\n";
     
     if (currentStep) {
@@ -440,6 +513,19 @@ To visualize malaria prevalence data:
         answer += `**Tools:** ${lab.tools.join(', ')}\n`;
         answer += `**Estimated Time:** ${lab.estimatedTime}\n`;
       }
+    } else {
+      answer += `**💡 I can help with:**
+• GIS fundamentals (coordinate systems, data types)
+• QGIS procedures (importing data, symbology, layouts)
+• Google Earth Engine basics
+• Spatial analysis concepts
+• Lab-specific guidance
+
+**Try asking:**
+• "How do I import CSV data?"
+• "What is buffer analysis?"
+• "How to create choropleth maps?"
+• "What are coordinate reference systems?"`;
     }
     
     const links = searchResults.slice(0, 3).map(result => ({
