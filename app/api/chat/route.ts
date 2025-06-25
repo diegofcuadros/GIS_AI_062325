@@ -103,10 +103,17 @@ async function semanticSearch(query: string, topK: number = 5): Promise<VectorDo
     const queryEmbedding = await embeddings.embedQuery(query)
 
     // Calculate similarities
-    const similarities = vectorStore.embeddings.map((docEmbedding, index) => ({
-      document: documents[index] || vectorStore.documents[index],
-      similarity: cosineSimilarity(queryEmbedding, Array.isArray(docEmbedding[0]) ? docEmbedding[0] : docEmbedding as number[])
-    }))
+    const similarities = vectorStore.embeddings.map((docEmbedding, index) => {
+      // Ensure docEmbedding is a flat array of numbers
+      const embedding = Array.isArray(docEmbedding) && docEmbedding.length > 0 && !Array.isArray(docEmbedding[0])
+        ? (docEmbedding as number[])
+        : Array.isArray(docEmbedding[0]) ? (docEmbedding[0] as number[]) : [];
+
+      return {
+        document: documents[index] || vectorStore.documents[index],
+        similarity: cosineSimilarity(queryEmbedding, embedding)
+      };
+    });
 
     // Sort by similarity and return top K
     return similarities
@@ -175,7 +182,7 @@ export async function POST(req: NextRequest) {
 
     // Generate streaming response using GROQ
     const result = streamText({
-      model: groq('llama-3.1-70b-versatile'),
+      model: groq('llama3-70b-8192'),
       messages: [
         {
           role: 'system',
