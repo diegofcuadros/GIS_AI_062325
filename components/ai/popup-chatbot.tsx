@@ -459,7 +459,7 @@ What would you like to know about?`
 
     try {
       // Use RAG system for response generation
-      const response = await generateRAGResponse(input.trim(), messages)
+      const aiResponse = await generateRAGResponse(input.trim(), messages)
       
       // Update the temporary message with the final response and generate smart actions
       setMessages(prev => {
@@ -468,12 +468,12 @@ What would you like to know about?`
         
         if (lastMessage && lastMessage.role === 'assistant') {
           const messageId = (Date.now() + 1).toString()
-          lastMessage.content = response
+          lastMessage.content = aiResponse
           lastMessage.id = messageId
           
           // Phase 4B: Generate smart actions for this response
           if (userPreferences.showQuickActions) {
-            lastMessage.quickActions = generateSmartActions(response, messageId)
+            lastMessage.quickActions = generateSmartActions(aiResponse, messageId)
           }
           
           // Add metadata for tracking

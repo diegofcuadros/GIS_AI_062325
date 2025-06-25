@@ -3729,8 +3729,9 @@ const labSpecificContent: Record<string, ReactNode> = {
   lab5: lab5Content,
 }
 
-export default function LabPage({ params }: { params: { labId: string } }) {
-  const lab = labsData.find((l) => l.id === params.labId)
+export default async function LabPage({ params }: { params: Promise<{ labId: string }> }) {
+  const { labId } = await params
+  const lab = labsData.find((l) => l.id === labId)
 
   if (!lab) {
     notFound()
