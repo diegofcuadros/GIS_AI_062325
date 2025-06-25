@@ -756,7 +756,7 @@ What would you like to know about?`
                 <SmartSuggestionsCompact
                   suggestions={smartSuggestions}
                   onSuggestionSelect={handleSuggestionSelect}
-                  maxItems={3}
+                  maxItems={2}
                 />
               </div>
             )}
