@@ -697,6 +697,26 @@ What would you like to know about?`
                         ) : (
                           <p>{message.content}</p>
                         )}
+
+                        {/* Phase 4B: Quick Actions Panel for assistant messages - moved inside message */}
+                        {message.role === "assistant" && message.quickActions && userPreferences.showQuickActions && (
+                          <div className="mt-3 pt-2 border-t border-muted-foreground/20">
+                            <h4 className="text-xs font-semibold mb-1">Quick actions:</h4>
+                            <div className="flex flex-wrap gap-1">
+                              {message.quickActions.slice(0, 2).map((action, idx) => (
+                                <Button
+                                  key={idx}
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-xs h-6 px-2"
+                                  onClick={() => handleQuickAction(action)}
+                                >
+                                  {action.label}
+                                </Button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         
                         <div className="text-xs opacity-70 mt-1">
                           {message.timestamp.toLocaleTimeString([], { 
@@ -706,18 +726,6 @@ What would you like to know about?`
                         </div>
                       </div>
                     </div>
-
-                    {/* Phase 4B: Quick Actions Panel for assistant messages */}
-                    {message.role === "assistant" && message.quickActions && userPreferences.showQuickActions && (
-                      <div className="mt-3 ml-11">
-                        <QuickActionsPanel
-                          actions={message.quickActions}
-                          onActionClick={handleQuickAction}
-                          isVisible={true}
-                          position="bottom"
-                        />
-                      </div>
-                    )}
                   </div>
                 ))}
                 
