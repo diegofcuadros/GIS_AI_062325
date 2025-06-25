@@ -1,0 +1,453 @@
+[
+  {
+    "id": "common_gis_problems",
+    "title": "Common GIS Problems and Solutions",
+    "content": "# Common GIS Problems and Solutions\n\n# Common GIS Problems and How to Fix Them\n\n## Data Loading Issues\n\n### Problem: \"Layer won't load\" or \"No data appears\"\n**Possible causes:**\n1. **File corruption**: Data file is damaged\n2. **Wrong file path**: File moved or renamed\n3. **Unsupported format**: GIS can't read the file type\n4. **Coordinate system mismatch**: Data projects incorrectly\n\n**Solutions:**\n1. **Check file integrity**: Try opening in different software\n2. **Verify file path**: Browse to file location manually\n3. **Convert format**: Use data conversion tools\n4. **Set/check CRS**: Ensure coordinate systems match\n\n### Problem: \"Data appears in wrong location\"\n**Cause**: Coordinate Reference System (CRS) mismatch\n\n**Solutions:**\n1. **Check layer CRS**: Right-click layer → Properties → Source\n2. **Set correct CRS**: Layer Properties → Source → Assign CRS\n3. **Enable on-the-fly projection**: Project Properties → CRS\n4. **Reproject data**: Use \"Reproject Layer\" tool\n\n## QGIS-Specific Issues\n\n### Problem: \"QGIS crashes or freezes\"\n**Possible causes:**\n1. **Large datasets**: Too much data for available memory\n2. **Complex symbology**: Rendering takes too long\n3. **Plugin conflicts**: Incompatible or buggy plugins\n4. **Corrupted preferences**: QGIS settings corrupted\n\n**Solutions:**\n1. **Simplify data**: Use data subsets or generalized versions\n2. **Simplify symbology**: Use basic symbols for large datasets\n3. **Disable plugins**: Settings → Plugins → uncheck problematic ones\n4. **Reset preferences**: Delete QGIS profile folder\n\n### Problem: \"Can't edit features\"\n**Possible causes:**\n1. **Layer not editable**: Edit mode not turned on\n2. **File permissions**: Read-only file or folder\n3. **Network location**: Editing remote files\n4. **File lock**: Another program has file open\n\n**Solutions:**\n1. **Toggle editing**: Click pencil icon or Layer → Toggle Editing\n2. **Check permissions**: Ensure you can write to file location\n3. **Copy locally**: Download file for editing\n4. **Close other programs**: Close Excel, other GIS software\n\n## Google Earth Engine Issues\n\n### Problem: \"Code won't run\" or \"Error messages\"\n**Common causes:**\n1. **Syntax errors**: Typos in function names\n2. **Memory limits**: Computation too large\n3. **Timeout errors**: Process takes too long\n4. **Authentication issues**: Not signed in properly\n\n**Solutions:**\n1. **Check syntax**: Look for typos, missing parentheses\n2. **Reduce computation**: Use smaller areas or fewer images\n3. **Add .aside()**: Force computation to complete step by step\n4. **Re-authenticate**: Run ee.Authenticate() again\n\n### Problem: \"No data appears on map\"\n**Possible causes:**\n1. **Wrong visualization parameters**: Min/max values incorrect\n2. **No data in area**: Study area has no data\n3. **Date filtering**: No images in specified date range\n4. **Cloud cover**: All images cloudy\n\n**Solutions:**\n1. **Check data values**: Use print() to see actual values\n2. **Expand area**: Check larger region\n3. **Expand dates**: Use longer time period\n4. **Relax cloud filter**: Allow higher cloud percentage\n\n## Data Quality Issues\n\n### Problem: \"Missing or incomplete data\"\n**Identification:**\n- Gaps in spatial coverage\n- Missing attribute values\n- Inconsistent data collection\n\n**Solutions:**\n1. **Document gaps**: Note where data is missing\n2. **Find alternative sources**: Look for supplementary datasets\n3. **Interpolation**: Estimate missing values from nearby data\n4. **Flag uncertainty**: Mark areas with poor data quality\n\n### Problem: \"Inconsistent coordinate systems\"\n**Symptoms:**\n- Layers don't align properly\n- Distance measurements incorrect\n- Analysis results questionable\n\n**Solutions:**\n1. **Standardize CRS**: Choose one CRS for entire project\n2. **Reproject all layers**: Use consistent coordinate system\n3. **Document CRS**: Record which CRS you're using\n4. **Validate alignment**: Check that layers overlay correctly\n\n## Performance Issues\n\n### Problem: \"Slow rendering or analysis\"\n**Causes:**\n1. **Large datasets**: Too many features or high resolution\n2. **Complex operations**: Computationally intensive analysis\n3. **Inefficient workflows**: Unnecessary processing steps\n\n**Solutions:**\n1. **Simplify data**: Generalize geometries, reduce resolution\n2. **Use spatial indices**: Speed up spatial queries\n3. **Process in chunks**: Break large operations into smaller parts\n4. **Optimize workflows**: Remove unnecessary steps\n\n## Getting Help\n\n### When Stuck:\n1. **Check documentation**: Official software documentation\n2. **Search forums**: GIS Stack Exchange, software forums\n3. **Ask community**: Post detailed questions with error messages\n4. **Try simple examples**: Test with basic data first\n\n### Best Practices:\n1. **Save frequently**: Backup work regularly\n2. **Document workflow**: Record steps taken\n3. **Test with sample data**: Verify methods work before full analysis\n4. **Keep software updated**: Use latest stable versions\n\n## Key Information\n- **Category**: troubleshooting\n- **Difficulty**: beginner\n- **Source**: QGIS Documentation + GEE Community + Common Experience\n\n## Keywords\n- problems\n- errors\n- troubleshooting\n- solutions\n- debugging\n- fixes\n\n## Examples\n- Layer projection issues\n- Memory errors\n- Data loading failures\n\n## Related Topics\n- qgis_help\n- gee_debugging\n- data_quality\n\n## Relevant Labs\n- LAB1\n- LAB2\n- LAB3\n- LAB4\n- LAB5\n\n## Step-by-Step Approach\n1. Identify the specific error message or symptom\n2. Check the most common causes listed above\n3. Try the suggested solutions systematically\n4. Test with simpler data if problems persist\n5. Seek help with specific error messages and system details\n\n## Troubleshooting Tips\n- Always check the QGIS message log for detailed error information\n- Use 'Zoom to Layer' to quickly identify projection issues\n- Start with simple data when testing new procedures\n- Keep backup copies of working projects\n- Document steps that work for future reference\n\n## Ask the AI Assistant\n- \"Explain common gis problems and solutions in simple terms\"\n- \"How does common gis problems and solutions apply to health GIS?\"\n- \"Show me examples of common gis problems and solutions\"",
+    "metadata": {
+      "category": "troubleshooting",
+      "difficulty": "beginner",
+      "lab": "lab1,lab2,lab3,lab4,lab5",
+      "topics": [
+        "problems",
+        "errors",
+        "troubleshooting",
+        "solutions",
+        "debugging",
+        "fixes"
+      ],
+      "source": "concepts\\common_gis_problems.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "gee_comprehensive_intro",
+    "title": "Google Earth Engine: Complete Introduction",
+    "content": "# Google Earth Engine: Complete Introduction\n\n# Google Earth Engine: Planetary-Scale Geospatial Analysis\n\n## What is Google Earth Engine?\n\n**Google Earth Engine (GEE)** is a cloud-based platform that combines:\n- **Massive data catalog**: Petabytes of satellite imagery and geospatial datasets\n- **Google's computing power**: Parallel processing across Google's infrastructure\n- **APIs for analysis**: JavaScript and Python interfaces for analysis\n\n### The Revolution: Bring Analysis to Data\n**Traditional approach**: Download terabytes of satellite data locally\n**GEE approach**: Send your code to where the data lives\n**Result**: Global analyses that took months now run in minutes\n\n## Core Earth Engine Concepts\n\n### 1. Everything is Server-Side\n```javascript\n// This doesn't download data to your computer\nvar image = ee.Image('LANDSAT/LC08/C01/T1_SR/LC08_044034_20140318');\nvar mean = image.select('B4').mean();\nprint(mean); // Computation happens on Google's servers\n```\n\n### 2. Container Objects\nAll data in Earth Engine is wrapped in special container objects:\n- **ee.Image**: Single satellite image or raster dataset\n- **ee.ImageCollection**: Time series of images\n- **ee.Feature**: Vector feature with geometry and properties\n- **ee.FeatureCollection**: Collection of vector features\n- **ee.Geometry**: Geographic shapes (points, lines, polygons)\n\n### 3. Lazy Evaluation\nCode describes computations but doesn't execute until needed:\n```javascript\nvar collection = ee.ImageCollection('MODIS/006/MOD11A1'); // Just a description\nvar filtered = collection.filterDate('2020-01-01', '2020-12-31'); // Still just a description\nMap.addLayer(filtered.mean()); // NOW the computation happens\n```\n\n## Earth Engine Data Catalog\n\n### Satellite Imagery:\n- **Landsat**: 1970s-present, 30m resolution, free\n- **Sentinel**: 2015-present, 10m resolution, free\n- **MODIS**: 2000-present, 250m-1km resolution, daily\n- **High-resolution**: Various commercial satellites\n\n### Climate and Weather:\n- **Temperature**: Land surface, air temperature\n- **Precipitation**: Gridded rainfall datasets\n- **Weather**: Wind, humidity, pressure\n\n### Environmental Datasets:\n- **Elevation**: SRTM, ASTER global DEMs\n- **Land cover**: Global and regional classifications\n- **Vegetation indices**: NDVI, EVI, LAI\n- **Population**: Gridded population datasets\n\n### Applications in Health Research:\n- **Vector habitats**: Identify mosquito breeding areas\n- **Air quality**: Monitor pollution from space\n- **Urban heat islands**: Track temperature differences\n- **Water resources**: Monitor drought, floods\n- **Agricultural productivity**: Food security assessment\n\n## Getting Started with Earth Engine\n\n### Prerequisites:\n1. **Google account**: Sign up at earthengine.google.com\n2. **Basic programming**: JavaScript or Python knowledge helpful\n3. **GIS concepts**: Understanding of raster data and projections\n\n### First Steps:\n1. **Explore the Code Editor**: https://code.earthengine.google.com\n2. **Browse data catalog**: https://developers.google.com/earth-engine/datasets\n3. **Complete tutorials**: Start with \"Introduction to Earth Engine\"\n4. **Join the community**: Google Earth Engine Developers group\n\n### Basic Workflow:\n1. **Import data**: Load satellite imagery or datasets\n2. **Filter data**: By date, location, cloud cover\n3. **Process data**: Calculate indices, classify, analyze\n4. **Visualize results**: Display on interactive map\n5. **Export results**: Download or save to Google Drive/Cloud\n\n## Python vs JavaScript APIs\n\n### JavaScript (Code Editor):\n- **Interactive development**: Immediate visual feedback\n- **Prototyping**: Quick testing of ideas\n- **Sharing**: Easy to share scripts\n- **Learning**: Great for beginners\n\n### Python API:\n- **Scientific computing**: Integration with pandas, matplotlib\n- **Jupyter notebooks**: Documentation and analysis together\n- **Machine learning**: scikit-learn, TensorFlow integration\n- **Automation**: Batch processing, operational workflows\n\n## Key Information\n- **Category**: gee\n- **Difficulty**: intermediate\n- **Source**: Google Earth Engine Community Tutorials + Documentation\n\n## Keywords\n- google earth engine\n- cloud computing\n- satellite imagery\n- remote sensing\n- javascript\n- python\n\n## Examples\n- Global forest change\n- Urban growth monitoring\n- Drought assessment\n- Air quality mapping\n\n## Related Topics\n- remote_sensing_basics\n- satellite_imagery\n- cloud_computing\n\n## Relevant Labs\n- LAB3\n- LAB4\n- LAB5\n\n## Step-by-Step Approach\n1. Sign up for Google Earth Engine access\n2. Open the Code Editor and explore the interface\n3. Load a simple dataset like a Landsat image\n4. Apply a simple operation like calculating NDVI\n5. Visualize the result on the map\n6. Export the result to Google Drive\n\n## Troubleshooting Tips\n- If code doesn't run, check for typos in function names\n- Use print() statements to debug intermediate results\n- Start simple and build complexity gradually\n- Check the Assets tab if data doesn't appear\n- Use Map.centerObject() to navigate to your study area\n\n## Ask the AI Assistant\n- \"Explain google earth engine: complete introduction in simple terms\"\n- \"How does google earth engine: complete introduction apply to health GIS?\"\n- \"Show me examples of google earth engine: complete introduction\"",
+    "metadata": {
+      "category": "gee",
+      "difficulty": "intermediate",
+      "lab": "lab3,lab4,lab5",
+      "topics": [
+        "google earth engine",
+        "cloud computing",
+        "satellite imagery",
+        "remote sensing",
+        "javascript",
+        "python"
+      ],
+      "source": "concepts\\gee_comprehensive_intro.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "gis_comprehensive_intro",
+    "title": "Complete Introduction to GIS - From Basics to Applications",
+    "content": "# Complete Introduction to GIS - From Basics to Applications\n\n# Geographic Information Systems: A Comprehensive Introduction\n\n## What is GIS?\n\n**GIS (Geographic Information System)** is a multi-component environment for creating, managing, visualizing and analyzing spatial data. Just as we use word processors for text, we use GIS applications for spatial information.\n\n### Core GIS Components:\n1. **Digital Data**: Geographical information stored digitally\n2. **Computer Hardware**: Systems for storing, displaying, processing data\n3. **Computer Software**: GIS applications (QGIS, ArcGIS, Google Earth Engine)\n4. **People**: Users, analysts, decision-makers\n5. **Methods**: Procedures and workflows for analysis\n\n### Why GIS is Revolutionary:\n- **Location-based analysis**: Everything has a geographic component\n- **Pattern recognition**: Identify spatial relationships invisible in tables\n- **Decision support**: Inform policy, planning, emergency response\n- **Data integration**: Combine multiple data sources spatially\n\n## Real-World GIS Example: Health Applications\n\n**Scenario**: Track disease outbreaks and identify patterns\n\n**Traditional Approach**: \n```\nDate       | Location    | Disease | Patients\n13/12/2008 | 26.87, -31.91 | Mumps  | 1\n24/12/2008 | 26.87, -31.91 | Mumps  | 1\n22/01/2009 | 26.87, -31.91 | Mumps  | 1\n```\n\n**GIS Approach**: \n- Map patient locations spatially\n- Identify disease clusters visually\n- Analyze proximity to potential sources\n- Predict spread patterns\n- Target interventions geographically\n\n**Result**: Clear spatial patterns emerge that are invisible in tabular data - mumps cases cluster together, suggesting local transmission.\n\n## GIS vs. Traditional Mapping\n\n**Traditional Maps**: Static representations for navigation\n**GIS Maps**: Dynamic, analytical tools for:\n- **Reference maps**: Navigation, location identification\n- **Presentation maps**: Communicate specific narratives\n- **Statistical maps**: Reveal patterns through data manipulation\n\n## GIS Applications in Health and Development:\n- **Epidemiology**: Disease surveillance, outbreak investigation\n- **Healthcare access**: Facility location, service area analysis\n- **Environmental health**: Pollution exposure, vector habitats\n- **Emergency response**: Resource allocation, evacuation planning\n- **Global development**: Poverty mapping, infrastructure planning\n\n## Key Information\n- **Category**: fundamentals\n- **Difficulty**: beginner\n- **Source**: QGIS Gentle GIS Introduction + Spatial Analysis textbook\n\n## Keywords\n- gis\n- geographic information system\n- spatial analysis\n- health applications\n- mapping\n\n## Examples\n- Disease outbreak mapping\n- Hospital accessibility analysis\n- Environmental risk assessment\n\n## Related Topics\n- spatial_analysis_concepts\n- gis_software_intro\n- health_gis_applications\n\n## Relevant Labs\n- LAB1\n- LAB2\n- LAB3\n- LAB4\n- LAB5\n\n## Step-by-Step Approach\n1. Understand that GIS combines location data with descriptive information\n2. Recognize that spatial patterns often reveal insights invisible in tables\n3. Learn that GIS has five core components: data, hardware, software, people, methods\n4. Practice thinking about how your data could be mapped spatially\n\n\n\n## Ask the AI Assistant\n- \"Explain complete introduction to gis - from basics to applications in simple terms\"\n- \"How does complete introduction to gis - from basics to applications apply to health GIS?\"\n- \"Show me examples of complete introduction to gis - from basics to applications\"",
+    "metadata": {
+      "category": "fundamentals",
+      "difficulty": "beginner",
+      "lab": "lab1,lab2,lab3,lab4,lab5",
+      "topics": [
+        "gis",
+        "geographic information system",
+        "spatial analysis",
+        "health applications",
+        "mapping"
+      ],
+      "source": "concepts\\gis_comprehensive_intro.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "qgis_complete_interface",
+    "title": "QGIS Interface and Core Concepts",
+    "content": "# QGIS Interface and Core Concepts\n\n# QGIS: Complete Interface Guide\n\n## What is QGIS?\n\n**QGIS** is a free, open-source Geographic Information System that provides most functionality of expensive commercial software like ArcGIS.\n\n### Key Advantages:\n- **Free and open source**: No licensing costs\n- **Cross-platform**: Windows, Mac, Linux\n- **Powerful functionality**: Rivals commercial software\n- **Active community**: Extensive documentation and support\n- **GRASS integration**: Advanced spatial analysis capabilities\n\n## Core Interface Components\n\n### 1. Menu Bar\nLocated at the top, provides access to all QGIS functions:\n- **Project**: Open/save projects, import/export data\n- **Edit**: Modify features and attributes\n- **View**: Control map display and navigation\n- **Layer**: Add, remove, and manage map layers\n- **Settings**: Configure QGIS preferences\n- **Plugins**: Extend QGIS functionality\n- **Vector/Raster**: Analysis tools for different data types\n- **Help**: Documentation and tutorials\n\n### 2. Toolbars\nQuick access to frequently used functions:\n- **File Toolbar**: Open, save, new project\n- **Map Navigation**: Zoom, pan, select features\n- **Attributes Toolbar**: Open attribute tables, select features\n- **Digitizing Toolbar**: Create and edit features\n- **Advanced Digitizing**: Precise feature creation\n\n**Tip**: Hover over toolbar icons to see tooltips explaining their function.\n\n### 3. Map Canvas (Map View)\nThe central area where spatial data is displayed:\n- **Layer visualization**: Shows all loaded map layers\n- **Interactive navigation**: Zoom, pan, identify features\n- **Scale-dependent rendering**: Layers can appear/disappear at different scales\n- **Multiple map views**: Create additional map windows for comparison\n\n### 4. Layers Panel (Table of Contents)\nLeft panel showing all loaded layers:\n- **Layer management**: Add, remove, reorder layers\n- **Visibility control**: Turn layers on/off with checkboxes\n- **Layer grouping**: Organize related layers together\n- **Symbology access**: Right-click for styling options\n- **Layer properties**: Access metadata, styling, and settings\n\n**Layer Order Matters**: Layers drawn from bottom to top, with top layers obscuring those below.\n\n### 5. Browser Panel\nNavigate and preview data sources:\n- **File system**: Browse local files and folders\n- **Database connections**: Connect to PostGIS, SpatiaLite\n- **Web services**: Add WMS, WFS, and other online services\n- **Preview capability**: See data before adding to project\n\n## Essential QGIS Concepts\n\n### Projects (.qgs files)\n- **Save everything**: Layer references, symbology, layouts\n- **Portable projects**: Use relative paths for data sharing\n- **Project CRS**: Coordinate reference system for the project\n\n### Layers\n- **Data representation**: Each layer represents one dataset\n- **Layer types**: Vector (points, lines, polygons), Raster (grids)\n- **Styling**: Control colors, symbols, labels for each layer\n- **Attributes**: Associated data tables for vector layers\n\n### Coordinate Reference Systems (CRS)\n- **Project CRS**: Overall map projection\n- **Layer CRS**: Individual layer projections\n- **On-the-fly projection**: QGIS reprojects layers automatically\n- **Importance**: Ensures spatial accuracy and proper analysis\n\n## Key Information\n- **Category**: qgis\n- **Difficulty**: beginner\n- **Source**: QGIS User Manual + Training Materials\n\n## Keywords\n- qgis\n- interface\n- layers\n- map canvas\n- toolbars\n- gis software\n\n## Examples\n- Loading shapefiles\n- Creating basic maps\n- Managing layer visibility\n\n## Related Topics\n- qgis_getting_started\n- layer_management\n- map_navigation\n\n## Relevant Labs\n- LAB1\n- LAB2\n\n## Step-by-Step Approach\n1. Open QGIS and familiarize yourself with the interface layout\n2. Add a vector layer using the toolbar or Layer menu\n3. Practice zooming and panning in the map canvas\n4. Open the attribute table for a layer to see associated data\n5. Change layer symbology by right-clicking and selecting Properties\n6. Save your project to preserve all settings and layer references\n\n## Troubleshooting Tips\n- If layers don't appear, check the layer CRS matches the project CRS\n- Use 'Zoom to Layer' if data appears in wrong location\n- Right-click layers for context menu with most common functions\n- Save project frequently to preserve work and settings\n\n## Ask the AI Assistant\n- \"Explain qgis interface and core concepts in simple terms\"\n- \"How does qgis interface and core concepts apply to health GIS?\"\n- \"Show me examples of qgis interface and core concepts\"",
+    "metadata": {
+      "category": "qgis",
+      "difficulty": "beginner",
+      "lab": "lab1,lab2",
+      "topics": [
+        "qgis",
+        "interface",
+        "layers",
+        "map canvas",
+        "toolbars",
+        "gis software"
+      ],
+      "source": "concepts\\qgis_complete_interface.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "spatial_analysis_comprehensive",
+    "title": "Spatial Analysis: From Patterns to Processes",
+    "content": "# Spatial Analysis: From Patterns to Processes\n\n# Spatial Analysis: Understanding Geographic Patterns\n\n## What is Spatial Analysis?\n\n**Spatial Analysis** goes beyond visualization to understand **why** spatial patterns exist and **what processes** created them.\n\n### GIS vs. Spatial Analysis:\n- **GIS**: \"What is where?\" - Data manipulation, querying, visualization\n- **Spatial Analysis**: \"Why is it there?\" - Statistical analysis of patterns and processes\n\n### The Spatial Analysis Workflow:\n1. **Visualize**: Create maps to see patterns\n2. **Describe**: Quantify spatial patterns statistically  \n3. **Explain**: Test hypotheses about underlying processes\n4. **Predict**: Model future patterns or scenarios\n\n## Core Spatial Analysis Concepts\n\n### 1. Scale and Resolution\n**Scale** in geography refers to the ratio of map distance to real-world distance:\n- **Large scale** (e.g., 1:10,000): Small area, high detail\n- **Small scale** (e.g., 1:1,000,000): Large area, low detail\n\n**Resolution** affects what patterns we can detect:\n- **Fine resolution**: See individual buildings, trees\n- **Coarse resolution**: See regional patterns, climate zones\n\n### 2. Object vs. Field View\n**Object View**: Treats features as discrete entities\n- Examples: Cities, hospitals, disease cases\n- Best for: Counting, location analysis, network analysis\n\n**Field View**: Treats phenomena as continuous surfaces\n- Examples: Temperature, elevation, population density\n- Best for: Interpolation, surface analysis, modeling\n\n### 3. Spatial Relationships\n**Topological relationships** describe how features relate spatially:\n- **Adjacent**: Share a boundary\n- **Contains**: One feature inside another\n- **Overlaps**: Partial overlap between features\n- **Disjoint**: No spatial relationship\n\n**Distance relationships**:\n- **Euclidean distance**: Straight-line distance\n- **Network distance**: Distance along roads/paths\n- **Travel time**: Time-based accessibility\n\n### 4. Spatial Patterns\n**Random**: Features distributed without spatial pattern\n**Clustered**: Features grouped together more than expected\n**Dispersed**: Features more spread out than expected\n\n## Statistical Measures of Spatial Pattern\n\n### Point Pattern Analysis:\n- **Nearest neighbor analysis**: Measures clustering vs. dispersion\n- **Quadrat analysis**: Compares observed vs. expected distributions\n- **Kernel density estimation**: Creates smooth density surfaces\n\n### Spatial Autocorrelation:\n- **Positive autocorrelation**: Similar values cluster together\n- **Negative autocorrelation**: Different values are neighbors\n- **No autocorrelation**: Values distributed randomly\n\n**Moran's I**: Measures global spatial autocorrelation\n- **I > 0**: Clustered pattern\n- **I = 0**: Random pattern  \n- **I < 0**: Dispersed pattern\n\n## Applications in Health Research\n\n### Disease Surveillance:\n1. **Map disease cases** to identify spatial patterns\n2. **Test for clustering** using statistical methods\n3. **Identify risk factors** through spatial correlation\n4. **Predict spread** using spatial models\n\n### Healthcare Access:\n1. **Map facilities and populations** to assess coverage\n2. **Calculate travel distances/times** to measure access\n3. **Identify service gaps** where access is poor\n4. **Optimize locations** for new facilities\n\n### Environmental Health:\n1. **Map exposure sources** (pollution, contamination)\n2. **Model exposure surfaces** using interpolation\n3. **Correlate health outcomes** with environmental factors\n4. **Assess environmental justice** through spatial equity analysis\n\n## Tools for Spatial Analysis\n\n### R Programming:\n- **Spatial packages**: sf, sp, rgdal, raster\n- **Statistical analysis**: Comprehensive spatial statistics\n- **Reproducible research**: Script-based workflows\n- **Visualization**: Advanced mapping and plotting\n\n### Python:\n- **Spatial libraries**: GeoPandas, Shapely, Rasterio\n- **Machine learning**: scikit-learn for spatial ML\n- **Notebooks**: Jupyter for interactive analysis\n\n### Specialized Software:\n- **GeoDa**: Free spatial analysis software\n- **ArcGIS Spatial Analyst**: Commercial spatial analysis extension\n- **QGIS + R**: Combine QGIS visualization with R analysis\n\n## Key Information\n- **Category**: analysis\n- **Difficulty**: intermediate\n- **Source**: Spatial Analysis textbook (mgimond) + Applied Spatial Analysis\n\n## Keywords\n- spatial analysis\n- patterns\n- statistics\n- autocorrelation\n- clustering\n- health research\n\n## Examples\n- Disease cluster detection\n- Healthcare facility optimization\n- Environmental exposure assessment\n\n## Related Topics\n- statistical_methods\n- pattern_analysis\n- gis_analysis\n\n## Relevant Labs\n- LAB2\n- LAB3\n- LAB5\n\n## Step-by-Step Approach\n1. Start with exploratory data visualization\n2. Calculate basic spatial statistics (nearest neighbor, Moran's I)\n3. Test hypotheses about spatial patterns\n4. Investigate underlying processes causing patterns\n5. Validate results and consider alternative explanations\n\n## Troubleshooting Tips\n- Always visualize data before statistical analysis\n- Check for data quality issues that could affect results\n- Consider multiple scales of analysis\n- Validate statistical results with domain knowledge\n\n## Ask the AI Assistant\n- \"Explain spatial analysis: from patterns to processes in simple terms\"\n- \"How does spatial analysis: from patterns to processes apply to health GIS?\"\n- \"Show me examples of spatial analysis: from patterns to processes\"",
+    "metadata": {
+      "category": "analysis",
+      "difficulty": "intermediate",
+      "lab": "lab2,lab3,lab5",
+      "topics": [
+        "spatial analysis",
+        "patterns",
+        "statistics",
+        "autocorrelation",
+        "clustering",
+        "health research"
+      ],
+      "source": "concepts\\spatial_analysis_comprehensive.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "coordinate_reference_systems",
+    "title": "Understanding Coordinate Reference Systems",
+    "content": "# Understanding Coordinate Reference Systems\n\nCoordinate Reference Systems (CRS) define how locations on Earth are represented mathematically.\n\n**Key Concepts:**\n- **Geographic CRS**: Uses latitude/longitude (e.g., WGS84 - EPSG:4326)\n- **Projected CRS**: Uses x,y coordinates in meters/feet (e.g., UTM zones)\n- **EPSG Codes**: Standardized numerical identifiers for CRS\n\n**Uganda Context:**\n- **EPSG:4326 (WGS84)**: Global geographic system, good for general mapping\n- **EPSG:32636 (UTM Zone 36N)**: Projected system for Uganda, better for measurements\n\n**When to Use Each:**\n- Geographic (4326): Web mapping, global datasets, initial data visualization\n- Projected (32636): Distance measurements, area calculations, spatial analysis\n\n**Common Issues:**\n- Mixing different CRS in analysis can cause errors\n- Always check your project CRS (bottom-right of QGIS)\n- Reproject data when necessary for accurate measurements\n\n## Information\n- **Category**: concept\n- **Difficulty**: intermediate\n- **Source**: qgis-tutor\n\n## Topics Covered\n- crs\n- projections\n- coordinates\n- epsg\n- uganda\n\n## Teaching Guidance\nUse analogies and hands-on experimentation\n\n## Discussion Questions\n- Why might the same location have different coordinate values?\n- What happens to distance measurements when you use the wrong CRS?\n\n## Related Queries\n- \"Tell me about understanding coordinate reference systems\"\n- \"How does understanding coordinate reference systems work?\"\n- \"Examples of understanding coordinate reference systems\"",
+    "metadata": {
+      "category": "concept",
+      "difficulty": "intermediate",
+      "lab": "general",
+      "topics": [
+        "crs",
+        "projections",
+        "coordinates",
+        "epsg",
+        "uganda"
+      ],
+      "source": "fundamentals\\coordinate_reference_systems.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "crs_setup_location",
+    "title": "Where to Find CRS Setup Information",
+    "content": "# Where to Find CRS Setup Information\n\nCoordinate Reference System setup is covered in multiple locations in the workshop:\n\n**Primary Location - Lab 1:**\n- **Section**: \"1.2 Setting Up Your GIS Environment\"\n- **Subsection**: \"Coordinate Reference Systems for Uganda\"\n- **Page**: Lab 1, Step 2 of the tutorial\n- **Direct Link**: Navigate to Labs & Tutorials → Lab 1 → Section 1.2\n\n**What You'll Find:**\n- Explanation of coordinate systems\n- Uganda-specific CRS (EPSG:32636)\n- Step-by-step QGIS setup\n- Visual guides with screenshots\n\n**Quick Navigation:**\n1. Click \"Labs & Tutorials\" in main menu\n2. Select \"Lab 1: Malaria Mapping Fundamentals\"\n3. Scroll to \"1.2 Setting Up Your GIS Environment\"\n4. Look for \"Coordinate Reference Systems\" subsection\n\n## Information\n- **Category**: navigation\n- **Difficulty**: beginner\n- **Source**: workshop\n\n## Topics Covered\n- crs\n- navigation\n- lab1\n- setup\n- uganda\n\n## Teaching Guidance\nGuide students to the exact location and help them understand the content\n\n## Discussion Questions\n- Are you looking for basic CRS concepts or specific setup steps?\n- Have you already started Lab 1?\n\n## Related Queries\n- \"Tell me about where to find crs setup information\"\n- \"How does where to find crs setup information work?\"\n- \"Examples of where to find crs setup information\"",
+    "metadata": {
+      "category": "navigation",
+      "difficulty": "beginner",
+      "lab": "general",
+      "topics": [
+        "crs",
+        "navigation",
+        "lab1",
+        "setup",
+        "uganda"
+      ],
+      "source": "fundamentals\\crs_setup_location.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "day2_activities",
+    "title": "Day 2 Workshop Activities",
+    "content": "# Day 2 Workshop Activities\n\nDay 2 focuses on Environmental Risk Mapping using Google Earth Engine and satellite data.\n\n**Morning Session (9:00 AM - 12:00 PM):**\n- **Lab 3**: Environmental Risk Mapping (GEE)\n  - Introduction to Google Earth Engine\n  - JavaScript fundamentals for GEE\n  - Loading and visualizing satellite imagery\n  - NDVI calculation for vegetation analysis\n\n**Afternoon Session (1:00 PM - 5:00 PM):**\n- **Lab 3 Continued**: Advanced GEE Analysis\n  - Time series analysis\n  - Climate data integration (CHIRPS precipitation)\n  - Malaria risk factor mapping\n  - Environmental correlation analysis\n\n**Key Learning Outcomes:**\n- Understand cloud-based remote sensing\n- Calculate vegetation indices (NDVI)\n- Analyze environmental factors affecting malaria\n- Create risk assessment maps\n\n## Information\n- **Category**: navigation\n- **Difficulty**: intermediate\n- **Source**: workshop\n\n## Topics Covered\n- day2\n- schedule\n- activities\n- google earth engine\n- lab3\n\n## Teaching Guidance\nGuide students through the day's progression and help them prepare\n\n## Discussion Questions\n- What environmental factors do you think affect malaria transmission?\n- How might satellite data help us understand disease patterns?\n\n## Related Queries\n- \"Tell me about day 2 workshop activities\"\n- \"How does day 2 workshop activities work?\"\n- \"Examples of day 2 workshop activities\"",
+    "metadata": {
+      "category": "navigation",
+      "difficulty": "intermediate",
+      "lab": "general",
+      "topics": [
+        "day2",
+        "schedule",
+        "activities",
+        "google earth engine",
+        "lab3"
+      ],
+      "source": "fundamentals\\day2_activities.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "qgis_installation",
+    "title": "How to Install QGIS",
+    "content": "# How to Install QGIS\n\nQGIS is free, open-source GIS software. Here's how to install it:\n\n**Step 1: Download QGIS**\n- Visit: https://qgis.org/en/site/forusers/download.html\n- Choose your operating system (Windows, Mac, Linux)\n- Download the Long Term Release (LTR) version for stability\n\n**Step 2: Windows Installation**\n1. Run the downloaded .exe file\n2. Follow installation wizard\n3. Accept default settings (recommended)\n4. Installation takes 5-10 minutes\n\n**Step 3: Mac Installation**\n1. Open the downloaded .dmg file\n2. Drag QGIS to Applications folder\n3. First launch may require security permissions\n\n**Step 4: Verify Installation**\n- Open QGIS\n- You should see the main interface\n- Try loading a sample dataset\n\n**System Requirements:**\n- **RAM**: Minimum 4GB, recommended 8GB+\n- **Storage**: 2GB free space\n- **OS**: Windows 10+, macOS 10.14+, Linux\n\n## Information\n- **Category**: installation\n- **Difficulty**: beginner\n- **Source**: qgis-tutor\n\n## Topics Covered\n- qgis\n- installation\n- setup\n- download\n\n## Teaching Guidance\nWalk through each step, address common installation issues\n\n## Discussion Questions\n- What operating system are you using?\n- Have you installed other software before?\n\n## Related Queries\n- \"Tell me about how to install qgis\"\n- \"How does how to install qgis work?\"\n- \"Examples of how to install qgis\"",
+    "metadata": {
+      "category": "installation",
+      "difficulty": "beginner",
+      "lab": "general",
+      "topics": [
+        "qgis",
+        "installation",
+        "setup",
+        "download"
+      ],
+      "source": "fundamentals\\qgis_installation.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "what_is_gis",
+    "title": "What is GIS? - Geographic Information Systems",
+    "content": "# What is GIS? - Geographic Information Systems\n\nGIS (Geographic Information Systems) is a technology that captures, stores, analyzes, and displays geographic information.\n\n**Core Components of GIS:**\n1. **Hardware**: Computers, GPS units, scanners\n2. **Software**: QGIS, ArcGIS, Google Earth Engine\n3. **Data**: Spatial data (where) + Attribute data (what)\n4. **People**: Users, analysts, developers\n5. **Methods**: Procedures for analysis and visualization\n\n**What Makes GIS Special:**\n- **Location-based**: Everything has a geographic component\n- **Layered approach**: Combine different data types\n- **Spatial analysis**: Understand patterns and relationships\n- **Decision support**: Inform policy and planning\n\n**GIS in Health Applications:**\n- **Disease mapping**: Track outbreaks and patterns\n- **Accessibility analysis**: Healthcare facility coverage\n- **Environmental health**: Pollution, water quality\n- **Resource allocation**: Optimize service delivery\n\n## Information\n- **Category**: concept\n- **Difficulty**: beginner\n- **Source**: workshop\n\n## Topics Covered\n- gis\n- definition\n- fundamentals\n- health\n- applications\n\n## Teaching Guidance\nStart with familiar examples, then build to technical concepts\n\n## Discussion Questions\n- Think about using GPS on your phone - how is that similar to GIS?\n- What spatial questions do you encounter in your daily life?\n\n## Related Queries\n- \"Tell me about what is gis? - geographic information systems\"\n- \"How does what is gis? - geographic information systems work?\"\n- \"Examples of what is gis? - geographic information systems\"",
+    "metadata": {
+      "category": "concept",
+      "difficulty": "beginner",
+      "lab": "general",
+      "topics": [
+        "gis",
+        "definition",
+        "fundamentals",
+        "health",
+        "applications"
+      ],
+      "source": "fundamentals\\what_is_gis.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "workshop_overview",
+    "title": "GIS & AI Workshop Overview",
+    "content": "# GIS & AI Workshop Overview\n\nThis 3-day workshop combines GIS fundamentals with AI-powered analysis for health geography applications.\n\n**Workshop Structure:**\n- **Day 1**: QGIS Fundamentals & Malaria Mapping\n- **Day 2**: Environmental Risk Mapping with Google Earth Engine  \n- **Day 3**: AI-Assisted Programming & Advanced Analysis\n\n**Learning Objectives:**\n- Master QGIS for health facility mapping\n- Use Google Earth Engine for environmental analysis\n- Apply AI tools for spatial analysis\n- Develop malaria risk assessment models\n- Create professional maps and visualizations\n\n## Information\n- **Category**: navigation\n- **Difficulty**: beginner\n- **Source**: workshop\n\n## Topics Covered\n- workshop\n- overview\n- structure\n- schedule\n\n## Teaching Guidance\nHelp students understand the big picture and how each component fits together\n\n## Discussion Questions\n- What aspects of this workshop interest you most?\n- How might GIS help in your field of work?\n\n## Related Queries\n- \"Tell me about gis & ai workshop overview\"\n- \"How does gis & ai workshop overview work?\"\n- \"Examples of gis & ai workshop overview\"",
+    "metadata": {
+      "category": "navigation",
+      "difficulty": "beginner",
+      "lab": "general",
+      "topics": [
+        "workshop",
+        "overview",
+        "structure",
+        "schedule"
+      ],
+      "source": "fundamentals\\workshop_overview.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab1-overview",
+    "title": "Enhanced QGIS Health Facility Access Analysis",
+    "content": "# Enhanced QGIS Health Facility Access Analysis\n\n## Overview\nThis tutorial teaches spatial accessibility analysis using Uganda's healthcare system as a case study. Students learn to create service catchment areas, identify underserved populations, and combine spatial and health indicator data for evidence-based planning.\n\n## Learning Objectives\nComprehensive spatial accessibility analysis for healthcare facilities in Uganda using QGIS buffer analysis and spatial queries\n\n## Lab Details\n- **Estimated Time**: 3-4 hours\n- **Difficulty**: Intermediate\n- **Tools Required**: QGIS, Print Layout, Buffer Analysis, Spatial Queries\n- **Datasets**: Uganda_districts.gpkg, health_facilities_uganda.csv, malaria_prevalence_uganda.csv\n\n## What You'll Learn\nThis lab covers 15 main steps focusing on practical application of GIS techniques for health geography.\n\n### Key Skills Developed\n- Spatial data management and visualization\n- Health facility accessibility analysis\n- Professional cartographic output creation\n- Evidence-based decision making with GIS\n\n## Prerequisites\n- Basic computer skills\n- Interest in health geography applications\n- No prior GIS experience required\n\n## Getting Help\nIf you encounter issues during this lab, the AI assistant can help with:\n- Step-by-step guidance\n- Troubleshooting common errors\n- Concept explanations\n- Alternative approaches",
+    "metadata": {
+      "category": "lab-overview",
+      "difficulty": "intermediate",
+      "lab": "lab1",
+      "topics": [
+        "qgis",
+        "print layout",
+        "buffer analysis",
+        "spatial queries"
+      ],
+      "source": "labs\\lab1-overview.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab1-section-3.1-step-1",
+    "title": "Create and Configure Your QGIS Project",
+    "content": "# Create and Configure Your QGIS Project\n\n## Step 1: Create and Configure Your QGIS Project\n\n### Instructions\n1. Launch QGIS and create a new project (Project → New)\n2. Save project as 'Uganda_Health_Facility_Access_Analysis.qgz'\n3. Create folder structure: Raw_Data, Processed_Data, Maps, Analysis_Results\n4. Set project CRS to WGS 84 / UTM Zone 36N (EPSG:32636) via Project → Properties → CRS\n\n### 💡 Tips\n- UTM Zone 36N provides accurate metric measurements for Uganda\n- Good organization prevents data management issues later\n- Save frequently to avoid losing work\n\n### 🔧 Troubleshooting\n- **Issue**: If CRS doesn't appear, search for '32636' in the filter\n- **Issue**: Verify coordinates show in meters in bottom-right corner\n\n\n\n### Navigation\n\n- **Next**: Step 2\n\n### Need Help?\n- Ask the AI assistant: \"Explain step 1 in detail\"\n- Common question: \"I'm stuck on create and configure your qgis project\"\n- Troubleshooting: \"Error with create and configure your qgis project\"",
+    "metadata": {
+      "category": "lab-step",
+      "difficulty": "intermediate",
+      "lab": "lab1",
+      "topics": [],
+      "source": "labs\\lab1-section-3.1-step-1.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab1-section-3.1-step-2",
+    "title": "Organize Your Data and Workspace",
+    "content": "# Organize Your Data and Workspace\n\n## Step 2: Organize Your Data and Workspace\n\n### Instructions\n1. Enable Processing Toolbox (View → Panels → Processing Toolbox)\n2. Enable Browser Panel for data navigation\n3. Enable Layers Panel for layer management\n4. Create organized folder structure in project directory\n\n### 💡 Tips\n- Processing Toolbox contains essential spatial analysis tools\n- Good workspace organization improves efficiency\n- Browser panel helps locate and manage files\n\n\n\n\n\n### Navigation\n- **Previous**: Step 1\n- **Next**: Step 3\n\n### Need Help?\n- Ask the AI assistant: \"Explain step 2 in detail\"\n- Common question: \"I'm stuck on organize your data and workspace\"\n- Troubleshooting: \"Error with organize your data and workspace\"",
+    "metadata": {
+      "category": "lab-step",
+      "difficulty": "intermediate",
+      "lab": "lab1",
+      "topics": [],
+      "source": "labs\\lab1-section-3.1-step-2.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab1-section-3.2-step-3",
+    "title": "Import Uganda District Boundaries",
+    "content": "# Import Uganda District Boundaries\n\n## Step 3: Import Uganda District Boundaries\n\n### Instructions\n1. Use Layer → Add Layer → Add Vector Layer\n2. Import Uganda_districts.gpkg file\n3. Examine attribute table (right-click → Open Attribute Table)\n4. Note district name field for future joining operations\n\n### 💡 Tips\n- District boundaries provide spatial framework for analysis\n- Check that all districts loaded correctly\n- Note field names for later use in joins\n\n### 🔧 Troubleshooting\n- **Issue**: If layer doesn't load, check file path and format\n- **Issue**: Ensure file isn't corrupted or moved\n\n\n\n### Navigation\n- **Previous**: Step 2\n- **Next**: Step 4\n\n### Need Help?\n- Ask the AI assistant: \"Explain step 3 in detail\"\n- Common question: \"I'm stuck on import uganda district boundaries\"\n- Troubleshooting: \"Error with import uganda district boundaries\"",
+    "metadata": {
+      "category": "lab-step",
+      "difficulty": "intermediate",
+      "lab": "lab1",
+      "topics": [],
+      "source": "labs\\lab1-section-3.2-step-3.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab1-section-3.2-step-4",
+    "title": "Convert Health Facility Coordinates to Spatial Data",
+    "content": "# Convert Health Facility Coordinates to Spatial Data\n\n## Step 4: Convert Health Facility Coordinates to Spatial Data\n\n### Instructions\n1. Navigate to Layer → Add Layer → Add Delimited Text Layer\n2. Select health_facilities_uganda.csv file\n3. Set File format to 'CSV'\n4. Set X field to 'Longitude' and Y field to 'Latitude'\n5. Set Geometry CRS to EPSG:4326 (WGS 84)\n6. Click 'Add' to create temporary layer\n7. Export as permanent shapefile: right-click → Export → Save Features As\n8. Save as 'health_facilities_uganda.shp' with CRS EPSG:32636\n\n### 💡 Tips\n- Always convert CSV coordinates to permanent spatial files\n- Use consistent CRS throughout project (EPSG:32636)\n- Remove temporary CSV layer after creating permanent shapefile\n\n### 🔧 Troubleshooting\n- **Issue**: If coordinates don't appear correctly, check X/Y field assignments\n- **Issue**: Ensure latitude/longitude values are in decimal degrees\n- **Issue**: If points appear in wrong location, verify CRS settings\n\n### Related Concepts\n- Coordinate Reference Systems\n- CSV Import\n- Point Data\n\n### Navigation\n- **Previous**: Step 3\n- **Next**: Step 5\n\n### Need Help?\n- Ask the AI assistant: \"Explain step 4 in detail\"\n- Common question: \"I'm stuck on convert health facility coordinates to spatial data\"\n- Troubleshooting: \"Error with convert health facility coordinates to spatial data\"",
+    "metadata": {
+      "category": "lab-step",
+      "difficulty": "intermediate",
+      "lab": "lab1",
+      "topics": [
+        "Coordinate Reference Systems",
+        "CSV Import",
+        "Point Data"
+      ],
+      "source": "labs\\lab1-section-3.2-step-4.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab1-section-3.3-step-5",
+    "title": "Import Malaria Prevalence Data (CSV)",
+    "content": "# Import Malaria Prevalence Data (CSV)\n\n## Step 5: Import Malaria Prevalence Data (CSV)\n\n### Instructions\n1. Click 'Layer' → 'Add Layer' → 'Add Delimited Text Layer'\n2. Browse to your malaria_prevalence.csv file\n3. Ensure 'CSV (comma separated values)' is selected\n4. Under 'Geometry Definition,' select 'No geometry (attribute table only)'\n5. Click 'Add' then 'Close'\n\n### 💡 Tips\n- CSV contains statistical data without coordinates\n- Data will be joined to spatial features using district names\n- Check that district names match between datasets\n\n### 🔧 Troubleshooting\n- **Issue**: If CSV won't load, check file format and encoding\n- **Issue**: Ensure file path is correct and accessible\n- **Issue**: Verify CSV has proper headers and consistent formatting\n\n### Related Concepts\n- Attribute Data\n- CSV Import\n- Data Joining\n\n### Navigation\n- **Previous**: Step 4\n- **Next**: Step 6\n\n### Need Help?\n- Ask the AI assistant: \"Explain step 5 in detail\"\n- Common question: \"I'm stuck on import malaria prevalence data (csv)\"\n- Troubleshooting: \"Error with import malaria prevalence data (csv)\"",
+    "metadata": {
+      "category": "lab-step",
+      "difficulty": "intermediate",
+      "lab": "lab1",
+      "topics": [
+        "Attribute Data",
+        "CSV Import",
+        "Data Joining"
+      ],
+      "source": "labs\\lab1-section-3.3-step-5.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab1-section-3.3-step-6",
+    "title": "Join Malaria Data to District Boundaries",
+    "content": "# Join Malaria Data to District Boundaries\n\n## Step 6: Join Malaria Data to District Boundaries\n\n### Instructions\n1. Right-click on Uganda_districts layer → 'Properties'\n2. Go to 'Joins' tab, click '+' button\n3. In 'Add Vector Join' dialog:\n4.   - Set 'Join layer' to malaria prevalence CSV\n5.   - Set 'Join field' to district name field in CSV\n6.   - Set 'Target field' to district name field in shapefile\n7.   - Check 'Custom field name prefix' and leave blank\n8. Click 'OK' then 'Apply'\n9. Verify join by opening districts attribute table\n\n### 💡 Tips\n- Successful joins combine geographic and health data\n- District names must match exactly between datasets\n- Custom prefix helps avoid field name conflicts\n\n### 🔧 Troubleshooting\n- **Issue**: If join fails, check for spelling differences in district names\n- **Issue**: Ensure both datasets use consistent naming conventions\n- **Issue**: Look for extra spaces or special characters in names\n\n### Related Concepts\n- Table Joins\n- Attribute Matching\n- Data Integration\n\n### Navigation\n- **Previous**: Step 5\n- **Next**: Step 7\n\n### Need Help?\n- Ask the AI assistant: \"Explain step 6 in detail\"\n- Common question: \"I'm stuck on join malaria data to district boundaries\"\n- Troubleshooting: \"Error with join malaria data to district boundaries\"",
+    "metadata": {
+      "category": "lab-step",
+      "difficulty": "intermediate",
+      "lab": "lab1",
+      "topics": [
+        "Table Joins",
+        "Attribute Matching",
+        "Data Integration"
+      ],
+      "source": "labs\\lab1-section-3.3-step-6.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab1-section-3.4-step-8",
+    "title": "Create Service Catchment Buffers",
+    "content": "# Create Service Catchment Buffers\n\n## Step 8: Create Service Catchment Buffers\n\n### Instructions\n1. Access Vector → Geoprocessing Tools → Buffer\n2. Set Input layer to health facilities shapefile\n3. Specify Distance as 10,000 meters (10 km)\n4. Maintain 20 segments for smooth circular buffers\n5. Save output as 'facility_buffers_10km.shp'\n\n### 💡 Tips\n- 10km represents 2-3 hours walking time in rural Uganda\n- Buffer zones show reasonable access distances\n- Higher segment count creates smoother circles\n\n### 🔧 Troubleshooting\n- **Issue**: If buffers appear too large/small, check distance units\n- **Issue**: Ensure project CRS uses meters for accurate measurements\n- **Issue**: Verify input layer contains point features\n\n\n\n### Navigation\n- **Previous**: Step 7\n- **Next**: Step 9\n\n### Need Help?\n- Ask the AI assistant: \"Explain step 8 in detail\"\n- Common question: \"I'm stuck on create service catchment buffers\"\n- Troubleshooting: \"Error with create service catchment buffers\"",
+    "metadata": {
+      "category": "lab-step",
+      "difficulty": "intermediate",
+      "lab": "lab1",
+      "topics": [],
+      "source": "labs\\lab1-section-3.4-step-8.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab1-section-3.5-step-10",
+    "title": "Identify Underserved Districts",
+    "content": "# Identify Underserved Districts\n\n## Step 10: Identify Underserved Districts\n\n### Instructions\n1. Navigate to Vector → Research Tools → Select by Location\n2. Configure query: 'Select features from' Uganda districts\n3. 'where the features' 'do not intersect'\n4. 'by comparing to features from' facility buffers layer\n5. Run query to identify districts without facility coverage\n\n### 💡 Tips\n- 'Do not intersect' finds areas completely outside buffer zones\n- These districts represent highest priority for intervention\n- Results show most underserved populations\n\n\n\n\n\n### Navigation\n- **Previous**: Step 9\n- **Next**: Step 11\n\n### Need Help?\n- Ask the AI assistant: \"Explain step 10 in detail\"\n- Common question: \"I'm stuck on identify underserved districts\"\n- Troubleshooting: \"Error with identify underserved districts\"",
+    "metadata": {
+      "category": "lab-step",
+      "difficulty": "intermediate",
+      "lab": "lab1",
+      "topics": [],
+      "source": "labs\\lab1-section-3.5-step-10.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab2-overview",
+    "title": "Enhanced Google Earth Engine Environmental Risk Mapping",
+    "content": "# Enhanced Google Earth Engine Environmental Risk Mapping\n\n## Overview\nAdvanced remote sensing tutorial using Google Earth Engine to analyze environmental factors influencing malaria transmission, including precipitation, temperature, and vegetation indices.\n\n## Learning Objectives\nUsing Google Earth Engine for satellite-based environmental risk assessment and malaria mapping\n\n## Lab Details\n- **Estimated Time**: 4-5 hours\n- **Difficulty**: Advanced\n- **Tools Required**: Google Earth Engine, JavaScript API, Remote Sensing, Time Series Analysis\n- **Datasets**: CHIRPS Precipitation, MODIS Temperature, NDVI, Landsat Imagery\n\n## What You'll Learn\nThis lab covers 12 main steps focusing on practical application of GIS techniques for health geography.\n\n### Key Skills Developed\n- Spatial data management and visualization\n- Health facility accessibility analysis\n- Professional cartographic output creation\n- Evidence-based decision making with GIS\n\n## Prerequisites\n- Basic computer skills\n- Interest in health geography applications\n- No prior GIS experience required\n\n## Getting Help\nIf you encounter issues during this lab, the AI assistant can help with:\n- Step-by-step guidance\n- Troubleshooting common errors\n- Concept explanations\n- Alternative approaches",
+    "metadata": {
+      "category": "lab-overview",
+      "difficulty": "advanced",
+      "lab": "lab2",
+      "topics": [
+        "google earth engine",
+        "javascript api",
+        "remote sensing",
+        "time series analysis"
+      ],
+      "source": "labs\\lab2-overview.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab3-overview",
+    "title": "Enhanced QGIS Malaria Mapping Tutorial",
+    "content": "# Enhanced QGIS Malaria Mapping Tutorial\n\n## Overview\nComplete tutorial for creating professional malaria prevalence maps using QGIS, covering data visualization, classification methods, and cartographic design principles.\n\n## Learning Objectives\nComprehensive malaria mapping with choropleth visualization and classification methods\n\n## Lab Details\n- **Estimated Time**: 2-3 hours\n- **Difficulty**: Beginner\n- **Tools Required**: QGIS, Symbology, Print Layout, Data Classification\n- **Datasets**: Uganda_districts.gpkg, malaria_prevalence.csv\n\n## What You'll Learn\nThis lab covers 12 main steps focusing on practical application of GIS techniques for health geography.\n\n### Key Skills Developed\n- Spatial data management and visualization\n- Health facility accessibility analysis\n- Professional cartographic output creation\n- Evidence-based decision making with GIS\n\n## Prerequisites\n- Basic computer skills\n- Interest in health geography applications\n- No prior GIS experience required\n\n## Getting Help\nIf you encounter issues during this lab, the AI assistant can help with:\n- Step-by-step guidance\n- Troubleshooting common errors\n- Concept explanations\n- Alternative approaches",
+    "metadata": {
+      "category": "lab-overview",
+      "difficulty": "beginner",
+      "lab": "lab3",
+      "topics": [
+        "qgis",
+        "symbology",
+        "print layout",
+        "data classification"
+      ],
+      "source": "labs\\lab3-overview.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab4-overview",
+    "title": "Enhanced AI-Assisted Google Earth Engine Programming",
+    "content": "# Enhanced AI-Assisted Google Earth Engine Programming\n\n## Overview\nLearn to leverage AI assistants like ChatGPT and GitHub Copilot to write more efficient Google Earth Engine code for environmental and health applications.\n\n## Learning Objectives\nUsing AI tools to accelerate Google Earth Engine programming for environmental analysis\n\n## Lab Details\n- **Estimated Time**: 3-4 hours\n- **Difficulty**: Intermediate\n- **Tools Required**: Google Earth Engine, AI Assistants, JavaScript, Python API\n- **Datasets**: Sentinel-2, Landsat, MODIS, Climate Data\n\n## What You'll Learn\nThis lab covers 10 main steps focusing on practical application of GIS techniques for health geography.\n\n### Key Skills Developed\n- Spatial data management and visualization\n- Health facility accessibility analysis\n- Professional cartographic output creation\n- Evidence-based decision making with GIS\n\n## Prerequisites\n- Basic computer skills\n- Interest in health geography applications\n- No prior GIS experience required\n\n## Getting Help\nIf you encounter issues during this lab, the AI assistant can help with:\n- Step-by-step guidance\n- Troubleshooting common errors\n- Concept explanations\n- Alternative approaches",
+    "metadata": {
+      "category": "lab-overview",
+      "difficulty": "intermediate",
+      "lab": "lab4",
+      "topics": [
+        "google earth engine",
+        "ai assistants",
+        "javascript",
+        "python api"
+      ],
+      "source": "labs\\lab4-overview.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "lab5-overview",
+    "title": "Enhanced AI-Based Clustering for Malaria Risk Mapping",
+    "content": "# Enhanced AI-Based Clustering for Malaria Risk Mapping\n\n## Overview\nAdvanced tutorial combining environmental data with machine learning clustering to identify and map malaria risk zones in East Africa.\n\n## Learning Objectives\nMachine learning approaches for identifying malaria risk zones using clustering algorithms\n\n## Lab Details\n- **Estimated Time**: 4-5 hours\n- **Difficulty**: Advanced\n- **Tools Required**: Python, Scikit-learn, QGIS, K-means Clustering\n- **Datasets**: Environmental Variables, Malaria Cases, Population Data\n\n## What You'll Learn\nThis lab covers 15 main steps focusing on practical application of GIS techniques for health geography.\n\n### Key Skills Developed\n- Spatial data management and visualization\n- Health facility accessibility analysis\n- Professional cartographic output creation\n- Evidence-based decision making with GIS\n\n## Prerequisites\n- Basic computer skills\n- Interest in health geography applications\n- No prior GIS experience required\n\n## Getting Help\nIf you encounter issues during this lab, the AI assistant can help with:\n- Step-by-step guidance\n- Troubleshooting common errors\n- Concept explanations\n- Alternative approaches",
+    "metadata": {
+      "category": "lab-overview",
+      "difficulty": "advanced",
+      "lab": "lab5",
+      "topics": [
+        "python",
+        "scikit-learn",
+        "qgis",
+        "k-means clustering"
+      ],
+      "source": "labs\\lab5-overview.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "crs-mismatch",
+    "title": "Coordinate Reference System Issues",
+    "content": "# Fixing Coordinate Reference System Problems\n\n## The Problem\nLayers appear in wrong locations, don't align properly, or distances are calculated incorrectly.\n\n## Why This Happens\nDifferent layers use different coordinate reference systems (CRS), causing spatial misalignment.\n\n## Solutions\n\n### Quick Fix\n1. Right-click problematic layer → Properties → Source tab\n2. Note the current CRS (e.g., EPSG:4326)\n3. Right-click layer → Export → Save Features As\n4. Change CRS to EPSG:32636 (Uganda UTM Zone 36N)\n5. Load the new file and remove the old one\n\n### Project-Wide Fix\n1. Project → Properties → CRS tab\n2. Set project CRS to EPSG:32636\n3. Enable \"on-the-fly\" reprojection\n4. All layers will display in the same coordinate system\n\n### Prevention\n- Always check CRS before loading data\n- Use consistent CRS throughout project\n- For Uganda: EPSG:32636 for measurements, EPSG:4326 for GPS data\n\n## Common CRS for Uganda\n- **EPSG:32636**: UTM Zone 36N - best for measurements and analysis\n- **EPSG:4326**: WGS84 - best for GPS coordinates and global context\n- **EPSG:21036**: Arc 1960 UTM 36N - historical surveys\n\n## Ask the AI Assistant\n- \"My layers don't align, help with CRS\"\n- \"What CRS should I use for Uganda?\"\n- \"How to reproject layers in QGIS\"",
+    "metadata": {
+      "category": "troubleshooting",
+      "difficulty": "beginner",
+      "lab": "all",
+      "topics": [
+        "errors",
+        "troubleshooting",
+        "common-issues"
+      ],
+      "source": "troubleshooting\\crs-mismatch.md",
+      "chunkIndex": 0
+    }
+  },
+  {
+    "id": "file-loading-errors",
+    "title": "Data Loading Problems",
+    "content": "# Solving Data Loading Issues\n\n## Common File Loading Problems\n\n### Shapefile Won't Load\n**Symptoms**: Error messages, empty layers, or files won't open\n\n**Solutions**:\n1. **Check file completeness**: Shapefiles need .shp, .shx, .dbf, and .prj files\n2. **Remove spaces**: Rename files to remove spaces and special characters\n3. **Check file path**: Ensure path doesn't contain special characters\n4. **Verify format**: Confirm file is actually a shapefile\n\n### CSV Coordinates Not Displaying\n**Symptoms**: CSV loads but points don't appear on map\n\n**Solutions**:\n1. **Check coordinate columns**: Ensure X=Longitude, Y=Latitude\n2. **Verify coordinate format**: Use decimal degrees (not degrees/minutes/seconds)\n3. **Set correct CRS**: Usually EPSG:4326 for GPS coordinates\n4. **Check for missing values**: Empty coordinates cause issues\n\n### \"Invalid Geometry\" Errors\n**Symptoms**: Processing tools fail with geometry errors\n\n**Solutions**:\n1. Vector → Geometry Tools → Fix Geometries\n2. Vector → Geometry Tools → Check Validity (to identify issues)\n3. Use fixed geometry layer for analysis\n\n### File Path Problems\n**Symptoms**: \"File not found\" errors, broken links\n\n**Solutions**:\n1. Use simple folder names (no spaces, special characters)\n2. Keep project files in organized folder structure\n3. Use relative paths when possible\n4. Avoid cloud storage folders (OneDrive, Dropbox) for active projects\n\n## Prevention Tips\n- Always validate data after importing\n- Use consistent file naming conventions\n- Keep backups of original data\n- Document your data sources and formats\n\n## Ask the AI Assistant\n- \"My shapefile won't load, what's wrong?\"\n- \"CSV coordinates not showing on map\"\n- \"How to fix invalid geometry errors\"",
+    "metadata": {
+      "category": "troubleshooting",
+      "difficulty": "beginner",
+      "lab": "all",
+      "topics": [
+        "errors",
+        "troubleshooting",
+        "common-issues"
+      ],
+      "source": "troubleshooting\\file-loading-errors.md",
+      "chunkIndex": 0
+    }
+  }
+]

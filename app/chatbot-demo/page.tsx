@@ -312,9 +312,9 @@ export default function ChatbotDemoPage() {
                       <h4 className="font-medium text-gray-800">New Components Created:</h4>
                       <div className="bg-gray-50 p-3 rounded-lg">
                         <ul className="space-y-1 text-sm font-mono">
-                          <li>📁 <code>lib/lab-knowledge-base.ts</code> - Comprehensive lab content database</li>
-                          <li>📁 <code>lib/contextual-ai-service.ts</code> - Smart context detection & responses</li>
-                          <li>🔄 <code>components/ai/popup-chatbot.tsx</code> - Updated with contextual responses</li>
+                          <li>📁 <code>app/api/chat/route.ts</code> - RAG API endpoint with vector search</li>
+                          <li>📁 <code>vector_store/</code> - FAISS vector database (26 documents)</li>
+                          <li>🔄 <code>components/ai/popup-chatbot.tsx</code> - Direct RAG integration</li>
                         </ul>
                       </div>
                     </div>

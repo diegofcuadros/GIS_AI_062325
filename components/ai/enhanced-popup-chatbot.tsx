@@ -19,10 +19,6 @@ import {
   Bot
 } from "lucide-react"
 
-import { ContextualAIService } from "@/lib/contextual-ai-service"
-import { dynamicKnowledge } from "@/lib/dynamic-knowledge-service"
-import { smartLinkService, SmartLink, CitationInfo, LinkContext } from "@/lib/smart-link-service"
-import { SmartLinksDisplay } from "./smart-links-display"
 import { MarkdownContent } from "./markdown-content"
 
 export interface EnhancedChatMessage {
@@ -31,9 +27,6 @@ export interface EnhancedChatMessage {
   content: string
   timestamp: Date
   type?: "question" | "suggestion" | "error"
-  smartLinks?: SmartLink[]
-  citations?: CitationInfo[]
-  relatedContent?: SmartLink[]
 }
 
 export interface EnhancedPopupChatbotProps {
@@ -94,7 +87,7 @@ export function EnhancedPopupChatbot({
     {
       id: "welcome",
       role: "assistant",
-      content: `Hi! I'm your GIS AI Assistant! 🎓\n\nI can help you with:\n• **Lab procedures** and step-by-step guidance\n• **GIS fundamentals** (what is GIS, vector vs raster, etc.)\n• **Technical troubleshooting** for QGIS and Google Earth Engine\n• **Concepts** like coordinate systems, spatial analysis\n\nWhat would you like to know about?`,
+      content: `Hi! I'm your Enhanced GIS AI Assistant! 🎓\n\nI'm powered by RAG technology and have access to all workshop materials. I can help you with:\n\n• **Lab procedures** and step-by-step guidance\n• **GIS fundamentals** and technical concepts\n• **Troubleshooting** for QGIS and Google Earth Engine\n• **Practical examples** from the workshop\n\nAsk me anything about the workshop content!`,
       timestamp: new Date(),
       type: "suggestion"
     }
@@ -172,42 +165,159 @@ export function EnhancedPopupChatbot({
     }
   }, [isDragging, handleMouseMove, handleMouseUp])
 
-  const generateEnhancedResponse = async (userMessage: string): Promise<EnhancedChatMessage> => {
+  // RAG API Integration for Enhanced Chatbot
+  const generateEnhancedResponse = async (userMessage: string, conversationHistory: EnhancedChatMessage[]): Promise<EnhancedChatMessage> => {
     try {
-      const currentUrl = typeof window !== 'undefined' ? window.location.pathname + window.location.hash : ''
-      const pageContent = typeof document !== 'undefined' ? document.body.innerText : undefined
-      
-      const labContext = ContextualAIService.detectLabContext(currentUrl, pageContent)
-      const contextualResponse = ContextualAIService.generateContextualResponse(userMessage, labContext)
-      
-      const linkContext: LinkContext = {
+      // Prepare conversation history for API
+      const apiMessages = conversationHistory
+        .filter(msg => msg.role === 'user' || msg.role === 'assistant')
+        .map(msg => ({
+          role: msg.role,
+          content: msg.content
+        }))
+
+      // Add the current user message
+      apiMessages.push({
+        role: 'user',
+        content: userMessage
+      })
+
+      // Prepare enhanced user context
+      const userContext = {
         currentLab: currentLab,
-        userQuery: userMessage,
-        relatedConcepts: [], // Can be enhanced based on lab content analysis
-        difficulty: 'beginner'
+        difficulty: 'intermediate', // Enhanced version defaults to intermediate
+        currentStep: currentStep,
+        enhancedMode: true,
+        sessionInfo: {
+          totalMessages: conversationHistory.length,
+          startTime: conversationHistory[0]?.timestamp || new Date(),
+          isEnhancedSession: true
+        }
+      }
+
+      // Call RAG API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: apiMessages,
+          userContext: userContext
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`RAG API error: ${response.status} ${response.statusText}`)
+      }
+
+      // Handle Vercel AI SDK data stream response
+      const reader = response.body?.getReader()
+      if (!reader) {
+        throw new Error('No response stream available')
+      }
+
+      let fullResponse = ''
+      const decoder = new TextDecoder()
+
+      // Read the entire streaming response
+      let responseText = ''
+      
+      // Read all chunks from the stream
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        responseText += decoder.decode(value, { stream: true })
       }
       
-      const smartLinks = smartLinkService.generateContextualLinks(userMessage, linkContext)
-      const citations = smartLinkService.extractCitationsFromText(userMessage + ' ' + (contextualResponse?.answer || ''))
-      const relatedContent = currentLab !== "general" ? smartLinkService.getRelatedContentSuggestions(currentLab) : []
+      // Parse Vercel AI SDK streaming format
+      const lines = responseText.split('\n').filter(line => line.trim())
       
-      let responseContent = contextualResponse?.answer || "I can help with GIS concepts and lab procedures. Try asking about QGIS, Google Earth Engine, or spatial analysis!"
+      for (const line of lines) {
+        if (line.startsWith('0:')) {
+          // Extract text content from Vercel AI format
+          try {
+            const jsonStr = line.slice(2)
+            const parsed = JSON.parse(jsonStr)
+            
+            // Handle different response formats
+            if (typeof parsed === 'string') {
+              fullResponse += parsed
+            } else if (parsed && typeof parsed === 'object') {
+              // Extract text from object format
+              if (parsed.content) fullResponse += parsed.content
+              else if (parsed.text) fullResponse += parsed.text
+              else if (parsed.delta) fullResponse += parsed.delta
+              else fullResponse += JSON.stringify(parsed)
+            }
+          } catch (parseError) {
+            // If JSON parsing fails, try direct text extraction
+            const textContent = line.slice(2).replace(/"/g, '')
+            if (textContent && textContent.length > 0) {
+              fullResponse += textContent
+            }
+          }
+        } else if (line.includes('"')) {
+          // Handle direct text responses
+          try {
+            const textMatch = line.match(/"([^"]+)"/)
+            if (textMatch && textMatch[1]) {
+              fullResponse += textMatch[1]
+            }
+          } catch (e) {
+            // Fallback: add the line as-is if it contains meaningful text
+            if (line.length > 10 && !line.includes('data:') && !line.includes('event:')) {
+              fullResponse += line
+            }
+          }
+        }
+      }
       
+      // If we still don't have a response, try to read the response as text
+      if (!fullResponse && responseText) {
+        // Final fallback: try to extract any meaningful text
+        const meaningfulText = responseText
+          .replace(/^data:\s*/gm, '')
+          .replace(/^event:\s*/gm, '')
+          .replace(/^\d+:/gm, '')
+          .replace(/[{}[\]"]/g, '')
+          .split('\n')
+          .filter(line => line.trim() && line.length > 10)
+          .join(' ')
+          .trim()
+          
+        if (meaningfulText) {
+          fullResponse = meaningfulText
+        }
+      }
+
       return {
         id: Date.now().toString(),
         role: "assistant",
-        content: responseContent,
-        timestamp: new Date(),
-        smartLinks: smartLinks.length > 0 ? smartLinks : undefined,
-        citations: citations.length > 0 ? citations : undefined,
-        relatedContent: relatedContent.length > 0 ? relatedContent : undefined
+        content: fullResponse,
+        timestamp: new Date()
       }
+
     } catch (error) {
-      console.error('Error generating enhanced response:', error)
+      console.error('Enhanced RAG API Error:', error)
+      
       return {
         id: Date.now().toString(),
         role: "assistant",
-        content: "I'm sorry, I encountered an error processing your request. Please try asking your question again.",
+        content: `I apologize, but I'm having trouble accessing the workshop materials right now. 
+
+**Please try:**
+• Refreshing the page and asking again
+• Checking your internet connection
+• Asking a more specific question
+
+**Enhanced features I can help with:**
+• "Explain coordinate systems in detail"
+• "Advanced buffer analysis techniques"
+• "Complex Google Earth Engine workflows"
+• "Machine learning for GIS applications"
+
+What would you like to explore?`,
         timestamp: new Date(),
         type: "error"
       }
@@ -229,10 +339,18 @@ export function EnhancedPopupChatbot({
     setIsLoading(true)
 
     try {
-      const assistantMessage = await generateEnhancedResponse(input.trim())
-      setMessages(prev => [...prev, assistantMessage])
+      const response = await generateEnhancedResponse(input.trim(), messages)
+      setMessages(prev => [...prev, response])
     } catch (error) {
-      console.error('Error sending message:', error)
+      const errorMessage: EnhancedChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "I apologize, but I encountered an error processing your question. Please try asking again.",
+        timestamp: new Date(),
+        type: "error"
+      }
+
+      setMessages(prev => [...prev, errorMessage])
     } finally {
       setIsLoading(false)
     }
@@ -240,26 +358,6 @@ export function EnhancedPopupChatbot({
 
   const handleQuickSuggestion = async (suggestion: string) => {
     setInput(suggestion)
-    
-    // Auto-send the suggestion
-    const userMessage: EnhancedChatMessage = {
-      id: Date.now().toString(),
-      role: "user",
-      content: suggestion,
-      timestamp: new Date()
-    }
-
-    setMessages(prev => [...prev, userMessage])
-    setIsLoading(true)
-
-    try {
-      const assistantMessage = await generateEnhancedResponse(suggestion)
-      setMessages(prev => [...prev, assistantMessage])
-    } catch (error) {
-      console.error('Error with quick suggestion:', error)
-    } finally {
-      setIsLoading(false)
-    }
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -269,176 +367,198 @@ export function EnhancedPopupChatbot({
     }
   }
 
+  const currentSuggestions = QUICK_SUGGESTIONS[currentLab as keyof typeof QUICK_SUGGESTIONS] || QUICK_SUGGESTIONS.general
+
   if (!isOpen) return null
 
-  const suggestions = QUICK_SUGGESTIONS[currentLab as keyof typeof QUICK_SUGGESTIONS] || QUICK_SUGGESTIONS.general
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <Card
+    <>
+      <div 
+        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
+        onClick={onClose}
+      />
+      
+      <div
         ref={popupRef}
         className={cn(
-          "w-[90vw] md:w-[500px] flex flex-col",
-          isMinimized ? "h-[60px]" : "h-[80vh] md:h-[650px]",
-          "shadow-2xl border-2 transition-all duration-200",
+          "fixed z-50 w-[90vw] md:w-96 bg-background border border-border rounded-xl shadow-2xl",
+          "transition-all duration-300 ease-in-out flex flex-col",
+          isMinimized ? "h-14" : "h-[80vh] md:h-[650px]",
+          isDragging ? "select-none" : "",
           className
         )}
         style={{
-          position: 'absolute',
           left: position.x,
           top: position.y,
-          cursor: isDragging ? 'grabbing' : 'default'
         }}
+        onMouseDown={handleMouseDown}
       >
-        <CardHeader 
+        {/* Header */}
+        <div 
           ref={headerRef}
-          className="flex flex-row items-center justify-between space-y-0 pb-2 cursor-grab active:cursor-grabbing bg-primary/5"
-          onMouseDown={handleMouseDown}
+          className={cn(
+            "flex items-center justify-between p-4 border-b border-border bg-card rounded-t-xl",
+            "cursor-move select-none"
+          )}
         >
-          <div className="flex items-center gap-2">
-            <Bot className="h-5 w-5 text-primary" />
-            <CardTitle className="text-lg">GIS AI Assistant</CardTitle>
-            {currentLab !== "general" && (
-              <Badge variant="secondary" className="text-xs">
-                {currentLab.toUpperCase()}
-              </Badge>
-            )}
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <Bot className="h-4 w-4 text-primary" />
+            </div>
+            <div>
+              <h3 className="font-medium text-sm">Enhanced GIS AI Assistant</h3>
+              <p className="text-xs text-muted-foreground">
+                {currentLab !== 'general' ? `Lab ${currentLab.slice(-1)} • ` : ''}
+                Powered by RAG
+              </p>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <GripHorizontal className="h-4 w-4 text-muted-foreground" />
+          
+          <div className="flex items-center space-x-1">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsMinimized(!isMinimized)}
-              className="h-8 w-8 p-0"
+              className="h-7 w-7 p-0"
             >
-              {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
+              {isMinimized ? (
+                <Maximize2 className="h-3 w-3" />
+              ) : (
+                <Minimize2 className="h-3 w-3" />
+              )}
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="h-8 w-8 p-0"
+              className="h-7 w-7 p-0"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3 w-3" />
             </Button>
           </div>
-        </CardHeader>
+        </div>
 
+        {/* Content area */}
         {!isMinimized && (
-          <div className="flex flex-col flex-1 min-h-0">
-            <CardContent className="flex-1 flex flex-col p-4 min-h-0">
-              <ScrollArea className="flex-1 pr-4">
-                <div className="space-y-4">
-                  {messages.map((message) => (
-                    <div key={message.id} className="space-y-3">
+          <>
+            {/* Messages area */}
+            <ScrollArea className="flex-1 p-4">
+              <div className="space-y-4">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={cn(
+                      "flex w-full",
+                      message.role === "user" ? "justify-end" : "justify-start"
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "flex max-w-[85%] space-x-3",
+                        message.role === "user" ? "flex-row-reverse space-x-reverse" : "flex-row"
+                      )}
+                    >
+                      <div className={cn(
+                        "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
+                        message.role === "user" 
+                          ? "bg-primary text-primary-foreground" 
+                          : "bg-muted"
+                      )}>
+                        {message.role === "user" ? (
+                          <MessageCircle className="h-4 w-4" />
+                        ) : (
+                          <Bot className="h-4 w-4" />
+                        )}
+                      </div>
+
                       <div
                         className={cn(
-                          "flex",
-                          message.role === "user" ? "justify-end" : "justify-start"
+                          "rounded-lg px-3 py-2 text-sm",
+                          message.role === "user"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted",
+                          message.type === "error" && "bg-destructive/10 border border-destructive/20"
                         )}
                       >
-                        <div
-                          className={cn(
-                            "max-w-[85%] rounded-lg px-3 py-2 text-sm",
-                            message.role === "user"
-                              ? "bg-primary text-primary-foreground"
-                              : message.type === "error"
-                              ? "bg-destructive/10 text-destructive border border-destructive/20"
-                              : "bg-muted",
-                            message.type === "suggestion" && "border-2 border-primary/20"
-                          )}
-                        >
+                        {message.role === "assistant" ? (
                           <MarkdownContent content={message.content} />
-                          
-                          {message.role === "assistant" && (
-                            <div className="text-xs text-muted-foreground mt-1">
-                              {message.timestamp.toLocaleTimeString([], { 
-                                hour: '2-digit', 
-                                minute: '2-digit' 
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Smart Links Display */}
-                      {message.role === "assistant" && (
-                        message.smartLinks || message.citations || message.relatedContent
-                      ) && (
-                        <div className="ml-4">
-                          <SmartLinksDisplay
-                            links={message.smartLinks || []}
-                            citations={message.citations}
-                            relatedContent={message.relatedContent}
-                            className="max-w-[85%]"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  
-                  {isLoading && (
-                    <div className="flex justify-start">
-                      <div className="bg-muted rounded-lg px-3 py-2 text-sm">
-                        <div className="flex items-center gap-2">
-                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent" />
-                          Thinking...
+                        ) : (
+                          <p>{message.content}</p>
+                        )}
+                        
+                        <div className="text-xs opacity-70 mt-1">
+                          {message.timestamp.toLocaleTimeString([], { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                          })}
                         </div>
                       </div>
                     </div>
-                  )}
-                </div>
-                <div ref={messagesEndRef} />
-              </ScrollArea>
-
-              {/* Quick suggestions */}
-              {messages.length === 1 && (
-                <div className="mt-4 space-y-2">
-                  <p className="text-xs text-muted-foreground flex items-center gap-2">
-                    <Lightbulb className="h-3 w-3" />
-                    Quick suggestions:
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {suggestions.map((suggestion, index) => (
-                      <Button
-                        key={index}
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleQuickSuggestion(suggestion)}
-                        className="h-7 text-xs"
-                        disabled={isLoading}
-                      >
-                        {suggestion}
-                      </Button>
-                    ))}
                   </div>
-                </div>
-              )}
+                ))}
+                
+                <div ref={messagesEndRef} />
+              </div>
+            </ScrollArea>
 
-              {/* Input area */}
-              <div className="flex gap-2 mt-4">
+            {/* Quick suggestions */}
+            {messages.length <= 2 && (
+              <div className="p-3 border-t border-border">
+                <p className="text-xs text-muted-foreground mb-2">Enhanced suggestions:</p>
+                <div className="flex flex-wrap gap-2">
+                  {currentSuggestions.slice(0, 4).map((suggestion, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      size="sm"
+                      className="text-xs h-7"
+                      onClick={() => handleQuickSuggestion(suggestion)}
+                    >
+                      {suggestion}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Input area */}
+            <div className="p-4 border-t border-border">
+              <div className="flex space-x-2">
                 <Input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Ask me anything about GIS or the labs..."
-                  disabled={isLoading}
+                  placeholder="Ask about advanced GIS concepts..."
                   className="flex-1"
+                  disabled={isLoading}
                 />
                 <Button
                   onClick={handleSendMessage}
-                  disabled={isLoading || !input.trim()}
                   size="sm"
+                  disabled={!input.trim() || isLoading}
                   className="px-3"
                 >
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
-            </CardContent>
-          </div>
+              
+              <div className="flex items-center justify-between mt-2">
+                <div className="flex items-center space-x-2">
+                  <Badge variant="outline" className="text-xs">
+                    Enhanced Mode
+                  </Badge>
+                  <Badge variant="outline" className="text-xs">
+                    {currentLab !== 'general' ? `Lab ${currentLab.slice(-1)}` : 'General'}
+                  </Badge>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  RAG + Llama 3
+                </div>
+              </div>
+            </div>
+          </>
         )}
-      </Card>
-    </div>
+      </div>
+    </>
   )
 } 

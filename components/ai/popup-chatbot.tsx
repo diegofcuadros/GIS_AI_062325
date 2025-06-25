@@ -24,25 +24,35 @@ import {
   ArrowUp,
   Keyboard
 } from "lucide-react"
-import { introductoryKnowledge } from "@/lib/introductory-knowledge"
-import { enhancedAI } from "@/lib/enhanced-ai-service"
-import { ContextualAIService } from "@/lib/contextual-ai-service"
-import { dynamicKnowledge } from "@/lib/dynamic-knowledge-service"
-import { mlRecommendationService, ContentSimilarityMatch, PredictiveAssistance } from '@/lib/ml-recommendation-service'
-import MLRecommendationsDisplay from '@/components/ai/ml-recommendations-display'
-import { smartLinkService, SmartLink, CitationInfo, LinkContext } from "@/lib/smart-link-service"
-import { SmartLinksDisplay } from "./smart-links-display"
 import { MarkdownContent } from "./markdown-content"
+import { QuickActionsPanel } from "./quick-actions-panel"
+import { SmartSuggestionsCompact } from "./smart-suggestions-card"
+import { SmartActionService } from "@/lib/smart-action-service"
+import { SmartSuggestionsEngine } from "@/lib/smart-suggestions-engine"
+
+export interface QuickAction {
+  id: string
+  label: string
+  type: 'followup' | 'troubleshoot' | 'next_step' | 'related' | 'explain_more'
+  icon: string
+  priority: number
+  contextTriggers: string[]
+  payload?: any
+}
 
 export interface ChatMessage {
   id: string
   role: "user" | "assistant"
   content: string
   timestamp: Date
-  type?: "question" | "suggestion" | "error"
-  smartLinks?: SmartLink[]
-  citations?: CitationInfo[]
-  relatedContent?: SmartLink[]
+  type?: "question" | "suggestion" | "error" | "guidance"
+  quickActions?: QuickAction[]
+  metadata?: {
+    lab?: string
+    difficulty?: string
+    concepts?: string[]
+    userInteraction?: 'helpful' | 'not_helpful'
+  }
 }
 
 export interface PopupChatbotProps {
@@ -93,6 +103,13 @@ const QUICK_SUGGESTIONS = {
   ]
 }
 
+// User preferences interface
+interface UserPreferences {
+  difficulty: 'beginner' | 'intermediate' | 'advanced'
+  showQuickActions: boolean
+  autoDetectLab: boolean
+}
+
 export function PopupChatbot({ 
   isOpen, 
   onClose, 
@@ -104,7 +121,7 @@ export function PopupChatbot({
     {
       id: "welcome",
       role: "assistant",
-      content: `Hi! I'm your GIS AI Assistant! 🎓\n\nI can help you with:\n• **Lab procedures** and step-by-step guidance\n• **GIS fundamentals** (what is GIS, vector vs raster, etc.)\n• **Technical troubleshooting** for QGIS and Google Earth Engine\n• **Concepts** like coordinate systems, spatial analysis\n\nWhat would you like to know about?`,
+      content: `Hi! I'm your GIS AI Assistant! 🎓\n\nI'm powered by advanced AI and have access to all workshop materials. I can help you with:\n\n• **Lab procedures** and step-by-step guidance\n• **GIS fundamentals** and technical concepts\n• **Troubleshooting** for QGIS and Google Earth Engine\n• **Practical examples** from the workshop\n\nAsk me anything about the workshop content!`,
       timestamp: new Date(),
       type: "suggestion"
     }
@@ -115,11 +132,93 @@ export function PopupChatbot({
   const [position, setPosition] = React.useState({ x: 20, y: 20 })
   const [isDragging, setIsDragging] = React.useState(false)
   const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 })
+  const [userPreferences, setUserPreferences] = React.useState<UserPreferences>({
+    difficulty: 'beginner',
+    showQuickActions: true,
+    autoDetectLab: true
+  })
+
+  // Phase 4B: Smart Actions and Suggestions state
+  const [smartSuggestions, setSmartSuggestions] = React.useState<any[]>([])
+  const [showSuggestions, setShowSuggestions] = React.useState(false)
+  
+  // Initialize Phase 4B services
+  const smartActionService = React.useMemo(() => new SmartActionService(), [])
+  const smartSuggestionsEngine = React.useMemo(() => new SmartSuggestionsEngine(), [])
 
   // Refs for dragging functionality
   const popupRef = React.useRef<HTMLDivElement>(null)
   const headerRef = React.useRef<HTMLDivElement>(null)
   const messagesEndRef = React.useRef<HTMLDivElement>(null)
+
+  // Load user preferences from localStorage
+  React.useEffect(() => {
+    const savedPreferences = localStorage.getItem('gis-chatbot-preferences')
+    if (savedPreferences) {
+      try {
+        setUserPreferences(JSON.parse(savedPreferences))
+      } catch (error) {
+        console.warn('Failed to load user preferences:', error)
+      }
+    }
+  }, [])
+
+  // Save user preferences to localStorage
+  const updateUserPreferences = (newPreferences: Partial<UserPreferences>) => {
+    const updatedPreferences = { ...userPreferences, ...newPreferences }
+    setUserPreferences(updatedPreferences)
+    localStorage.setItem('gis-chatbot-preferences', JSON.stringify(updatedPreferences))
+  }
+
+  // Phase 4B: Generate smart actions using advanced service
+  const generateSmartActions = React.useCallback((response: string, messageId: string): QuickAction[] => {
+    const userContext = {
+      currentLab: userPreferences.autoDetectLab ? currentLab : 'general',
+      difficulty: userPreferences.difficulty,
+      currentStep: currentStep || 1,
+      recentTopics: messages.slice(-5).map(m => m.content.toLowerCase()),
+      strugglingConcepts: [], // Could be enhanced with conversation analysis
+      masteredTopics: [] // Could be enhanced with conversation analysis
+    }
+
+    // Use the advanced SmartActionService for intelligent action generation
+    const actions = smartActionService.generateActionsForResponse(
+      response, 
+      userContext, 
+      messages
+    )
+
+    return actions.slice(0, 4) // Return top 4 prioritized actions
+  }, [currentLab, currentStep, userPreferences, messages, smartActionService])
+
+  // Phase 4B: Generate smart suggestions using advanced engine
+  const generateSmartSuggestions = React.useCallback(() => {
+    const userContext = {
+      currentLab: userPreferences.autoDetectLab ? currentLab : 'general',
+      difficulty: userPreferences.difficulty,
+      currentStep: currentStep || 1,
+      recentTopics: messages.slice(-5).map(m => m.content.toLowerCase()),
+      strugglingConcepts: [], // Could be enhanced with conversation analysis
+      masteredTopics: [], // Could be enhanced with conversation analysis
+      sessionDuration: Math.floor((Date.now() - (messages[0]?.timestamp.getTime() || Date.now())) / 1000),
+      totalInteractions: messages.length
+    }
+
+    // Use the advanced SmartSuggestionsEngine for intelligent suggestions
+    const suggestions = smartSuggestionsEngine.generateContextualSuggestions(
+      messages, 
+      userContext, 
+      currentLab
+    )
+
+    setSmartSuggestions(suggestions)
+    setShowSuggestions(suggestions.length > 0 && messages.length >= 2)
+  }, [currentLab, currentStep, userPreferences, messages, smartSuggestionsEngine])
+
+  // Update suggestions when context changes
+  React.useEffect(() => {
+    generateSmartSuggestions()
+  }, [generateSmartSuggestions])
 
   // Auto-scroll to bottom when new messages arrive
   React.useEffect(() => {
@@ -187,112 +286,151 @@ export function PopupChatbot({
     }
   }, [isDragging, handleMouseMove, handleMouseUp])
 
-  // Generate response using contextual AI service
-  const generateResponse = async (userMessage: string): Promise<string> => {
+  // RAG API Integration - Generate response using our new RAG system
+  const generateRAGResponse = async (userMessage: string, conversationHistory: ChatMessage[]): Promise<string> => {
     try {
-      // Detect current lab context from URL and page content
-      const currentUrl = typeof window !== 'undefined' ? window.location.pathname + window.location.hash : ''
-      const pageContent = typeof document !== 'undefined' ? document.body.innerText : undefined
-      
-      const labContext = ContextualAIService.detectLabContext(currentUrl, pageContent)
-      
-      // Generate contextual response
-      const contextualResponse = ContextualAIService.generateContextualResponse(userMessage, labContext)
-      
-      // Ensure we have a valid response
-      if (contextualResponse && contextualResponse.answer && contextualResponse.answer.trim().length > 0) {
-        // Format response with direct links
-        let formattedResponse = contextualResponse.answer
-        
-        if (contextualResponse.directLinks && contextualResponse.directLinks.length > 0) {
-          formattedResponse += "\n\n**Direct Links:**\n"
-          contextualResponse.directLinks.forEach(link => {
-            formattedResponse += `• [${link.text}](${link.url})\n`
-          })
-        }
-        
-        if (contextualResponse.tips && contextualResponse.tips.length > 0) {
-          formattedResponse += "\n\n**💡 Tips:**\n"
-          contextualResponse.tips.forEach(tip => {
-            formattedResponse += `• ${tip}\n`
-          })
-        }
-        
-        if (contextualResponse.troubleshooting && contextualResponse.troubleshooting.length > 0) {
-          formattedResponse += "\n\n**🔧 Troubleshooting:**\n"
-          contextualResponse.troubleshooting.forEach(issue => {
-            formattedResponse += `• ${issue}\n`
-          })
-        }
-        
-        return formattedResponse
-      } else {
-        console.warn('Contextual AI returned empty response, falling back...')
-      }
-      
-    } catch (error) {
-      console.warn('Contextual AI service error:', error)
-    }
-    
-    // Primary fallback to dynamic knowledge service (Expansion_Knowledge integration)
-    try {
-      const searchResults = await dynamicKnowledge.search(userMessage, {
-        maxResults: 5,
-        labContext: currentLab
+      // Prepare conversation history for API
+      const apiMessages = conversationHistory
+        .filter(msg => msg.role === 'user' || msg.role === 'assistant')
+        .map(msg => ({
+          role: msg.role,
+          content: msg.content
+        }))
+
+      // Add the current user message
+      apiMessages.push({
+        role: 'user',
+        content: userMessage
       })
-      
-      if (searchResults.length > 0) {
-        const dynamicResponse = dynamicKnowledge.generateResponse(userMessage, searchResults, {
-          currentLab: currentLab
+
+      // Prepare user context
+      const userContext = {
+        currentLab: userPreferences.autoDetectLab ? currentLab : 'general',
+        difficulty: userPreferences.difficulty,
+        currentStep: currentStep,
+        sessionInfo: {
+          totalMessages: conversationHistory.length,
+          startTime: conversationHistory[0]?.timestamp || new Date()
+        }
+      }
+
+      // Call our RAG API endpoint
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: apiMessages,
+          userContext: userContext
         })
-        
-        if (dynamicResponse && dynamicResponse.length > 100) {
-          return dynamicResponse
+      })
+
+      if (!response.ok) {
+        throw new Error(`RAG API error: ${response.status} ${response.statusText}`)
+      }
+
+      // Handle Vercel AI SDK data stream response
+      const reader = response.body?.getReader()
+      if (!reader) {
+        throw new Error('No response stream available')
+      }
+
+      let fullResponse = ''
+      const decoder = new TextDecoder()
+
+      // Read the entire streaming response
+      let responseText = ''
+      
+      // Read all chunks from the stream
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        responseText += decoder.decode(value, { stream: true })
+      }
+      
+      // Parse Vercel AI SDK streaming format
+      const lines = responseText.split('\n').filter(line => line.trim())
+      
+      for (const line of lines) {
+        if (line.startsWith('0:')) {
+          // Extract text content from Vercel AI format
+          try {
+            const jsonStr = line.slice(2)
+            const parsed = JSON.parse(jsonStr)
+            
+            // Handle different response formats
+            if (typeof parsed === 'string') {
+              fullResponse += parsed
+            } else if (parsed && typeof parsed === 'object') {
+              // Extract text from object format
+              if (parsed.content) fullResponse += parsed.content
+              else if (parsed.text) fullResponse += parsed.text
+              else if (parsed.delta) fullResponse += parsed.delta
+              else fullResponse += JSON.stringify(parsed)
+            }
+          } catch (parseError) {
+            // If JSON parsing fails, try direct text extraction
+            const textContent = line.slice(2).replace(/"/g, '')
+            if (textContent && textContent.length > 0) {
+              fullResponse += textContent
+            }
+          }
+        } else if (line.includes('"')) {
+          // Handle direct text responses
+          try {
+            const textMatch = line.match(/"([^"]+)"/)
+            if (textMatch && textMatch[1]) {
+              fullResponse += textMatch[1]
+            }
+          } catch (e) {
+            // Fallback: add the line as-is if it contains meaningful text
+            if (line.length > 10 && !line.includes('data:') && !line.includes('event:')) {
+              fullResponse += line
+            }
+          }
         }
       }
-    } catch (dynamicError) {
-      console.warn('Dynamic knowledge service error:', dynamicError)
-    }
-    
-    // Secondary fallback to enhanced AI service
-    try {
-      const labContextPath = enhancedAI.detectLabContext(typeof window !== 'undefined' ? window.location.pathname : undefined)
-      const enhancedResponse = enhancedAI.generateResponse(userMessage, {
-        currentLab: labContextPath || currentLab,
-        userExpertise: 'beginner'
-      })
       
-      if (enhancedResponse && enhancedResponse.length > 50) {
-        return enhancedResponse
+      // If we still don't have a response, try to read the response as text
+      if (!fullResponse && responseText) {
+        // Final fallback: try to extract any meaningful text
+        const meaningfulText = responseText
+          .replace(/^data:\s*/gm, '')
+          .replace(/^event:\s*/gm, '')
+          .replace(/^\d+:/gm, '')
+          .replace(/[{}[\]"]/g, '')
+          .split('\n')
+          .filter(line => line.trim() && line.length > 10)
+          .join(' ')
+          .trim()
+          
+        if (meaningfulText) {
+          fullResponse = meaningfulText
+        }
       }
-    } catch (enhancedError) {
-      console.warn('Enhanced AI service error:', enhancedError)
+
+      return fullResponse
+
+    } catch (error) {
+      console.error('RAG API Error:', error)
+      
+      // Provide helpful fallback message
+      return `I apologize, but I'm having trouble accessing the workshop materials right now. 
+
+**Please try:**
+• Refreshing the page and asking again
+• Checking your internet connection
+• Asking a more specific question
+
+**Common questions I can help with:**
+• "How do I load a shapefile in QGIS?"
+• "What is buffer analysis?"
+• "Explain coordinate reference systems"
+• "I'm getting an error in Google Earth Engine"
+
+What would you like to know about?`
     }
-    
-    // Final fallback to introductory knowledge
-    const results = introductoryKnowledge.search(userMessage)
-    
-    if (results.length > 0) {
-      return introductoryKnowledge.generateResponse(userMessage)
-    }
-    
-    // Final fallback response with context-aware suggestions
-    const contextualSuggestions = enhancedAI.getContextualSuggestions(currentLab)
-    const suggestionsText = contextualSuggestions.slice(0, 4).map(s => `- "${s}"`).join('\n')
-    
-    return `I'd love to help you with "${userMessage}"! 🤔
-
-📚 **I have comprehensive knowledge about:**
-- **GIS Fundamentals**: What is GIS, spatial analysis, coordinate systems
-- **Data Types**: Vector vs raster, points/lines/polygons, shapefiles
-- **Software**: QGIS basics, Google Earth Engine, troubleshooting
-- **Lab Content**: Step-by-step guidance for workshop labs
-- **Concepts**: NDVI, clustering, buffer analysis, spatial joins
-
-**Try asking:**
-${suggestionsText}
-
-What specific aspect would you like me to explain?`
   }
 
   const handleSendMessage = async () => {
@@ -309,27 +447,61 @@ What specific aspect would you like me to explain?`
     setInput("")
     setIsLoading(true)
 
-    try {
-      const response = await generateResponse(input.trim())
-      
-      const assistantMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: response,
-        timestamp: new Date()
-      }
+    // Add temporary loading message for streaming effect
+    const tempAssistantMessage: ChatMessage = {
+      id: (Date.now() + 1).toString(),
+      role: "assistant",
+      content: "...",
+      timestamp: new Date()
+    }
 
-      setMessages(prev => [...prev, assistantMessage])
+    setMessages(prev => [...prev, tempAssistantMessage])
+
+    try {
+      // Use RAG system for response generation
+      const response = await generateRAGResponse(input.trim(), messages)
+      
+      // Update the temporary message with the final response and generate smart actions
+      setMessages(prev => {
+        const newMessages = [...prev]
+        const lastMessage = newMessages[newMessages.length - 1]
+        
+        if (lastMessage && lastMessage.role === 'assistant') {
+          const messageId = (Date.now() + 1).toString()
+          lastMessage.content = response
+          lastMessage.id = messageId
+          
+          // Phase 4B: Generate smart actions for this response
+          if (userPreferences.showQuickActions) {
+            lastMessage.quickActions = generateSmartActions(response, messageId)
+          }
+          
+          // Add metadata for tracking
+          lastMessage.metadata = {
+            lab: currentLab,
+            difficulty: userPreferences.difficulty,
+            concepts: [] // Could extract concepts from response
+          }
+        }
+        
+        return newMessages
+      })
+
     } catch (error) {
+      console.error('Error generating response:', error)
+      
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "I apologize, but I encountered an error. Please try asking your question again.",
+        content: "I apologize, but I encountered an error processing your question. Please try asking again or rephrase your question.",
         timestamp: new Date(),
         type: "error"
       }
 
-      setMessages(prev => [...prev, errorMessage])
+      setMessages(prev => {
+        const newMessages = prev.slice(0, -1) // Remove temp message
+        return [...newMessages, errorMessage]
+      })
     } finally {
       setIsLoading(false)
     }
@@ -339,6 +511,72 @@ What specific aspect would you like me to explain?`
     setInput(suggestion)
   }
 
+  // Phase 4B: Handle quick action clicks
+  const handleQuickAction = React.useCallback((action: QuickAction) => {
+    // Generate query based on action type and context
+    let query = ''
+    
+    switch (action.type) {
+      case 'followup':
+        if (action.label.includes('step-by-step')) {
+          query = 'Show me detailed step-by-step instructions for this'
+        } else if (action.label.includes('example')) {
+          query = 'Can you show me a practical example of this?'
+        } else {
+          query = action.label
+        }
+        break
+        
+      case 'troubleshoot':
+        if (action.label.includes('Common errors')) {
+          query = 'What are the most common errors with this and how do I fix them?'
+        } else if (action.label.includes('coordinate system')) {
+          query = 'Help me troubleshoot coordinate system issues'
+        } else {
+          query = `Help me troubleshoot: ${action.label}`
+        }
+        break
+        
+      case 'next_step':
+        query = "What's the next step I should take?"
+        break
+        
+      case 'related':
+        query = 'What are related concepts I should learn?'
+        break
+        
+      case 'explain_more':
+        query = 'Can you explain this in more detail with examples?'
+        break
+        
+      default:
+        query = action.label
+    }
+    
+    setInput(query)
+    
+    // Track action usage for learning using Phase 4B service
+    try {
+      smartActionService.trackActionUsage(action.id, true)
+      
+      // Also keep local storage for backward compatibility
+      const usage = JSON.parse(localStorage.getItem('action_usage') || '{}')
+      if (!usage[action.id]) {
+        usage[action.id] = { clicks: 0 }
+      }
+      usage[action.id].clicks++
+      localStorage.setItem('action_usage', JSON.stringify(usage))
+    } catch (error) {
+      console.warn('Failed to track action usage:', error)
+    }
+  }, [smartActionService])
+
+  // Phase 4B: Handle smart suggestion selection
+  const handleSuggestionSelect = React.useCallback((suggestion: any) => {
+    setInput(suggestion.actionQuery)
+    setShowSuggestions(false) // Hide suggestions after selection
+  }, [])
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
@@ -346,13 +584,9 @@ What specific aspect would you like me to explain?`
     }
   }
 
-  // Use enhanced AI service for context-aware suggestions or fallback to static suggestions
+  // Get current suggestions based on lab context
   const currentSuggestions = React.useMemo(() => {
-    try {
-      return enhancedAI.getContextualSuggestions(currentLab)
-    } catch (error) {
-      return QUICK_SUGGESTIONS[currentLab as keyof typeof QUICK_SUGGESTIONS] || QUICK_SUGGESTIONS.general
-    }
+    return QUICK_SUGGESTIONS[currentLab as keyof typeof QUICK_SUGGESTIONS] || QUICK_SUGGESTIONS.general
   }, [currentLab])
 
   if (!isOpen) return null
@@ -378,138 +612,139 @@ What specific aspect would you like me to explain?`
         style={{
           left: position.x,
           top: position.y,
-          cursor: isDragging ? "grabbing" : "default"
         }}
-
+        onMouseDown={handleMouseDown}
       >
         {/* Header */}
-        <div
+        <div 
           ref={headerRef}
           className={cn(
             "flex items-center justify-between p-4 border-b border-border bg-card rounded-t-xl",
-            "cursor-grab active:cursor-grabbing"
+            "cursor-move select-none"
           )}
-          onMouseDown={handleMouseDown}
         >
-          <div className="flex items-center space-x-2">
-            <div className="relative">
-              <Bot className="h-5 w-5 text-primary" />
-              <Sparkles className="h-3 w-3 text-accent absolute -top-1 -right-1" />
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <Bot className="h-4 w-4 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-sm">GIS AI Assistant</h3>
-              {currentLab !== "general" && (
-                <p className="text-xs text-muted-foreground">
-                  Helping with {currentLab.toUpperCase()}
-                  {currentStep && ` - Step ${currentStep}`}
-                </p>
-              )}
+              <h3 className="font-medium text-sm">GIS AI Assistant</h3>
+              <p className="text-xs text-muted-foreground">
+                {currentLab !== 'general' ? `Lab ${currentLab.slice(-1)} • ` : ''}
+                Powered by RAG
+              </p>
             </div>
           </div>
           
           <div className="flex items-center space-x-1">
-            <GripHorizontal className="h-4 w-4 text-muted-foreground" />
             <Button
               variant="ghost"
-              size="icon"
-              className="h-8 w-8"
+              size="sm"
               onClick={() => setIsMinimized(!isMinimized)}
+              className="h-7 w-7 p-0"
             >
               {isMinimized ? (
-                <Maximize2 className="h-4 w-4" />
+                <Maximize2 className="h-3 w-3" />
               ) : (
-                <Minimize2 className="h-4 w-4" />
+                <Minimize2 className="h-3 w-3" />
               )}
             </Button>
             <Button
               variant="ghost"
-              size="icon"
-              className="h-8 w-8"
+              size="sm"
               onClick={onClose}
+              className="h-7 w-7 p-0"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3 w-3" />
             </Button>
           </div>
         </div>
 
-        {/* Content */}
+        {/* Content area - only show when not minimized */}
         {!isMinimized && (
-          <div className="flex flex-col flex-1 min-h-0">
-            {/* Quick suggestions */}
-            <div className="p-3 border-b border-border bg-muted/30">
-              <p className="text-xs font-medium text-muted-foreground mb-2">Quick help:</p>
-              <div className="flex flex-wrap gap-1">
-                {currentSuggestions.map((suggestion, index) => (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    size="sm"
-                    className="h-7 text-xs"
-                    onClick={() => handleQuickSuggestion(suggestion)}
-                  >
-                    {suggestion}
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            {/* Messages */}
+          <>
+            {/* Messages area */}
             <ScrollArea className="flex-1 p-4">
               <div className="space-y-4">
                 {messages.map((message) => (
                   <div
                     key={message.id}
                     className={cn(
-                      "flex gap-3",
+                      "flex w-full",
                       message.role === "user" ? "justify-end" : "justify-start"
                     )}
                   >
-                    {message.role === "assistant" && (
-                      <div className="flex-shrink-0">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Bot className="h-4 w-4 text-primary" />
-                        </div>
-                      </div>
-                    )}
-                    
                     <div
                       className={cn(
-                        "max-w-[80%] rounded-lg px-3 py-2 text-sm",
-                        message.role === "user"
-                          ? "bg-primary text-primary-foreground ml-auto"
-                          : message.type === "error"
-                          ? "bg-destructive/10 text-destructive border border-destructive/20"
-                          : "bg-muted"
+                        "flex max-w-[85%] space-x-3",
+                        message.role === "user" ? "flex-row-reverse space-x-reverse" : "flex-row"
                       )}
                     >
-                                                <MarkdownContent content={message.content} />
-                      <div className="text-xs opacity-70 mt-1">
-                        {message.timestamp.toLocaleTimeString([], { 
-                          hour: '2-digit', 
-                          minute: '2-digit' 
-                        })}
+                      {/* Avatar */}
+                      <div className={cn(
+                        "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
+                        message.role === "user" 
+                          ? "bg-primary text-primary-foreground" 
+                          : "bg-muted"
+                      )}>
+                        {message.role === "user" ? (
+                          <User className="h-4 w-4" />
+                        ) : (
+                          <Bot className="h-4 w-4" />
+                        )}
+                      </div>
+
+                      {/* Message content */}
+                      <div
+                        className={cn(
+                          "rounded-lg px-3 py-2 text-sm",
+                          message.role === "user"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted",
+                          message.type === "error" && "bg-destructive/10 border border-destructive/20"
+                        )}
+                      >
+                        {message.role === "assistant" ? (
+                          <MarkdownContent content={message.content} />
+                        ) : (
+                          <p>{message.content}</p>
+                        )}
+                        
+                        <div className="text-xs opacity-70 mt-1">
+                          {message.timestamp.toLocaleTimeString([], { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                          })}
+                        </div>
                       </div>
                     </div>
 
-                    {message.role === "user" && (
-                      <div className="flex-shrink-0">
-                        <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center">
-                          <User className="h-4 w-4 text-accent" />
-                        </div>
+                    {/* Phase 4B: Quick Actions Panel for assistant messages */}
+                    {message.role === "assistant" && message.quickActions && userPreferences.showQuickActions && (
+                      <div className="mt-3 ml-11">
+                        <QuickActionsPanel
+                          actions={message.quickActions}
+                          onActionClick={handleQuickAction}
+                          isVisible={true}
+                          position="bottom"
+                        />
                       </div>
                     )}
                   </div>
                 ))}
                 
+                {/* Loading indicator */}
                 {isLoading && (
-                  <div className="flex gap-3">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Bot className="h-4 w-4 text-primary" />
-                    </div>
-                    <div className="bg-muted rounded-lg px-3 py-2">
-                      <div className="flex items-center space-x-2">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <span className="text-sm text-muted-foreground">Thinking...</span>
+                  <div className="flex justify-start">
+                    <div className="flex space-x-3 max-w-[85%]">
+                      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                        <Bot className="h-4 w-4" />
+                      </div>
+                      <div className="bg-muted rounded-lg px-3 py-2">
+                        <div className="flex items-center space-x-1">
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                          <span className="text-sm text-muted-foreground">Thinking...</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -519,35 +754,78 @@ What specific aspect would you like me to explain?`
               </div>
             </ScrollArea>
 
-            {/* Input */}
+            {/* Phase 4B: Smart Suggestions */}
+            {showSuggestions && smartSuggestions.length > 0 && (
+              <div className="p-3 border-t border-border">
+                <SmartSuggestionsCompact
+                  suggestions={smartSuggestions}
+                  onSuggestionSelect={handleSuggestionSelect}
+                  maxItems={3}
+                />
+              </div>
+            )}
+
+            {/* Quick suggestions */}
+            {userPreferences.showQuickActions && messages.length <= 2 && !showSuggestions && (
+              <div className="p-3 border-t border-border">
+                <p className="text-xs text-muted-foreground mb-2">Quick questions:</p>
+                <div className="flex flex-wrap gap-2">
+                  {currentSuggestions.slice(0, 4).map((suggestion, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      size="sm"
+                      className="text-xs h-7"
+                      onClick={() => handleQuickSuggestion(suggestion)}
+                    >
+                      {suggestion}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Input area */}
             <div className="p-4 border-t border-border">
               <div className="flex space-x-2">
                 <Input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Ask me about GIS, labs, or any concept..."
+                  placeholder="Ask anything about GIS, labs, or concepts..."
                   className="flex-1"
                   disabled={isLoading}
                 />
                 <Button
                   onClick={handleSendMessage}
-                  size="icon"
+                  size="sm"
                   disabled={!input.trim() || isLoading}
-                  className="shrink-0"
+                  className="px-3"
                 >
-                  <Send className="h-4 w-4" />
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
                 </Button>
               </div>
-              <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
-                <span>Press Enter to send, Escape to close</span>
-                <Badge variant="outline" className="text-xs">
-                  <Keyboard className="h-3 w-3 mr-1" />
-                  Ctrl+K to open
-                </Badge>
+              
+              {/* Context info */}
+              <div className="flex items-center justify-between mt-2">
+                <div className="flex items-center space-x-2">
+                  <Badge variant="outline" className="text-xs">
+                    {currentLab !== 'general' ? `Lab ${currentLab.slice(-1)}` : 'General'}
+                  </Badge>
+                  <Badge variant="outline" className="text-xs capitalize">
+                    {userPreferences.difficulty}
+                  </Badge>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  Powered by RAG + Llama 3
+                </div>
               </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </>
