@@ -18,6 +18,12 @@ import {
   GripHorizontal,
   Bot
 } from "lucide-react"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 import { MarkdownContent } from "./markdown-content"
 
@@ -442,84 +448,81 @@ What would you like to explore?`,
         {!isMinimized && (
           <>
             {/* Messages area */}
-            <ScrollArea className="flex-1 p-4">
-              <div className="space-y-4">
+            <ScrollArea className="flex-grow pr-4 -mr-4">
+              <div className="space-y-6">
                 {messages.map((message) => (
                   <div
                     key={message.id}
                     className={cn(
-                      "flex w-full",
+                      "flex gap-3",
                       message.role === "user" ? "justify-end" : "justify-start"
                     )}
                   >
-                    <div
-                      className={cn(
-                        "flex max-w-[85%] space-x-3",
-                        message.role === "user" ? "flex-row-reverse space-x-reverse" : "flex-row"
-                      )}
-                    >
-                      <div className={cn(
-                        "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
-                        message.role === "user" 
-                          ? "bg-primary text-primary-foreground" 
-                          : "bg-muted"
-                      )}>
-                        {message.role === "user" ? (
-                          <MessageCircle className="h-4 w-4" />
-                        ) : (
-                          <Bot className="h-4 w-4" />
-                        )}
+                    {message.role === "assistant" && (
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Bot className="w-5 h-5 text-primary" />
                       </div>
-
+                    )}
+                    <div className="max-w-[85%]">
                       <div
                         className={cn(
-                          "rounded-lg px-3 py-2 text-sm",
+                          "p-3 rounded-lg relative",
                           message.role === "user"
                             ? "bg-primary text-primary-foreground"
-                            : "bg-muted",
-                          message.type === "error" && "bg-destructive/10 border border-destructive/20"
+                            : "bg-muted"
                         )}
                       >
-                        {message.role === "assistant" ? (
-                          <MarkdownContent content={message.content} />
-                        ) : (
-                          <p>{message.content}</p>
+                        <MarkdownContent content={message.content} />
+                        {message.role === 'assistant' && message.id !== 'welcome' && (
+                          <div className="mt-2 pt-2 border-t border-muted-foreground/20">
+                            <h4 className="text-xs font-semibold mb-1">Quick actions:</h4>
+                             <Button variant="outline" size="sm" className="text-xs mr-2">
+                              Show step-by-step
+                             </Button>
+                             <Button variant="outline" size="sm" className="text-xs">
+                              Explain this concept
+                             </Button>
+                          </div>
                         )}
-                        
-                        <div className="text-xs opacity-70 mt-1">
-                          {message.timestamp.toLocaleTimeString([], { 
-                            hour: '2-digit', 
-                            minute: '2-digit' 
-                          })}
-                        </div>
                       </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
                     </div>
+
+                    {message.role === "user" && (
+                      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                        <img src="/placeholder-logo.png" alt="User" className="w-5 h-5" />
+                      </div>
+                    )}
                   </div>
                 ))}
-                
                 <div ref={messagesEndRef} />
               </div>
             </ScrollArea>
 
-            {/* Quick suggestions */}
-            {messages.length <= 2 && (
-              <div className="p-3 border-t border-border">
-                <p className="text-xs text-muted-foreground mb-2">Enhanced suggestions:</p>
-                <div className="flex flex-wrap gap-2">
-                  {currentSuggestions.slice(0, 4).map((suggestion, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs h-7"
-                      onClick={() => handleQuickSuggestion(suggestion)}
-                    >
-                      {suggestion}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            )}
+            <div className="mt-4">
+               <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="item-1">
+                    <AccordionTrigger>Suggestions for you</AccordionTrigger>
+                    <AccordionContent>
+                        <div className="grid grid-cols-2 gap-2">
+                          {(QUICK_SUGGESTIONS[currentLab as keyof typeof QUICK_SUGGESTIONS] || QUICK_SUGGESTIONS.general).map((suggestion, i) => (
+                            <Button
+                              key={i}
+                              variant="outline"
+                              size="sm"
+                              className="h-auto text-left py-2"
+                              onClick={() => handleQuickSuggestion(suggestion)}
+                            >
+                              {suggestion}
+                            </Button>
+                          ))}
+                        </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+            </div>
 
             {/* Input area */}
             <div className="p-4 border-t border-border">
