@@ -146,14 +146,14 @@ export function EnhancedPopupChatbot({
     const newX = e.clientX - dragOffset.x
     const newY = e.clientY - dragOffset.y
     
-    const maxX = window.innerWidth - 400
-    const maxY = window.innerHeight - 600
+    const maxX = window.innerWidth - 520
+    const maxY = window.innerHeight - 700
     
     setPosition({
       x: Math.max(0, Math.min(newX, maxX)),
       y: Math.max(0, Math.min(newY, maxY))
     })
-  }, [isDragging, dragOffset])
+  }, [isDragging, dragOffset, isMinimized])
 
   const handleMouseUp = React.useCallback(() => {
     setIsDragging(false)
@@ -387,10 +387,9 @@ What would you like to explore?`,
       <div
         ref={popupRef}
         className={cn(
-          "fixed z-50 w-[90vw] md:w-96 bg-background border border-border rounded-xl shadow-2xl",
-          "transition-all duration-300 ease-in-out flex flex-col",
-          isMinimized ? "h-14" : "h-[80vh] md:h-[650px]",
-          isDragging ? "select-none" : "",
+          "fixed shadow-2xl rounded-lg flex flex-col bg-card text-card-foreground border transition-all duration-300 z-50",
+          isMinimized ? "w-80 h-14" : "w-[480px] h-[600px] md:w-[520px] md:h-[700px]",
+          isDragging ? "cursor-grabbing" : "cursor-default",
           className
         )}
         style={{
