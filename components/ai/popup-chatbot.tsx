@@ -330,7 +330,7 @@ export function PopupChatbot({
         throw new Error(`RAG API error: ${response.status} ${response.statusText}`)
       }
 
-      // Handle Vercel AI SDK data stream response
+      // Handle streaming response
       const reader = response.body?.getReader()
       if (!reader) {
         throw new Error('No response stream available')
@@ -349,65 +349,53 @@ export function PopupChatbot({
         responseText += decoder.decode(value, { stream: true })
       }
       
-      // Parse Vercel AI SDK streaming format
+      // Simple response parsing - try different formats
       const lines = responseText.split('\n').filter(line => line.trim())
       
+      // Method 1: Look for '0:' prefix (Vercel AI SDK format)
       for (const line of lines) {
         if (line.startsWith('0:')) {
-          // Extract text content from Vercel AI format
           try {
-            const jsonStr = line.slice(2)
-            const parsed = JSON.parse(jsonStr)
-            
-            // Handle different response formats
+            const content = line.slice(2) // Remove '0:' prefix
+            const parsed = JSON.parse(content)
             if (typeof parsed === 'string') {
               fullResponse += parsed
-            } else if (parsed && typeof parsed === 'object') {
-              // Extract text from object format
-              if (parsed.content) fullResponse += parsed.content
-              else if (parsed.text) fullResponse += parsed.text
-              else if (parsed.delta) fullResponse += parsed.delta
-              else fullResponse += JSON.stringify(parsed)
-            }
-          } catch (parseError) {
-            // If JSON parsing fails, try direct text extraction
-            const textContent = line.slice(2).replace(/"/g, '')
-            if (textContent && textContent.length > 0) {
-              fullResponse += textContent
-            }
-          }
-        } else if (line.includes('"')) {
-          // Handle direct text responses
-          try {
-            const textMatch = line.match(/"([^"]+)"/)
-            if (textMatch && textMatch[1]) {
-              fullResponse += textMatch[1]
             }
           } catch (e) {
-            // Fallback: add the line as-is if it contains meaningful text
-            if (line.length > 10 && !line.includes('data:') && !line.includes('event:')) {
-              fullResponse += line
-            }
+            // If JSON parsing fails, treat as plain text
+            fullResponse += line.slice(2)
           }
         }
       }
       
-      // If we still don't have a response, try to read the response as text
-      if (!fullResponse && responseText) {
-        // Final fallback: try to extract any meaningful text
-        const meaningfulText = responseText
-          .replace(/^data:\s*/gm, '')
-          .replace(/^event:\s*/gm, '')
-          .replace(/^\d+:/gm, '')
-          .replace(/[{}[\]"]/g, '')
-          .split('\n')
-          .filter(line => line.trim() && line.length > 10)
-          .join(' ')
-          .trim()
-          
-        if (meaningfulText) {
-          fullResponse = meaningfulText
+      // Method 2: If no '0:' format found, try to parse as JSON
+      if (!fullResponse && responseText.trim()) {
+        try {
+          const parsed = JSON.parse(responseText)
+          if (typeof parsed === 'string') {
+            fullResponse = parsed
+          } else if (parsed.content) {
+            fullResponse = parsed.content
+          } else if (parsed.text) {
+            fullResponse = parsed.text
+          }
+        } catch (e) {
+          // Method 3: Use response as plain text
+          fullResponse = responseText.trim()
         }
+      }
+
+      // Debug logging
+      console.log('🔧 Response parsing debug:', {
+        rawResponseLength: responseText.length,
+        parsedResponseLength: fullResponse.length,
+        rawSample: responseText.substring(0, 200),
+        parsedSample: fullResponse.substring(0, 200)
+      })
+
+      // Ensure we have a response
+      if (!fullResponse || fullResponse.trim() === '') {
+        fullResponse = "I received your question but had trouble processing the response. Could you please try asking again?"
       }
 
       return fullResponse
