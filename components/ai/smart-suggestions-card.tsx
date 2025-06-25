@@ -307,7 +307,7 @@ export function SmartSuggestionsCard({
 export function SmartSuggestionsCompact({
   suggestions,
   onSuggestionSelect,
-  maxItems = 3,
+  maxItems = 2,
   className
 }: {
   suggestions: SmartSuggestion[]
@@ -324,9 +324,9 @@ export function SmartSuggestionsCompact({
   }
 
   return (
-    <div className={cn("space-y-2", className)}>
-      <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-        <Lightbulb className="h-4 w-4" />
+    <div className={cn("space-y-1.5", className)}>
+      <h4 className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+        <Lightbulb className="h-3 w-3" />
         Suggestions for you
       </h4>
       
@@ -339,15 +339,15 @@ export function SmartSuggestionsCompact({
             variant="outline"
             size="sm"
             onClick={() => onSuggestionSelect(suggestion)}
-            className="w-full justify-start h-auto p-3 text-left"
+            className="w-full justify-start h-auto p-2 text-left"
           >
-            <div className="flex items-start gap-2 w-full">
-              <typeConfig.icon className={cn("h-4 w-4 mt-0.5 flex-shrink-0", typeConfig.headerColor)} />
+            <div className="flex items-start gap-1.5 w-full">
+              <typeConfig.icon className={cn("h-3 w-3 mt-0.5 flex-shrink-0", typeConfig.headerColor)} />
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-sm truncate">{suggestion.title}</div>
-                <div className="text-xs text-muted-foreground mt-0.5 flex items-center gap-2">
+                <div className="font-medium text-xs truncate">{suggestion.title}</div>
+                <div className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1.5">
                   <span>{suggestion.estimatedTime}</span>
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="outline" className="text-xs px-1 py-0">
                     {suggestion.difficulty}
                   </Badge>
                 </div>

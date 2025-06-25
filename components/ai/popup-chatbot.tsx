@@ -766,12 +766,12 @@ What would you like to know about?`
               <div className="p-3 border-t border-border">
                 <p className="text-xs text-muted-foreground mb-2">Quick questions:</p>
                 <div className="flex flex-wrap gap-2">
-                  {currentSuggestions.slice(0, 4).map((suggestion, index) => (
+                  {currentSuggestions.slice(0, 2).map((suggestion, index) => (
                     <Button
                       key={index}
                       variant="outline"
                       size="sm"
-                      className="text-xs h-7"
+                      className="text-xs h-7 px-2"
                       onClick={() => handleQuickSuggestion(suggestion)}
                     >
                       {suggestion}
