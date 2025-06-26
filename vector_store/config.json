@@ -1,37 +1,19 @@
 {
-  "totalDocuments": 26,
-  "totalContentKB": 49,
+  "totalDocuments": 34,
   "categories": {
-    "troubleshooting": 3,
-    "gee": 1,
-    "fundamentals": 1,
-    "qgis": 1,
-    "analysis": 1,
+    "lab-material": 4,
+    "concepts": 7,
+    "tutorial": 2,
     "concept": 2,
     "navigation": 3,
     "installation": 1,
-    "lab-overview": 5,
-    "lab-step": 8
-  },
-  "difficulties": {
-    "beginner": 10,
-    "intermediate": 14,
-    "advanced": 2
-  },
-  "labs": {
-    "lab1,lab2,lab3,lab4,lab5": 2,
-    "lab3,lab4,lab5": 1,
-    "lab1,lab2": 1,
-    "lab2,lab3,lab5": 1,
-    "general": 6,
-    "lab1": 9,
-    "lab2": 1,
-    "lab3": 1,
-    "lab4": 1,
-    "lab5": 1,
-    "all": 2
+    "labs": 5,
+    "lab-step": 8,
+    "troubleshooting": 2
   },
   "embeddingModel": "text-embedding-004",
-  "embeddingDimensions": 768,
-  "createdAt": "2025-06-25T16:15:26.331Z"
+  "vectorStorePath": "vector_store/faiss_index",
+  "metadataPath": "vector_store/documents.json",
+  "generatedAt": "2025-06-26T17:52:33.500Z",
+  "version": "1.0.0"
 }

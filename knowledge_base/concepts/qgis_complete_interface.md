@@ -1,11 +1,3 @@
----
-title: "QGIS Interface and Core Concepts"
-category: qgis
-difficulty: beginner
-lab: lab1,lab2
-topics: ["qgis", "interface", "layers", "map canvas", "toolbars", "gis software"]
----
-
 # QGIS Interface and Core Concepts
 
 # QGIS: Complete Interface Guide
@@ -99,36 +91,3 @@ Navigate and preview data sources:
 - map canvas
 - toolbars
 - gis software
-
-## Examples
-- Loading shapefiles
-- Creating basic maps
-- Managing layer visibility
-
-## Related Topics
-- qgis_getting_started
-- layer_management
-- map_navigation
-
-## Relevant Labs
-- LAB1
-- LAB2
-
-## Step-by-Step Approach
-1. Open QGIS and familiarize yourself with the interface layout
-2. Add a vector layer using the toolbar or Layer menu
-3. Practice zooming and panning in the map canvas
-4. Open the attribute table for a layer to see associated data
-5. Change layer symbology by right-clicking and selecting Properties
-6. Save your project to preserve all settings and layer references
-
-## Troubleshooting Tips
-- If layers don't appear, check the layer CRS matches the project CRS
-- Use 'Zoom to Layer' if data appears in wrong location
-- Right-click layers for context menu with most common functions
-- Save project frequently to preserve work and settings
-
-## Ask the AI Assistant
-- "Explain qgis interface and core concepts in simple terms"
-- "How does qgis interface and core concepts apply to health GIS?"
-- "Show me examples of qgis interface and core concepts"

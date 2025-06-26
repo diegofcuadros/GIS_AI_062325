@@ -1,11 +1,3 @@
----
-title: "Enhanced AI-Assisted Google Earth Engine Programming"
-category: lab-overview
-difficulty: intermediate
-lab: lab4
-topics: ["google earth engine", "ai assistants", "javascript", "python api"]
----
-
 # Enhanced AI-Assisted Google Earth Engine Programming
 
 ## Overview
@@ -22,21 +14,3 @@ Using AI tools to accelerate Google Earth Engine programming for environmental a
 
 ## What You'll Learn
 This lab covers 10 main steps focusing on practical application of GIS techniques for health geography.
-
-### Key Skills Developed
-- Spatial data management and visualization
-- Health facility accessibility analysis
-- Professional cartographic output creation
-- Evidence-based decision making with GIS
-
-## Prerequisites
-- Basic computer skills
-- Interest in health geography applications
-- No prior GIS experience required
-
-## Getting Help
-If you encounter issues during this lab, the AI assistant can help with:
-- Step-by-step guidance
-- Troubleshooting common errors
-- Concept explanations
-- Alternative approaches

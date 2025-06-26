@@ -1,11 +1,3 @@
----
-title: "Spatial Analysis: From Patterns to Processes"
-category: analysis
-difficulty: intermediate
-lab: lab2,lab3,lab5
-topics: ["spatial analysis", "patterns", "statistics", "autocorrelation", "clustering", "health research"]
----
-
 # Spatial Analysis: From Patterns to Processes
 
 # Spatial Analysis: Understanding Geographic Patterns
@@ -128,36 +120,3 @@ topics: ["spatial analysis", "patterns", "statistics", "autocorrelation", "clust
 - autocorrelation
 - clustering
 - health research
-
-## Examples
-- Disease cluster detection
-- Healthcare facility optimization
-- Environmental exposure assessment
-
-## Related Topics
-- statistical_methods
-- pattern_analysis
-- gis_analysis
-
-## Relevant Labs
-- LAB2
-- LAB3
-- LAB5
-
-## Step-by-Step Approach
-1. Start with exploratory data visualization
-2. Calculate basic spatial statistics (nearest neighbor, Moran's I)
-3. Test hypotheses about spatial patterns
-4. Investigate underlying processes causing patterns
-5. Validate results and consider alternative explanations
-
-## Troubleshooting Tips
-- Always visualize data before statistical analysis
-- Check for data quality issues that could affect results
-- Consider multiple scales of analysis
-- Validate statistical results with domain knowledge
-
-## Ask the AI Assistant
-- "Explain spatial analysis: from patterns to processes in simple terms"
-- "How does spatial analysis: from patterns to processes apply to health GIS?"
-- "Show me examples of spatial analysis: from patterns to processes"

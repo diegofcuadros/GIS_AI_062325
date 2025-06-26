@@ -1,11 +1,3 @@
----
-title: "Complete Introduction to GIS - From Basics to Applications"
-category: fundamentals
-difficulty: beginner
-lab: lab1,lab2,lab3,lab4,lab5
-topics: ["gis", "geographic information system", "spatial analysis", "health applications", "mapping"]
----
-
 # Complete Introduction to GIS - From Basics to Applications
 
 # Geographic Information Systems: A Comprehensive Introduction
@@ -74,33 +66,3 @@ Date       | Location    | Disease | Patients
 - spatial analysis
 - health applications
 - mapping
-
-## Examples
-- Disease outbreak mapping
-- Hospital accessibility analysis
-- Environmental risk assessment
-
-## Related Topics
-- spatial_analysis_concepts
-- gis_software_intro
-- health_gis_applications
-
-## Relevant Labs
-- LAB1
-- LAB2
-- LAB3
-- LAB4
-- LAB5
-
-## Step-by-Step Approach
-1. Understand that GIS combines location data with descriptive information
-2. Recognize that spatial patterns often reveal insights invisible in tables
-3. Learn that GIS has five core components: data, hardware, software, people, methods
-4. Practice thinking about how your data could be mapped spatially
-
-
-
-## Ask the AI Assistant
-- "Explain complete introduction to gis - from basics to applications in simple terms"
-- "How does complete introduction to gis - from basics to applications apply to health GIS?"
-- "Show me examples of complete introduction to gis - from basics to applications"

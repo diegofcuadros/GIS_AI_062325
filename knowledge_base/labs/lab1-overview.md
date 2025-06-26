@@ -1,11 +1,3 @@
----
-title: "Enhanced QGIS Health Facility Access Analysis"
-category: lab-overview
-difficulty: intermediate
-lab: lab1
-topics: ["qgis", "print layout", "buffer analysis", "spatial queries"]
----
-
 # Enhanced QGIS Health Facility Access Analysis
 
 ## Overview
@@ -22,21 +14,3 @@ Comprehensive spatial accessibility analysis for healthcare facilities in Uganda
 
 ## What You'll Learn
 This lab covers 15 main steps focusing on practical application of GIS techniques for health geography.
-
-### Key Skills Developed
-- Spatial data management and visualization
-- Health facility accessibility analysis
-- Professional cartographic output creation
-- Evidence-based decision making with GIS
-
-## Prerequisites
-- Basic computer skills
-- Interest in health geography applications
-- No prior GIS experience required
-
-## Getting Help
-If you encounter issues during this lab, the AI assistant can help with:
-- Step-by-step guidance
-- Troubleshooting common errors
-- Concept explanations
-- Alternative approaches
