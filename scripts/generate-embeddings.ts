@@ -16,6 +16,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import { MemoryVectorStore } from 'langchain/vectorstores/memory'
 import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai'
 import { Document } from '@langchain/core/documents'
+import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter'
 import matter from 'gray-matter'
 
 interface KnowledgeDocument {
@@ -114,9 +115,59 @@ async function generateEmbeddings() {
   await processDirectory(knowledgeDir)
 
   console.log(`📄 Loaded ${documents.length} documents`)
+  
+  // Split large documents into chunks
+  console.log('✂️ Splitting large documents into chunks...')
+  const textSplitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 3000, // Smaller chunks for Google's API limits
+    chunkOverlap: 200,
+    separators: ['\n\n', '\n', '. ', ' ', '']
+  })
+  
+  const chunkedDocuments: Document[] = []
+  for (const doc of documents) {
+    if (doc.pageContent.length > 3000) {
+      const chunks = await textSplitter.splitDocuments([doc])
+      // Add chunk info to metadata
+      chunks.forEach((chunk, index) => {
+        chunk.metadata = {
+          ...chunk.metadata,
+          chunkIndex: index,
+          totalChunks: chunks.length,
+          isChunk: true
+        }
+      })
+      chunkedDocuments.push(...chunks)
+    } else {
+      chunkedDocuments.push(doc)
+    }
+  }
+  
+  console.log(`✂️ Split into ${chunkedDocuments.length} chunks`)
+  
+  // Use chunked documents for embedding
+  const finalDocuments = chunkedDocuments
+  const finalKnowledgeDocs = chunkedDocuments.map(doc => ({
+    id: doc.metadata.isChunk ? `${doc.metadata.id}-chunk-${doc.metadata.chunkIndex}` : doc.metadata.id,
+    title: doc.metadata.title,
+    content: doc.pageContent,
+    metadata: {
+      category: doc.metadata.category,
+      difficulty: doc.metadata.difficulty,
+      lab: doc.metadata.lab,
+      topics: typeof doc.metadata.topics === 'string' ? doc.metadata.topics.split(', ') : doc.metadata.topics || [],
+      source: doc.metadata.source,
+      filename: doc.metadata.filename || '',
+      isChunk: doc.metadata.isChunk || false,
+      chunkIndex: doc.metadata.chunkIndex,
+      totalChunks: doc.metadata.totalChunks
+    }
+  }))
+
+  console.log(`📄 Final document count: ${finalDocuments.length}`)
   console.log(`🔢 Document categories:`)
   
-  const categoryCount = knowledgeDocs.reduce((acc, doc) => {
+  const categoryCount = finalKnowledgeDocs.reduce((acc, doc) => {
     acc[doc.metadata.category] = (acc[doc.metadata.category] || 0) + 1
     return acc
   }, {} as Record<string, number>)
@@ -130,16 +181,28 @@ async function generateEmbeddings() {
   
   try {
     // Create vector store with embeddings
-    const vectorStore = await MemoryVectorStore.fromDocuments(documents, embeddings)
+    const vectorStore = await MemoryVectorStore.fromDocuments(finalDocuments, embeddings)
     
     // Save vector store to disk as JSON
     const vectorStorePath = path.join(vectorStoreDir, 'vector_store.json')
+    
+    // Generate embeddings properly - embedDocuments returns nested arrays, we need flat arrays
+    console.log('🔢 Generating individual embeddings...')
+    const documentEmbeddings = []
+    for (let i = 0; i < finalDocuments.length; i++) {
+      const embedding = await embeddings.embedQuery(finalDocuments[i].pageContent)
+      documentEmbeddings.push(embedding)
+      if ((i + 1) % 10 === 0) {
+        console.log(`   Processed ${i + 1}/${finalDocuments.length} embeddings`)
+      }
+    }
+    
     const vectorData = {
-      documents: documents.map(doc => ({
+      documents: finalDocuments.map(doc => ({
         pageContent: doc.pageContent,
         metadata: doc.metadata
       })),
-      embeddings: await Promise.all(documents.map(doc => embeddings.embedDocuments([doc.pageContent]))),
+      embeddings: documentEmbeddings,
       createdAt: new Date().toISOString()
     }
     
@@ -151,7 +214,7 @@ async function generateEmbeddings() {
     const metadataPath = path.join(vectorStoreDir, 'documents.json')
     await fs.writeFile(
       metadataPath, 
-      JSON.stringify(knowledgeDocs, null, 2), 
+      JSON.stringify(finalKnowledgeDocs, null, 2), 
       'utf-8'
     )
     
@@ -159,7 +222,7 @@ async function generateEmbeddings() {
 
     // Create configuration file
     const config = {
-      totalDocuments: documents.length,
+      totalDocuments: finalDocuments.length,
       categories: categoryCount,
       embeddingModel: 'text-embedding-004',
       vectorStorePath: 'vector_store/faiss_index',
@@ -189,7 +252,7 @@ async function generateEmbeddings() {
 
     console.log('✅ Embedding generation complete!')
     console.log(`📈 Performance metrics:`)
-    console.log(`   - Documents processed: ${documents.length}`)
+    console.log(`   - Documents processed: ${finalDocuments.length}`)
     console.log(`   - Categories: ${Object.keys(categoryCount).length}`)
     console.log(`   - Vector dimensions: 768 (text-embedding-004)`)
     console.log(`   - Storage format: FAISS index`)
