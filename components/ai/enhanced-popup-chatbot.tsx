@@ -388,7 +388,7 @@ What would you like to explore?`,
         ref={popupRef}
         className={cn(
           "fixed shadow-2xl rounded-lg flex flex-col bg-card text-card-foreground border transition-all duration-300 z-50",
-          isMinimized ? "w-80 h-14" : "w-[480px] h-[600px] md:w-[520px] md:h-[700px]",
+          isMinimized ? "w-80 h-14" : "w-[400px] h-[560px] md:w-[440px] md:h-[620px] max-h-[90vh] max-w-[90vw]",
           isDragging ? "cursor-grabbing" : "cursor-default",
           className
         )}
@@ -447,81 +447,109 @@ What would you like to explore?`,
         {!isMinimized && (
           <>
             {/* Messages area */}
-            <ScrollArea className="flex-grow pr-4 -mr-4">
-              <div className="space-y-6">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={cn(
-                      "flex gap-3",
-                      message.role === "user" ? "justify-end" : "justify-start"
-                    )}
-                  >
-                    {message.role === "assistant" && (
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Bot className="w-5 h-5 text-primary" />
-                      </div>
-                    )}
-                    <div className="max-w-[85%]">
-                      <div
-                        className={cn(
-                          "p-3 rounded-lg relative",
-                          message.role === "user"
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted"
-                        )}
-                      >
-                        <MarkdownContent content={message.content} />
-                        {message.role === 'assistant' && message.id !== 'welcome' && (
-                          <div className="mt-2 pt-2 border-t border-muted-foreground/20">
-                            <h4 className="text-xs font-semibold mb-1">Quick actions:</h4>
-                             <Button variant="outline" size="sm" className="text-xs mr-2">
-                              Show step-by-step
-                             </Button>
-                             <Button variant="outline" size="sm" className="text-xs">
-                              Explain this concept
-                             </Button>
-                          </div>
-                        )}
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </p>
-                    </div>
-
-                    {message.role === "user" && (
-                      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                        <img src="/placeholder-logo.png" alt="User" className="w-5 h-5" />
-                      </div>
-                    )}
-                  </div>
-                ))}
-                <div ref={messagesEndRef} />
-              </div>
-            </ScrollArea>
-
-            <div className="mt-4">
-               <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>Suggestions for you</AccordionTrigger>
-                    <AccordionContent>
-                        <div className="grid grid-cols-2 gap-2">
-                          {(QUICK_SUGGESTIONS[currentLab as keyof typeof QUICK_SUGGESTIONS] || QUICK_SUGGESTIONS.general).map((suggestion, i) => (
-                            <Button
-                              key={i}
-                              variant="outline"
-                              size="sm"
-                              className="h-auto text-left py-2"
-                              onClick={() => handleQuickSuggestion(suggestion)}
-                            >
-                              {suggestion}
-                            </Button>
-                          ))}
+            <div className="flex-1 overflow-hidden px-4">
+              <ScrollArea className="h-full">
+                <div className="space-y-4 py-2">
+                  {messages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={cn(
+                        "flex gap-3 w-full",
+                        message.role === "user" ? "justify-end" : "justify-start"
+                      )}
+                    >
+                      {message.role === "assistant" && (
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                          <Bot className="w-4 h-4 text-primary" />
                         </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                      )}
+                      <div className={cn(
+                        "flex-1 min-w-0",
+                        message.role === "user" ? "max-w-[75%] ml-auto" : "max-w-[75%]"
+                      )}>
+                        <div
+                          className={cn(
+                            "p-3 rounded-lg relative break-words",
+                            message.role === "user"
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-muted"
+                          )}
+                        >
+                          <div className="text-sm leading-relaxed">
+                            <MarkdownContent content={message.content} />
+                          </div>
+                          {message.role === 'assistant' && message.id !== 'welcome' && (
+                            <div className="mt-3 pt-2 border-t border-muted-foreground/20">
+                              <h4 className="text-xs font-semibold mb-2">Quick actions:</h4>
+                              <div className="flex flex-wrap gap-1">
+                                <Button variant="outline" size="sm" className="text-xs h-6 px-2">
+                                  Show step-by-step
+                                </Button>
+                                <Button variant="outline" size="sm" className="text-xs h-6 px-2">
+                                  Explain concept
+                                </Button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1 px-1">
+                          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                      </div>
+
+                      {message.role === "user" && (
+                        <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-1">
+                          <img src="/placeholder-logo.png" alt="User" className="w-4 h-4" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+
+                  {/* Loading indicator */}
+                  {isLoading && (
+                    <div className="flex justify-start gap-3 w-full">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                        <Bot className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0 max-w-[75%]">
+                        <div className="p-3 rounded-lg bg-muted">
+                          <div className="flex items-center space-x-2">
+                            <div className="flex space-x-1">
+                              <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
+                              <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{animationDelay: '0.1s'}} />
+                              <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{animationDelay: '0.2s'}} />
+                            </div>
+                            <span className="text-sm text-muted-foreground">Thinking...</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div ref={messagesEndRef} />
+                </div>
+              </ScrollArea>
             </div>
+
+            {/* Quick suggestions */}
+            {messages.length <= 1 && (
+              <div className="px-4 pb-2">
+                <p className="text-xs text-muted-foreground mb-2">Try asking:</p>
+                <div className="flex flex-wrap gap-1">
+                  {(QUICK_SUGGESTIONS[currentLab as keyof typeof QUICK_SUGGESTIONS] || QUICK_SUGGESTIONS.general).slice(0, 3).map((suggestion, i) => (
+                    <Button
+                      key={i}
+                      variant="outline"
+                      size="sm"
+                      className="text-xs h-7 px-2 text-left"
+                      onClick={() => handleQuickSuggestion(suggestion)}
+                    >
+                      {suggestion.length > 20 ? suggestion.substring(0, 20) + "..." : suggestion}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Input area */}
             <div className="p-4 border-t border-border">

@@ -129,7 +129,7 @@ export function MarkdownContent({ content, className = '' }: MarkdownContentProp
   }
 
   return (
-    <div className={`${className}`}>
+    <div className={`break-words overflow-wrap-anywhere ${className}`}>
       {renderContent()}
     </div>
   )
@@ -192,7 +192,7 @@ export function SimpleMarkdownContent({ content, className = '' }: MarkdownConte
   }
 
   return (
-    <div className={`whitespace-pre-wrap ${className}`}>
+    <div className={`break-words overflow-wrap-anywhere whitespace-pre-wrap ${className}`}>
       {renderWithLinks(content)}
     </div>
   )

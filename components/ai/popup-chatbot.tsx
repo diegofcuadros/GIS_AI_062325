@@ -591,9 +591,9 @@ What would you like to know about?`
       <div
         ref={popupRef}
         className={cn(
-          "fixed z-50 w-[90vw] md:w-96 bg-background border border-border rounded-xl shadow-2xl",
+          "fixed z-50 w-[95vw] max-w-md bg-background border border-border rounded-xl shadow-2xl",
           "transition-all duration-300 ease-in-out flex flex-col",
-          isMinimized ? "h-14" : "h-[80vh] md:h-[650px]",
+          isMinimized ? "h-14" : "h-[85vh] max-h-[600px]",
           isDragging ? "select-none" : "",
           className
         )}
@@ -664,13 +664,13 @@ What would you like to know about?`
                   >
                     <div
                       className={cn(
-                        "flex max-w-[85%] space-x-3",
+                        "flex space-x-3 w-full",
                         message.role === "user" ? "flex-row-reverse space-x-reverse" : "flex-row"
                       )}
                     >
                       {/* Avatar */}
                       <div className={cn(
-                        "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
+                        "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1",
                         message.role === "user" 
                           ? "bg-primary text-primary-foreground" 
                           : "bg-muted"
@@ -685,17 +685,17 @@ What would you like to know about?`
                       {/* Message content */}
                       <div
                         className={cn(
-                          "rounded-lg px-3 py-2 text-sm",
+                          "rounded-lg px-3 py-2 text-sm break-words overflow-wrap-anywhere flex-1 min-w-0",
                           message.role === "user"
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted",
+                            ? "bg-primary text-primary-foreground max-w-[75%] ml-auto"
+                            : "bg-muted max-w-[80%]",
                           message.type === "error" && "bg-destructive/10 border border-destructive/20"
                         )}
                       >
                         {message.role === "assistant" ? (
                           <MarkdownContent content={message.content} />
                         ) : (
-                          <p>{message.content}</p>
+                          <p className="break-words overflow-wrap-anywhere">{message.content}</p>
                         )}
 
                         {/* Phase 4B: Quick Actions Panel for assistant messages - moved inside message */}
@@ -732,13 +732,17 @@ What would you like to know about?`
                 {/* Loading indicator */}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="flex space-x-3 max-w-[85%]">
-                      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                    <div className="flex space-x-3 w-full">
+                      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-1">
                         <Bot className="h-4 w-4" />
                       </div>
-                      <div className="bg-muted rounded-lg px-3 py-2">
-                        <div className="flex items-center space-x-1">
-                          <Loader2 className="h-3 w-3 animate-spin" />
+                      <div className="bg-muted rounded-lg px-3 py-2 max-w-[80%]">
+                        <div className="flex items-center space-x-2">
+                          <div className="flex space-x-1">
+                            <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
+                            <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{animationDelay: '0.1s'}} />
+                            <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{animationDelay: '0.2s'}} />
+                          </div>
                           <span className="text-sm text-muted-foreground">Thinking...</span>
                         </div>
                       </div>
