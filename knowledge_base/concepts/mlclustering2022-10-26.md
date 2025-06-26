@@ -2,12 +2,12 @@
 title: "Machine Learning Part 2:  Clustering"
 category: "concepts"
 difficulty: "advanced"
-lab: "lab2,lab4,lab5"
+lab: "lab5"
 topics: ["classification", "clustering", "gis", "machine learning", "python", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/mlclustering2022-10-26.pdf"
 type: "pdf"
 pages: 36
-processedAt: "2025-06-26T18:56:39.371Z"
+processedAt: "2025-06-26T19:29:08.780Z"
 ---
 
 # Machine Learning Part 2:  Clustering
@@ -528,7 +528,7 @@ Thank You.
 - **Source**: PDF Document (36 pages)
 - **Category**: concepts
 - **Difficulty**: advanced
-- **Relevant Labs**: lab2,lab4,lab5
+- **Relevant Labs**: lab5
 - **Topics**: classification, clustering, gis, machine learning, python, vector
 
 ## AI Assistant Usage

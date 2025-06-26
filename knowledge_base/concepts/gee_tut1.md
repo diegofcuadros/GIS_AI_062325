@@ -2,12 +2,12 @@
 title: "Introductory course to Google Earth Engine"
 category: "lab-material"
 difficulty: "advanced"
-lab: "lab3,lab4,lab5"
+lab: "lab3"
 topics: ["arcgis", "classification", "gee", "gis", "google earth engine", "mapping", "overlay", "projection", "raster", "remote sensing", "satellite", "scripting", "shapefile", "spatial analysis", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/GEE_Tut1.pdf"
 type: "pdf"
 pages: 55
-processedAt: "2025-06-26T18:56:38.056Z"
+processedAt: "2025-06-26T19:29:07.504Z"
 ---
 
 # Introductory course to Google Earth Engine
@@ -1383,7 +1383,7 @@ Engine
 - **Source**: PDF Document (55 pages)
 - **Category**: lab-material
 - **Difficulty**: advanced
-- **Relevant Labs**: lab3,lab4,lab5
+- **Relevant Labs**: lab3
 - **Topics**: arcgis, classification, gee, gis, google earth engine, mapping, overlay, projection, raster, remote sensing, satellite, scripting, shapefile, spatial analysis, vector
 
 ## AI Assistant Usage

@@ -2,12 +2,12 @@
 title: "Day 2: GEE & AI Workshop - Instructor Guide with Code Snippets"
 category: "tutorial"
 difficulty: "beginner"
-lab: "lab1,lab3,lab4,lab5"
+lab: "lab1"
 topics: ["buffer", "clustering", "crs", "gee", "gis", "google earth engine", "malaria", "mapping", "projection", "qgis", "raster"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/Day 2_ GEE & AI Workshop - Instructor Guide with Code Snippets.pdf"
 type: "pdf"
 pages: 28
-processedAt: "2025-06-26T18:56:36.553Z"
+processedAt: "2025-06-26T19:29:06.090Z"
 ---
 
 # Day 2: GEE & AI Workshop - Instructor Guide with Code Snippets
@@ -8120,7 +8120,7 @@ Malaria Atlas Project - For real prevalence data
 - **Source**: PDF Document (28 pages)
 - **Category**: tutorial
 - **Difficulty**: beginner
-- **Relevant Labs**: lab1,lab3,lab4,lab5
+- **Relevant Labs**: lab1
 - **Topics**: buffer, clustering, crs, gee, gis, google earth engine, malaria, mapping, projection, qgis, raster
 
 ## AI Assistant Usage

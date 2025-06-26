@@ -2,12 +2,12 @@
 title: "Lab 3 GEE Environmental Risk Ma"
 category: "lab-material"
 difficulty: "advanced"
-lab: "lab1,lab2,lab3,lab4,lab5"
+lab: "lab3"
 topics: ["accessibility", "classification", "gee", "gis", "google earth engine", "machine learning", "malaria", "mapping", "projection", "public health", "python", "raster", "remote sensing", "satellite", "spatial analysis", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/Lab_3_GEE_Environmental_Risk_Ma.pdf"
 type: "pdf"
 pages: 27
-processedAt: "2025-06-26T18:56:38.689Z"
+processedAt: "2025-06-26T19:29:08.116Z"
 ---
 
 # Lab 3 GEE Environmental Risk Ma
@@ -978,7 +978,7 @@ systems that adapt to changing environmental and epidemiological conditions.
 - **Source**: PDF Document (27 pages)
 - **Category**: lab-material
 - **Difficulty**: advanced
-- **Relevant Labs**: lab1,lab2,lab3,lab4,lab5
+- **Relevant Labs**: lab3
 - **Topics**: accessibility, classification, gee, gis, google earth engine, machine learning, malaria, mapping, projection, public health, python, raster, remote sensing, satellite, spatial analysis, vector
 
 ## AI Assistant Usage

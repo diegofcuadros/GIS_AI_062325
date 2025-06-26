@@ -2,12 +2,12 @@
 title: "Lab 5 AI Based Clustering Malaria Risk"
 category: "lab-material"
 difficulty: "advanced"
-lab: "lab1,lab2,lab3,lab4,lab5"
+lab: "lab5"
 topics: ["accessibility", "classification", "clustering", "gis", "google earth engine", "machine learning", "malaria", "mapping", "overlay", "public health", "python", "qgis", "satellite", "shapefile", "spatial analysis", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/Lab_5_AI-Based_Clustering_Malaria_Risk.pdf"
 type: "pdf"
 pages: 26
-processedAt: "2025-06-26T18:56:39.018Z"
+processedAt: "2025-06-26T19:29:08.428Z"
 ---
 
 # Lab 5 AI Based Clustering Malaria Risk
@@ -1046,7 +1046,7 @@ rning+for+patient+subtyping+&id=ec1852222847cff8c1ea099acba583bb743da40a
 - **Source**: PDF Document (26 pages)
 - **Category**: lab-material
 - **Difficulty**: advanced
-- **Relevant Labs**: lab1,lab2,lab3,lab4,lab5
+- **Relevant Labs**: lab5
 - **Topics**: accessibility, classification, clustering, gis, google earth engine, machine learning, malaria, mapping, overlay, public health, python, qgis, satellite, shapefile, spatial analysis, vector
 
 ## AI Assistant Usage

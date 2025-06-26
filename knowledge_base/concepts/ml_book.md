@@ -2,12 +2,12 @@
 title: "AnIntroductiontoMachineLearning"
 category: "lab-material"
 difficulty: "advanced"
-lab: "lab2,lab3,lab4,lab5"
+lab: "lab5"
 topics: ["classification", "clustering", "coordinate system", "gee", "gis", "machine learning", "mapping", "projection", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/ML_Book.pdf"
 type: "pdf"
 pages: 234
-processedAt: "2025-06-26T18:56:41.048Z"
+processedAt: "2025-06-26T19:29:10.372Z"
 ---
 
 # AnIntroductiontoMachineLearning
@@ -22996,7 +22996,7 @@ Statistics, September 2003.
 - **Source**: PDF Document (234 pages)
 - **Category**: lab-material
 - **Difficulty**: advanced
-- **Relevant Labs**: lab2,lab3,lab4,lab5
+- **Relevant Labs**: lab5
 - **Topics**: classification, clustering, coordinate system, gee, gis, machine learning, mapping, projection, vector
 
 ## AI Assistant Usage

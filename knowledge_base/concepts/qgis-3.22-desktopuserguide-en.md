@@ -2,12 +2,12 @@
 title: "QGIS Desktop 3.22 User Guide"
 category: "tutorial"
 difficulty: "advanced"
-lab: "lab2,lab3,lab4,lab5"
+lab: "general"
 topics: ["accessibility", "arcgis", "buffer", "cartography", "classification", "clustering", "coordinate system", "crs", "gee", "gis", "mapping", "overlay", "projection", "python", "qgis", "raster", "remote sensing", "satellite", "scripting", "shapefile", "spatial analysis", "symbology", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/QGIS-3.22-DesktopUserGuide-en.pdf"
 type: "pdf"
 pages: 1393
-processedAt: "2025-06-26T18:56:44.292Z"
+processedAt: "2025-06-26T19:29:13.538Z"
 ---
 
 # QGIS Desktop 3.22 User Guide
@@ -49639,7 +49639,7 @@ http://www.refractions.net/products/postgis/, 2013.
 - **Source**: PDF Document (1393 pages)
 - **Category**: tutorial
 - **Difficulty**: advanced
-- **Relevant Labs**: lab2,lab3,lab4,lab5
+- **Relevant Labs**: general
 - **Topics**: accessibility, arcgis, buffer, cartography, classification, clustering, coordinate system, crs, gee, gis, mapping, overlay, projection, python, qgis, raster, remote sensing, satellite, scripting, shapefile, spatial analysis, symbology, vector
 
 ## AI Assistant Usage

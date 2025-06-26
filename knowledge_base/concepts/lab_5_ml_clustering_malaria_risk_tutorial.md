@@ -2,12 +2,12 @@
 title: "Lab 5: AI-Based Clustering for Malaria Risk Mapping - Complete Machine Learning Tutorial"
 category: "tutorial"
 difficulty: "advanced"
-lab: "lab1,lab3,lab4,lab5"
+lab: "lab5"
 topics: ["classification", "clustering", "crs", "gee", "gis", "google earth engine", "machine learning", "malaria", "mapping", "projection", "public health", "qgis", "raster", "remote sensing", "satellite", "spatial analysis", "symbology", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/lab_5_ml_clustering_malaria_risk_tutorial.pdf"
 type: "pdf"
 pages: 2
-processedAt: "2025-06-26T18:56:39.128Z"
+processedAt: "2025-06-26T19:29:08.536Z"
 ---
 
 # Lab 5: AI-Based Clustering for Malaria Risk Mapping - Complete Machine Learning Tutorial
@@ -634,7 +634,7 @@ expertise. ”
 - **Source**: PDF Document (2 pages)
 - **Category**: tutorial
 - **Difficulty**: advanced
-- **Relevant Labs**: lab1,lab3,lab4,lab5
+- **Relevant Labs**: lab5
 - **Topics**: classification, clustering, crs, gee, gis, google earth engine, machine learning, malaria, mapping, projection, public health, qgis, raster, remote sensing, satellite, spatial analysis, symbology, vector
 
 ## AI Assistant Usage

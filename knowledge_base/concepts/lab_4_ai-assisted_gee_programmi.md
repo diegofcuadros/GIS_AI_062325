@@ -2,12 +2,12 @@
 title: "Lab 4 AI Assisted GEE Programmi"
 category: "lab-material"
 difficulty: "advanced"
-lab: "lab2,lab3,lab4,lab5"
+lab: "lab4"
 topics: ["accessibility", "classification", "clustering", "gee", "gis", "google earth engine", "machine learning", "python", "remote sensing", "satellite", "spatial analysis", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/Lab_4_AI-Assisted_GEE_Programmi.pdf"
 type: "pdf"
 pages: 19
-processedAt: "2025-06-26T18:56:38.759Z"
+processedAt: "2025-06-26T19:29:08.180Z"
 ---
 
 # Lab 4 AI Assisted GEE Programmi
@@ -747,7 +747,7 @@ sensing-geog-xl-182c
 - **Source**: PDF Document (19 pages)
 - **Category**: lab-material
 - **Difficulty**: advanced
-- **Relevant Labs**: lab2,lab3,lab4,lab5
+- **Relevant Labs**: lab4
 - **Topics**: accessibility, classification, clustering, gee, gis, google earth engine, machine learning, python, remote sensing, satellite, spatial analysis, vector
 
 ## AI Assistant Usage

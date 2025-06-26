@@ -167,20 +167,40 @@ async function processPDFDocument(pdfPath: string): Promise<PDFDocument | null> 
   const category = categorizeDocument(filename, text)
   const difficulty = determineDifficulty(text)
   
-  // Determine relevant labs based on content
-  const labKeywords = {
-    'lab1': ['malaria', 'disease mapping', 'health facility', 'qgis basic'],
-    'lab2': ['accessibility', 'catchment', 'service area', 'proximity'],
-    'lab3': ['google earth engine', 'gee', 'remote sensing', 'satellite'],
-    'lab4': ['ai', 'programming', 'python', 'automation', 'scripting'],
-    'lab5': ['machine learning', 'clustering', 'classification', 'ml']
+  // Determine specific lab assignment based on filename first, then content
+  let labAssignment = 'general'
+  
+  const filenameLower = filename.toLowerCase()
+  
+  // Primary assignment based on filename
+  if (filenameLower.includes('lab_1') || filenameLower.includes('lab1')) {
+    labAssignment = 'lab1'
+  } else if (filenameLower.includes('lab_2') || filenameLower.includes('lab2')) {
+    labAssignment = 'lab2'
+  } else if (filenameLower.includes('lab_3') || filenameLower.includes('lab3')) {
+    labAssignment = 'lab3'
+  } else if (filenameLower.includes('lab_4') || filenameLower.includes('lab4')) {
+    labAssignment = 'lab4'
+  } else if (filenameLower.includes('lab_5') || filenameLower.includes('lab5')) {
+    labAssignment = 'lab5'
+  } else if (filenameLower.includes('syllabus')) {
+    labAssignment = 'general'
+  } else {
+    // Secondary assignment based on primary content keywords
+    const contentLower = text.toLowerCase()
+    
+    if (contentLower.includes('malaria mapping') || (contentLower.includes('malaria') && contentLower.includes('qgis'))) {
+      labAssignment = 'lab1'
+    } else if (contentLower.includes('health facility') && contentLower.includes('access')) {
+      labAssignment = 'lab2'
+    } else if (contentLower.includes('google earth engine') || contentLower.includes('environmental risk')) {
+      labAssignment = 'lab3'
+    } else if (contentLower.includes('ai-assisted') && contentLower.includes('programming')) {
+      labAssignment = 'lab4'
+    } else if (contentLower.includes('machine learning') && contentLower.includes('clustering')) {
+      labAssignment = 'lab5'
+    }
   }
-  
-  const relevantLabs = Object.entries(labKeywords)
-    .filter(([_, keywords]) => keywords.some(keyword => text.toLowerCase().includes(keyword)))
-    .map(([lab, _]) => lab)
-  
-  const labAssignment = relevantLabs.length > 0 ? relevantLabs.join(',') : 'general'
   
   return {
     id: filename.toLowerCase().replace(/\s+/g, '-'),

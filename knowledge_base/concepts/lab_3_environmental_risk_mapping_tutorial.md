@@ -2,12 +2,12 @@
 title: "Lab 3: Environmental Risk Mapping for Malaria - Complete Google Earth Engine Tutorial"
 category: "tutorial"
 difficulty: "advanced"
-lab: "lab1,lab3,lab4,lab5"
+lab: "lab3"
 topics: ["classification", "gee", "gis", "google earth engine", "machine learning", "malaria", "mapping", "public health", "qgis", "raster", "remote sensing", "satellite", "shapefile", "spatial analysis", "symbology", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/lab_3_environmental_risk_mapping_tutorial.pdf"
 type: "pdf"
 pages: 1
-processedAt: "2025-06-26T18:56:38.606Z"
+processedAt: "2025-06-26T19:29:08.036Z"
 ---
 
 # Lab 3: Environmental Risk Mapping for Malaria - Complete Google Earth Engine Tutorial
@@ -514,7 +514,7 @@ Uganda
 - **Source**: PDF Document (1 pages)
 - **Category**: tutorial
 - **Difficulty**: advanced
-- **Relevant Labs**: lab1,lab3,lab4,lab5
+- **Relevant Labs**: lab3
 - **Topics**: classification, gee, gis, google earth engine, machine learning, malaria, mapping, public health, qgis, raster, remote sensing, satellite, shapefile, spatial analysis, symbology, vector
 
 ## AI Assistant Usage

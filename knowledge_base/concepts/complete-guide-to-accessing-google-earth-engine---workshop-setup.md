@@ -2,12 +2,12 @@
 title: "Complete Guide to Accessing Google Earth Engine - Workshop Setup"
 category: "tutorial"
 difficulty: "advanced"
-lab: "lab1,lab3,lab4"
+lab: "lab1"
 topics: ["gee", "gis", "google earth engine", "malaria", "mapping", "public health", "python", "qgis", "satellite"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/Complete Guide to Accessing Google Earth Engine - Workshop Setup.pdf"
 type: "pdf"
 pages: 11
-processedAt: "2025-06-26T18:56:36.293Z"
+processedAt: "2025-06-26T19:29:05.830Z"
 ---
 
 # Complete Guide to Accessing Google Earth Engine - Workshop Setup
@@ -907,7 +907,7 @@ public health analysis!
 - **Source**: PDF Document (11 pages)
 - **Category**: tutorial
 - **Difficulty**: advanced
-- **Relevant Labs**: lab1,lab3,lab4
+- **Relevant Labs**: lab1
 - **Topics**: gee, gis, google earth engine, malaria, mapping, public health, python, qgis, satellite
 
 ## AI Assistant Usage

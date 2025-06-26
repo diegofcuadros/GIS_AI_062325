@@ -2,12 +2,12 @@
 title: "Lab 2: Health Facility Access Analysis - Complete QGIS Tutorial"
 category: "tutorial"
 difficulty: "advanced"
-lab: "lab1,lab2,lab3,lab4"
+lab: "lab2"
 topics: ["accessibility", "buffer", "coordinate system", "crs", "gis", "google earth engine", "malaria", "mapping", "public health", "python", "qgis", "remote sensing", "satellite", "shapefile", "spatial analysis", "symbology", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/lab_2_health_facility_access_tutorial.pdf"
 type: "pdf"
 pages: 1
-processedAt: "2025-06-26T18:56:38.531Z"
+processedAt: "2025-06-26T19:29:07.960Z"
 ---
 
 # Lab 2: Health Facility Access Analysis - Complete QGIS Tutorial
@@ -345,7 +345,7 @@ techniques to become proficient in GIS for public health applications.
 - **Source**: PDF Document (1 pages)
 - **Category**: tutorial
 - **Difficulty**: advanced
-- **Relevant Labs**: lab1,lab2,lab3,lab4
+- **Relevant Labs**: lab2
 - **Topics**: accessibility, buffer, coordinate system, crs, gis, google earth engine, malaria, mapping, public health, python, qgis, remote sensing, satellite, shapefile, spatial analysis, symbology, vector
 
 ## AI Assistant Usage

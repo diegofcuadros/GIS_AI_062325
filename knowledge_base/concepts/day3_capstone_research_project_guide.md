@@ -2,12 +2,12 @@
 title: "Day 3: Capstone Research Project Guide - Independent GIS and AI-Assisted Spatial Health Analysis"
 category: "tutorial"
 difficulty: "intermediate"
-lab: "lab1,lab2,lab3,lab4,lab5"
+lab: "lab1"
 topics: ["buffer", "classification", "clustering", "crs", "gee", "gis", "google earth engine", "machine learning", "malaria", "mapping", "projection", "public health", "python", "qgis", "raster", "remote sensing", "satellite", "shapefile", "spatial analysis", "symbology", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/day3_capstone_research_project_guide.pdf"
 type: "pdf"
 pages: 1
-processedAt: "2025-06-26T18:56:36.796Z"
+processedAt: "2025-06-26T19:29:06.318Z"
 ---
 
 # Day 3: Capstone Research Project Guide - Independent GIS and AI-Assisted Spatial Health Analysis
@@ -612,7 +612,7 @@ explanations
 - **Source**: PDF Document (1 pages)
 - **Category**: tutorial
 - **Difficulty**: intermediate
-- **Relevant Labs**: lab1,lab2,lab3,lab4,lab5
+- **Relevant Labs**: lab1
 - **Topics**: buffer, classification, clustering, crs, gee, gis, google earth engine, machine learning, malaria, mapping, projection, public health, python, qgis, raster, remote sensing, satellite, shapefile, spatial analysis, symbology, vector
 
 ## AI Assistant Usage

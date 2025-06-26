@@ -2,12 +2,12 @@
 title: "http://pcmas1.ccrs.nrcan.gc.ca/fundam/chapter1/chapter1_1_e.htm"
 category: "lab-material"
 difficulty: "advanced"
-lab: "lab2,lab3,lab4,lab5"
+lab: "general"
 topics: ["classification", "clustering", "coordinate system", "crs", "gee", "gis", "mapping", "projection", "raster", "remote sensing", "satellite", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/fundamentals_RS.pdf"
 type: "pdf"
 pages: 258
-processedAt: "2025-06-26T18:56:37.808Z"
+processedAt: "2025-06-26T19:29:07.263Z"
 ---
 
 # http://pcmas1.ccrs.nrcan.gc.ca/fundam/chapter1/chapter1_1_e.htm
@@ -8741,7 +8741,7 @@ print it in colour. It can be printed on either 8½" x 11" or A4 paper
 - **Source**: PDF Document (258 pages)
 - **Category**: lab-material
 - **Difficulty**: advanced
-- **Relevant Labs**: lab2,lab3,lab4,lab5
+- **Relevant Labs**: general
 - **Topics**: classification, clustering, coordinate system, crs, gee, gis, mapping, projection, raster, remote sensing, satellite, vector
 
 ## AI Assistant Usage

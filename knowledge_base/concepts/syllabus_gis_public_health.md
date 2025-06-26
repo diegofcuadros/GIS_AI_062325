@@ -2,12 +2,12 @@
 title: "Syllabus GIS Public Health"
 category: "lab-material"
 difficulty: "intermediate"
-lab: "lab1,lab2,lab3,lab4,lab5"
+lab: "general"
 topics: ["accessibility", "buffer", "clustering", "gee", "gis", "google earth engine", "malaria", "mapping", "projection", "public health", "qgis", "remote sensing", "scripting", "shapefile"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/Syllabus_GIS_Public_Health.pdf"
 type: "pdf"
 pages: 4
-processedAt: "2025-06-26T18:56:44.348Z"
+processedAt: "2025-06-26T19:29:13.598Z"
 ---
 
 # Syllabus GIS Public Health
@@ -190,7 +190,7 @@ Software/Tools
 - **Source**: PDF Document (4 pages)
 - **Category**: lab-material
 - **Difficulty**: intermediate
-- **Relevant Labs**: lab1,lab2,lab3,lab4,lab5
+- **Relevant Labs**: general
 - **Topics**: accessibility, buffer, clustering, gee, gis, google earth engine, malaria, mapping, projection, public health, qgis, remote sensing, scripting, shapefile
 
 ## AI Assistant Usage

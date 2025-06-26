@@ -2,12 +2,12 @@
 title: "Lab 4: AI-Assisted Programming for Google Earth Engine - Complete Tutorial"
 category: "tutorial"
 difficulty: "advanced"
-lab: "lab3,lab4"
+lab: "lab4"
 topics: ["gee", "gis", "google earth engine", "mapping", "public health", "satellite"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/lab_4_ai_assisted_gee_programming_tutorial.pdf"
 type: "pdf"
 pages: 1
-processedAt: "2025-06-26T18:56:38.901Z"
+processedAt: "2025-06-26T19:29:08.319Z"
 ---
 
 # Lab 4: AI-Assisted Programming for Google Earth Engine - Complete Tutorial
@@ -408,7 +408,7 @@ rigor and building genuine expertise!
 - **Source**: PDF Document (1 pages)
 - **Category**: tutorial
 - **Difficulty**: advanced
-- **Relevant Labs**: lab3,lab4
+- **Relevant Labs**: lab4
 - **Topics**: gee, gis, google earth engine, mapping, public health, satellite
 
 ## AI Assistant Usage

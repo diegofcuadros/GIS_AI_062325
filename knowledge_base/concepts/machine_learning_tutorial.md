@@ -2,12 +2,12 @@
 title: "Machine Learning"
 category: "tutorial"
 difficulty: "advanced"
-lab: "lab4,lab5"
+lab: "lab5"
 topics: ["classification", "clustering", "gis", "machine learning", "python", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/machine_learning_tutorial.pdf"
 type: "pdf"
 pages: 35
-processedAt: "2025-06-26T18:56:39.285Z"
+processedAt: "2025-06-26T19:29:08.694Z"
 ---
 
 # Machine Learning
@@ -1053,7 +1053,7 @@ Good Luck!
 - **Source**: PDF Document (35 pages)
 - **Category**: tutorial
 - **Difficulty**: advanced
-- **Relevant Labs**: lab4,lab5
+- **Relevant Labs**: lab5
 - **Topics**: classification, clustering, gis, machine learning, python, vector
 
 ## AI Assistant Usage

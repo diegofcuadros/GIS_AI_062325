@@ -2,12 +2,12 @@
 title: "Lab 1 Enhanced QGIS Tutorial"
 category: "tutorial"
 difficulty: "intermediate"
-lab: "lab1,lab3,lab4,lab5"
+lab: "lab1"
 topics: ["arcgis", "classification", "coordinate system", "crs", "gis", "malaria", "mapping", "projection", "public health", "qgis", "raster", "remote sensing", "shapefile", "spatial analysis", "symbology", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/Lab_1_Enhanced_QGIS_Tutorial.pdf"
 type: "pdf"
 pages: 22
-processedAt: "2025-06-26T18:56:38.141Z"
+processedAt: "2025-06-26T19:29:07.590Z"
 ---
 
 # Lab 1 Enhanced QGIS Tutorial
@@ -804,7 +804,7 @@ Classification-Methods
 - **Source**: PDF Document (22 pages)
 - **Category**: tutorial
 - **Difficulty**: intermediate
-- **Relevant Labs**: lab1,lab3,lab4,lab5
+- **Relevant Labs**: lab1
 - **Topics**: arcgis, classification, coordinate system, crs, gis, malaria, mapping, projection, public health, qgis, raster, remote sensing, shapefile, spatial analysis, symbology, vector
 
 ## AI Assistant Usage

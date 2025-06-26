@@ -2,12 +2,12 @@
 title: "ch8.pdf"
 category: "lab-material"
 difficulty: "intermediate"
-lab: "lab2,lab4,lab5"
+lab: "lab5"
 topics: ["classification", "clustering", "gis", "machine learning", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/Clustering2.pdf"
 type: "pdf"
 pages: 82
-processedAt: "2025-06-26T18:56:36.180Z"
+processedAt: "2025-06-26T19:29:05.722Z"
 ---
 
 # ch8.pdf
@@ -3777,7 +3777,7 @@ Figure 8.41.Points and similarity matrices for Exercise 32.
 - **Source**: PDF Document (82 pages)
 - **Category**: lab-material
 - **Difficulty**: intermediate
-- **Relevant Labs**: lab2,lab4,lab5
+- **Relevant Labs**: lab5
 - **Topics**: classification, clustering, gis, machine learning, vector
 
 ## AI Assistant Usage

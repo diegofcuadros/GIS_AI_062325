@@ -2,12 +2,12 @@
 title: "Enhanced QGIS Malaria Mapping Tutorial - Complete Guide"
 category: "lab-material"
 difficulty: "intermediate"
-lab: "lab1,lab2,lab3,lab4,lab5"
+lab: "lab1"
 topics: ["accessibility", "classification", "clustering", "crs", "gis", "machine learning", "malaria", "mapping", "projection", "public health", "qgis", "raster", "satellite", "shapefile", "spatial analysis", "symbology", "vector"]
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/Lab_1_Malaria.pdf"
 type: "pdf"
 pages: 1
-processedAt: "2025-06-26T18:56:38.391Z"
+processedAt: "2025-06-26T19:29:07.819Z"
 ---
 
 # Enhanced QGIS Malaria Mapping Tutorial - Complete Guide
@@ -699,7 +699,7 @@ Complete Guide to Disease Mapping in Public Health
 - **Source**: PDF Document (1 pages)
 - **Category**: lab-material
 - **Difficulty**: intermediate
-- **Relevant Labs**: lab1,lab2,lab3,lab4,lab5
+- **Relevant Labs**: lab1
 - **Topics**: accessibility, classification, clustering, crs, gis, machine learning, malaria, mapping, projection, public health, qgis, raster, satellite, shapefile, spatial analysis, symbology, vector
 
 ## AI Assistant Usage
