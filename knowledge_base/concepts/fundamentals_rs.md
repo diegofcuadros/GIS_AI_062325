@@ -7,7 +7,7 @@ topics: ["classification", "clustering", "coordinate system", "crs", "gee", "gis
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/fundamentals_RS.pdf"
 type: "pdf"
 pages: 258
-processedAt: "2025-06-26T17:52:07.397Z"
+processedAt: "2025-06-26T18:56:37.808Z"
 ---
 
 # http://pcmas1.ccrs.nrcan.gc.ca/fundam/chapter1/chapter1_1_e.htm

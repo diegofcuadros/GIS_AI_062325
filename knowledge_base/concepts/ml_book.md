@@ -7,7 +7,7 @@ topics: ["classification", "clustering", "coordinate system", "gee", "gis", "mac
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/ML_Book.pdf"
 type: "pdf"
 pages: 234
-processedAt: "2025-06-26T17:52:11.451Z"
+processedAt: "2025-06-26T18:56:41.048Z"
 ---
 
 # AnIntroductiontoMachineLearning

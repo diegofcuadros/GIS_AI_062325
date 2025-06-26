@@ -7,7 +7,7 @@ topics: ["arcgis", "coordinate system", "crs", "gis", "mapping", "projection", "
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/Fundamentals_of_RS_Edited_SC.pdf"
 type: "pdf"
 pages: 39
-processedAt: "2025-06-26T17:52:05.851Z"
+processedAt: "2025-06-26T18:56:36.895Z"
 ---
 
 # Fundamentals Of RS Edited SC

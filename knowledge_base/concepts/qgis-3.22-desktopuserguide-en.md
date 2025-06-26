@@ -7,7 +7,7 @@ topics: ["accessibility", "arcgis", "buffer", "cartography", "classification", "
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/QGIS-3.22-DesktopUserGuide-en.pdf"
 type: "pdf"
 pages: 1393
-processedAt: "2025-06-26T17:52:16.768Z"
+processedAt: "2025-06-26T18:56:44.292Z"
 ---
 
 # QGIS Desktop 3.22 User Guide

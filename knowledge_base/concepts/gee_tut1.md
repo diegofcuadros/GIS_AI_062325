@@ -7,7 +7,7 @@ topics: ["arcgis", "classification", "gee", "gis", "google earth engine", "mappi
 source: "C:/Users/cuadrodo/Documents/GitHub/Wookshop_GIS_AI/GIS_AI_062325/documents/GEE_Tut1.pdf"
 type: "pdf"
 pages: 55
-processedAt: "2025-06-26T17:52:07.799Z"
+processedAt: "2025-06-26T18:56:38.056Z"
 ---
 
 # Introductory course to Google Earth Engine
