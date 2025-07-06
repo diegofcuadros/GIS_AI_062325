@@ -96,6 +96,64 @@ function DrGeoHealthIntro({ labId }: { labId: string }) {
   )
 }
 
+// Lab Data Download Component
+function LabDataDownload({ labId }: { labId: string }) {
+  if (labId === 'lab1') {
+    return (
+      <div className="bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4 mb-6">
+        <div className="flex items-center gap-3">
+          <Database className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+          <div>
+            <p className="text-sm font-medium text-orange-900 dark:text-orange-100">
+              Lab Data Available
+            </p>
+            <p className="text-xs text-orange-700 dark:text-orange-300 mb-2">
+              Data for this lab can be downloaded here:
+            </p>
+            <a 
+              href="/Data_Lab_1.zip"
+              download
+              className="inline-flex items-center text-sm text-orange-600 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300 font-medium"
+            >
+              <Download className="h-4 w-4 mr-1" />
+              Download Lab 1 Data (ZIP)
+            </a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  
+  if (labId === 'lab3') {
+    return (
+      <div className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 mb-6">
+        <div className="flex items-center gap-3">
+          <BookOpen className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+          <div>
+            <p className="text-sm font-medium text-purple-900 dark:text-purple-100">
+              Google Earth Engine Tutorial
+            </p>
+            <p className="text-xs text-purple-700 dark:text-purple-300 mb-2">
+              A detailed tutorial for Google Earth Engine can be downloaded here:
+            </p>
+            <a 
+              href="/Earth Engine Code Editor  _  Google Earth Engine  _  Google for Developers.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-sm text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium"
+            >
+              <FileText className="h-4 w-4 mr-1" />
+              Download GEE Tutorial (PDF)
+            </a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  
+  return null
+}
+
 // PDF Download Component
 function PDFDownload({ labId }: { labId: string }) {
   const pdfMap: { [key: string]: string } = {
@@ -4071,6 +4129,7 @@ export default async function LabPage({ params }: { params: Promise<{ labId: str
         <p className="text-sm text-muted-foreground mt-1">Day {lab.day}</p>
       </header>
 
+      <LabDataDownload labId={lab.id} />
       <DrGeoHealthIntro labId={lab.id} />
       <PDFDownload labId={lab.id} />
 
