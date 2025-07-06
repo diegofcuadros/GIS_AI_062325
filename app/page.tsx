@@ -121,7 +121,7 @@ export default function HomePage() {
               <div className="flex-shrink-0">
                 <div className="relative w-20 h-20">
                   <Image
-                    src="/LOGO_DigEpi_Lab_V2.tif"
+                    src="/Logo_DigitalEpi.png"
                     alt="Digital Epidemiology Laboratory Logo"
                     fill
                     className="object-contain"

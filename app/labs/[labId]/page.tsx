@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import { labsData } from "@/lib/constants"
 import { notFound } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import Image from "next/image"
 
 import {
   CheckSquare,
@@ -54,6 +55,46 @@ import {
 import { Laptop } from "lucide-react"
 
 
+
+// Dr. GeoHealth Introduction Component (Lab 4 only)
+function DrGeoHealthIntro({ labId }: { labId: string }) {
+  // Only show in Lab 4
+  if (labId !== 'lab4') return null
+  
+  return (
+    <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950/20 dark:to-blue-950/20 border border-green-200 dark:border-green-800 rounded-lg p-6 mb-6">
+      <div className="flex items-center gap-4">
+        <div className="flex-shrink-0">
+          <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-green-300 dark:border-green-700">
+            <Image
+              src="/Dr.GeoHealth.png"
+              alt="Dr. GeoHealth ChatGPT Tutor"
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+        <div className="flex-grow">
+          <h3 className="text-lg font-semibold text-green-900 dark:text-green-100 mb-2">
+            Meet Dr. GeoHealth 🤖
+          </h3>
+          <p className="text-sm text-green-800 dark:text-green-200 mb-3">
+            Let's meet Dr. GeoHealth, our customized ChatGPT tutor that will assist us in this lab.
+          </p>
+          <a 
+            href="https://chatgpt.com/g/g-6864415ac46c81919380375226285a85-dr-geohealth"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-sm text-green-700 dark:text-green-300 hover:text-green-900 dark:hover:text-green-100 font-medium bg-green-100 dark:bg-green-900/30 px-3 py-1 rounded-md transition-colors"
+          >
+            <Bot className="h-4 w-4 mr-2" />
+            Chat with Dr. GeoHealth
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 // PDF Download Component
 function PDFDownload({ labId }: { labId: string }) {
@@ -4030,6 +4071,7 @@ export default async function LabPage({ params }: { params: Promise<{ labId: str
         <p className="text-sm text-muted-foreground mt-1">Day {lab.day}</p>
       </header>
 
+      <DrGeoHealthIntro labId={lab.id} />
       <PDFDownload labId={lab.id} />
 
       <Card className="bg-card/50 font-sans">
