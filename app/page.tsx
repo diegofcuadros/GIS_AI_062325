@@ -88,6 +88,48 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent" />
             </div>
           </div>
+
+          {/* Instructor Information Section */}
+          <div className="bg-card/30 backdrop-blur-sm rounded-2xl border border-border/50 p-8 mb-12 max-w-4xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="flex-shrink-0">
+                <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-primary/20">
+                  <Image
+                    src="/instructor-diego-cuadros.jpg"
+                    alt="Dr. Diego F. Cuadros"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+              <div className="flex-grow text-center md:text-left">
+                <h3 className="text-xl font-semibold mb-2">Workshop Instructor</h3>
+                <p className="text-lg font-medium text-primary mb-1">Dr. Diego F. Cuadros</p>
+                <p className="text-muted-foreground mb-2">
+                  Digital Epidemiology Laboratory • Digital Futures • University of Cincinnati
+                </p>
+                <a 
+                  href="https://personal-website-dc-lgp4.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-sm text-primary hover:text-primary/80 transition-colors"
+                >
+                  <Globe className="h-4 w-4 mr-1" />
+                  Visit Instructor Website
+                </a>
+              </div>
+              <div className="flex-shrink-0">
+                <div className="relative w-20 h-20">
+                  <Image
+                    src="/digital-epidemiology-lab-logo.png"
+                    alt="Digital Epidemiology Laboratory Logo"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
