@@ -49,10 +49,50 @@ import {
   AreaChart,
   FlaskConical,
   LightbulbIcon,
+  Download,
 } from "lucide-react"
 import { Laptop } from "lucide-react"
 
 
+
+// PDF Download Component
+function PDFDownload({ labId }: { labId: string }) {
+  const pdfMap: { [key: string]: string } = {
+    lab1: "Lab_1_Tutorial.pdf",
+    lab2: "Lab_2_Tutorial.pdf", 
+    lab3: "Lab_3_Tutorial.pdf",
+    lab4: "Lab_4_Tutorial.pdf",
+    lab5: "Lab_5_Tutorial.pdf"
+  }
+
+  const pdfFile = pdfMap[labId]
+  if (!pdfFile) return null
+
+  return (
+    <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+      <div className="flex items-center gap-3">
+        <Download className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+        <div>
+          <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+            Simplified Tutorial Available
+          </p>
+          <p className="text-xs text-blue-700 dark:text-blue-300 mb-2">
+            A simplified version of the tutorial for this lab can be found here:
+          </p>
+          <a 
+            href={`/Tutorials/${pdfFile}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+          >
+            <FileText className="h-4 w-4 mr-1" />
+            Download PDF Tutorial
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 // Placeholder for Code Block / Interactive Cell
 function CodeBlockPlaceholder({
@@ -129,6 +169,7 @@ const InteractiveVerificationPoints = ({ section }: { section: string }) => (
 // Content for Lab 1 (Malaria Mapping)
 const lab1Content = (
   <div className="font-serif text-lg space-y-6">
+    <PDFDownload labId="lab1" />
     {/* ... Lab 1 content from previous steps ... */}
     <Card id="lab1-introduction" className="mb-6 bg-card/80 scroll-mt-20">
       <CardHeader>
@@ -3988,6 +4029,8 @@ export default async function LabPage({ params }: { params: Promise<{ labId: str
         <p className="text-lg text-muted-foreground">{lab.shortDescription}</p>
         <p className="text-sm text-muted-foreground mt-1">Day {lab.day}</p>
       </header>
+
+      <PDFDownload labId={lab.id} />
 
       <Card className="bg-card/50 font-sans">
         <CardHeader>

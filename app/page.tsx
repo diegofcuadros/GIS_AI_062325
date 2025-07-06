@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import { MapPin, BrainCircuit, Users, Briefcase, Rocket, Zap, Heart, Globe, Brain, ChevronRight, LinkIcon } from "lucide-react"
+import { MapPin, BrainCircuit, Users, Briefcase, Rocket, Zap, Heart, Globe, Brain, ChevronRight, LinkIcon, FileText } from "lucide-react"
 import { labsData } from "@/lib/constants"
 import Image from "next/image"
 
@@ -95,7 +95,7 @@ export default function HomePage() {
               <div className="flex-shrink-0">
                 <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-primary/20">
                   <Image
-                    src="/instructor-diego-cuadros.jpg"
+                    src="/Dic_2021-V2.jpg"
                     alt="Dr. Diego F. Cuadros"
                     fill
                     className="object-cover"
@@ -121,7 +121,7 @@ export default function HomePage() {
               <div className="flex-shrink-0">
                 <div className="relative w-20 h-20">
                   <Image
-                    src="/digital-epidemiology-lab-logo.png"
+                    src="/LOGO_DigEpi_Lab_V2.tif"
                     alt="Digital Epidemiology Laboratory Logo"
                     fill
                     className="object-contain"
@@ -144,6 +144,19 @@ export default function HomePage() {
                 Learn More About Impact
               </Link>
             </Button>
+          </div>
+          
+          {/* Syllabus Download */}
+          <div className="mt-6 text-center">
+            <a 
+              href="/Tutorials/Syllabus_GIS_Public_Health.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              <FileText className="h-4 w-4 mr-2" />
+              Download Complete Workshop Syllabus (PDF)
+            </a>
           </div>
           
           <div className="mt-8 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
