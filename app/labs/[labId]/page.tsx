@@ -137,7 +137,7 @@ function LabDataDownload({ labId }: { labId: string }) {
               A detailed tutorial for Google Earth Engine can be downloaded here:
             </p>
             <a 
-              href="/Earth Engine Code Editor  _  Google Earth Engine  _  Google for Developers.pdf"
+              href="/Google_Earth_Engine_Tutorial.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center text-sm text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium"
