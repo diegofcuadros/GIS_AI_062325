@@ -124,32 +124,7 @@ function LabDataDownload({ labId }: { labId: string }) {
     )
   }
   
-  if (labId === 'lab3') {
-    return (
-      <div className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 mb-6">
-        <div className="flex items-center gap-3">
-          <BookOpen className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-          <div>
-            <p className="text-sm font-medium text-purple-900 dark:text-purple-100">
-              Google Earth Engine Tutorial
-            </p>
-            <p className="text-xs text-purple-700 dark:text-purple-300 mb-2">
-              A detailed tutorial for Google Earth Engine can be downloaded here:
-            </p>
-            <a 
-              href="/Google_Earth_Engine_Tutorial.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-sm text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium"
-            >
-              <FileText className="h-4 w-4 mr-1" />
-              Download GEE Tutorial (PDF)
-            </a>
-          </div>
-        </div>
-      </div>
-    )
-  }
+
   
   return null
 }
@@ -369,6 +344,16 @@ const lab1Content = (
               <strong>Spatial Join:</strong> Combining datasets based on spatial relationships.
             </li>
           </ul>
+          <div className="my-3 p-2 bg-muted rounded-md text-center">
+            <img
+              src="/Lab_1_Attribute_Table.png"
+              alt="QGIS attribute table showing data fields and records for spatial features with disease-related information."
+              className="mx-auto rounded-md max-w-full h-auto"
+            />
+            <p className="text-xs text-muted-foreground mt-1 font-sans">
+              Example of an attribute table in QGIS showing spatial feature data.
+            </p>
+          </div>
         </div>
         <div>
           <h4 className="font-sans font-semibold text-xl mb-2">2.2 Coordinate Reference Systems for Uganda</h4>
@@ -407,12 +392,12 @@ const lab1Content = (
           </p>
           <div className="my-3 p-2 bg-muted rounded-md text-center">
             <img
-              src="/lab1/qgis-menu-add-arcgis-rest-layer.png"
-              alt="QGIS interface screenshot showing the 'Layer' menu expanded, with 'Add Layer' and then 'Add ArcGIS REST Server Layer...' highlighted."
+              src="/Lab_1_qgis-interface.png"
+              alt="QGIS interface overview showing menu bar, toolbars, map canvas, layers panel, and other key components."
               className="mx-auto rounded-md max-w-full h-auto"
             />
             <p className="text-xs text-muted-foreground mt-1 font-sans">
-              QGIS interface: Adding an ArcGIS REST Server Layer.
+              QGIS interface overview with labeled components.
             </p>
           </div>
           <ul className="list-disc list-inside space-y-1 text-muted-foreground ml-4 text-base leading-relaxed">
@@ -1929,13 +1914,29 @@ const lab3Content = (
           resolution necessary for detailed habitat assessment.
         </p>
         <CodeBlockPlaceholder language="javascript" title="GEE Code: Load MODIS NDVI">
-          {`// Load MODIS NDVI Image Collection for 2022
+          {`// Define area of interest (optional, here it's Uganda)
+var uganda = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017")
+  .filter(ee.Filter.eq('country_na', 'Uganda'));
+
+// Load MODIS NDVI Image Collection for 2022
 var ndvi = ee.ImageCollection('MODIS/006/MOD13Q1')
   .filterDate('2022-01-01', '2022-12-31')
+  .filterBounds(uganda) // Optional but preferred for performance
   .select('NDVI')
-  .mean();
+  .median() // More robust than mean for NDVI
+  .clip(uganda); // Optional: clip to Uganda
 
-print('NDVI Image:', ndvi);`}
+// Print info to console
+print('NDVI Image:', ndvi);
+
+// Visualize
+var visParams = {
+  min: 0,
+  max: 9000,
+  palette: ['white', 'green']
+};
+Map.centerObject(uganda, 6);
+Map.addLayer(ndvi, visParams, 'Median NDVI 2022');`}
         </CodeBlockPlaceholder>
         <div className="my-3 p-2 bg-muted rounded-md text-center">
           <img
@@ -1954,12 +1955,32 @@ print('NDVI Image:', ndvi);`}
           analytical requirements.
         </p>
         <CodeBlockPlaceholder language="javascript" title="GEE Code: Load CHIRPS Rainfall">
-          {`// Load CHIRPS Daily Rainfall and compute total for 2022
+          {`// Define Uganda boundary
+var uganda = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017")
+  .filter(ee.Filter.eq('country_na', 'Uganda'));
+
+// Load CHIRPS daily precipitation for 2022
 var rainfall = ee.ImageCollection('UCSB-CHG/CHIRPS/DAILY')
   .filterDate('2022-01-01', '2022-12-31')
-  .sum();
+  .filterBounds(uganda)
+  .sum()
+  .clip(uganda);
 
-print('Rainfall Image:', rainfall);`}
+// Rename the band for clarity
+rainfall = rainfall.rename('Annual_Rainfall_2022');
+
+// Visualize
+var rainfallVis = {
+  min: 0,
+  max: 2000,
+  palette: ['lightblue', 'blue', 'darkblue']
+};
+
+Map.addLayer(rainfall, rainfallVis, 'Total Rainfall 2022');
+Map.centerObject(uganda, 6);
+
+// Print image for inspection
+print('Total Annual Rainfall (2022):', rainfall);`}
         </CodeBlockPlaceholder>
 
         <h4 className="font-sans font-semibold text-xl mt-4 mb-2">
@@ -1971,14 +1992,8 @@ print('Rainfall Image:', rainfall);`}
           global datasets to your study area and enable country-specific analysis of environmental risk patterns.
         </p>
         <CodeBlockPlaceholder language="javascript" title="GEE Code: Load Uganda Boundary">
-          {`// Load Uganda Boundary
-var uganda = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
-  .filter(ee.Filter.eq('country_na', 'Uganda'));
-
-print('Uganda Boundary:', uganda);
-
-// Center the map on Uganda
-Map.centerObject(uganda, 6);`}
+          {`var uganda = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
+  .filter(ee.Filter.eq('country_na', 'Uganda'));`}
         </CodeBlockPlaceholder>
       </CardContent>
     </Card>
@@ -1998,17 +2013,23 @@ Map.centerObject(uganda, 6);`}
         </p>
         <CodeBlockPlaceholder language="javascript" title="GEE Code: Visualize Data">
           {`// NDVI Visualization
-Map.addLayer(ndvi.clip(uganda), 
-  {min: 0, max: 9000, palette: ['white', 'lightgreen', 'darkgreen']}, 
-  'Mean NDVI 2022');
+Map.addLayer(ndvi.clip(uganda), {
+  min: 0,
+  max: 9000,
+  palette: ['white', 'lightgreen', 'darkgreen'],
+  opacity: 1
+}, 'Vegetation Density (NDVI) 2022');
 
-// Rainfall Visualization  
-Map.addLayer(rainfall.clip(uganda), 
-  {min: 0, max: 2000, palette: ['white', 'lightblue', 'darkblue']}, 
-  'Total Rainfall 2022');
+// Rainfall Visualization
+Map.addLayer(rainfall.clip(uganda), {
+  min: 0,
+  max: 2000,
+  palette: ['white', 'lightblue', 'darkblue'],
+  opacity: 1
+}, 'Total Rainfall (mm) 2022');
 
-// Add Uganda boundary outline
-Map.addLayer(uganda, {color: 'red'}, 'Uganda Boundary');`}
+// Add Uganda boundary outline last so it overlays clearly
+Map.addLayer(uganda.style({color: 'red', fillColor: '00000000', width: 1}), {}, 'Uganda Boundary');`}
         </CodeBlockPlaceholder>
         <div className="my-3 p-2 bg-muted rounded-md text-center">
           <img
@@ -2081,16 +2102,20 @@ Export.image.toDrive({
   description: 'Uganda_NDVI_2022',
   scale: 250,
   region: uganda.geometry(),
-  maxPixels: 1e9
+  maxPixels: 1e9,
+  fileFormat: 'GeoTIFF',
+  folder: 'GEE_Exports'
 });
 
-// Export Rainfall to Google Drive  
+// Export Rainfall to Google Drive
 Export.image.toDrive({
   image: rainfall.clip(uganda),
-  description: 'Uganda_Rainfall_2022', 
+  description: 'Uganda_Rainfall_2022',
   scale: 5000,
   region: uganda.geometry(),
-  maxPixels: 1e9
+  maxPixels: 1e9,
+  fileFormat: 'GeoTIFF',
+  folder: 'GEE_Exports'
 });`}
         </CodeBlockPlaceholder>
         <p className="text-muted-foreground leading-relaxed">
@@ -4104,7 +4129,12 @@ export default async function LabPage({ params }: { params: Promise<{ labId: str
     },
   ]
 
-  let featuresForCurrentLab = []
+  let featuresForCurrentLab: Array<{
+    title: string;
+    description: string;
+    icon: any;
+    href: string;
+  }> = []
   if (lab.id === "lab1") {
     featuresForCurrentLab = lab1Features
   } else if (lab.id === "lab2") {
